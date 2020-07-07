@@ -73,8 +73,7 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
 
   .underline::after {
     content: "";
-    width: ${({ visibility }) =>
-      visibility ? 100 : 0}%;
+    width: ${({ visibility }) => visibility ? 100 : 0}%;
     height: 100%;
     background: ${({ theme }) => theme.darkGray};
     display: inline-block;
@@ -238,7 +237,7 @@ const TextInputWithValidation = ({ className, name, value, label, onChange, vali
         </g>
       </svg>
       <span className="underline"></span>
-      <ul className="all-validations">
+      <div className="all-validations">
         {Object.keys(validation).map((property) => (
           <ValidationItem
             key={property}
@@ -247,7 +246,7 @@ const TextInputWithValidation = ({ className, name, value, label, onChange, vali
             correctness={validation[property].correctness}
           />
         ))}
-      </ul>
+      </div>
     </StyledTextInput>
   );
 };

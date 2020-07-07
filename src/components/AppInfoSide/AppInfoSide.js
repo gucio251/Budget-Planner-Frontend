@@ -1,12 +1,13 @@
 import React from 'react';
+import {motion} from "framer-motion";
+import styled from "styled-components";
+
 import WelcomeText from "./../WelcomeText/WelcomeText";
 import RedirectComponent from "../atoms/RedirectComponent";
 import Button from "../atoms/Button";
-import {motion} from 'framer-motion';
-import styled from 'styled-components';
 
 const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
-  className: className,
+  className,
 }))`
   .text-container {
     display: flex;
@@ -79,8 +80,20 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
 
   @media (max-width: 961px) and (min-width: 577px) and (min-height: 599px) {
     #pig-with-background {
-      width: 317px;
-      height: 229px;
+      width: 250px;
+      height: 150px;
+    }
+
+    .wrapper-info-side {
+      overflow: hidden;
+    }
+
+    h1{
+      font-size: 32px;
+    }
+
+    .app-purpose{
+      font-size: 12px;
     }
   }
 

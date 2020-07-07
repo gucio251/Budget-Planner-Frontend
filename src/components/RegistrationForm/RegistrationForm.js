@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import RegistrationInputSide from "./../RegistrationInputSide/RegistrationInputSide";
 import AppInfoSide from "./../AppInfoSide/AppInfoSide";
 import SuccessWindow from "./../SuccessWindow/SuccessWindow";
-import { names, labels, types } from "./registrationFormData";
+import { names, labels, types} from "./registrationFormData";
 
 const FormStyle = styled.div.attrs(({ className }) => ({
   className,
@@ -19,7 +19,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
     height: 100%;
   }
 
-  .registration-form-info-side {
+  .form-info-side {
     width: 50%;
     height: 100vh;
     display: flex;
@@ -29,12 +29,13 @@ const FormStyle = styled.div.attrs(({ className }) => ({
     background-color: ${({ theme }) => theme.mainBlue};
   }
 
-  .registration-form-user-input-side {
+  .form-user-input-side {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100vh;
     margin-left: 72px;
+    width: 50%;
   }
 
   @media (max-width: 961px) and (min-width: 577px) and (min-height: 599px) {
@@ -42,18 +43,18 @@ const FormStyle = styled.div.attrs(({ className }) => ({
       display: flex;
       flex-direction: column;
       width: 100%;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
-    .registration-form-info-side {
+    .form-info-side {
       width: 100%;
       height: 50vh;
     }
 
-    .registration-form-user-input-side {
+    .form-user-input-side {
       width: 100%;
       height: 50vh;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       margin-left: 0;
     }
@@ -65,12 +66,12 @@ const FormStyle = styled.div.attrs(({ className }) => ({
       margin: 0;
     }
 
-    .registration-form-info-side {
+    .form-info-side {
       display: flex;
       height: 120vh;
     }
 
-    .registration-form-user-input-side {
+    .form-user-input-side {
       display: flex;
       height: 120vh;
       width: 50%;
@@ -80,16 +81,18 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   }
 
   @media (max-width: 576px) {
-    .registration-form-info-side {
+    .form-info-side {
       width: 100%;
-      display: flex;
+      display: ${({ formCorrectness }) =>
+        formCorrectness === true ? "none" : "flex"};
       justify-content: flex-start;
       align-items: center;
       overflow: hidden;
     }
 
-    .registration-form-user-input-side {
-      display: none;
+    .form-user-input-side {
+      display: ${({ formCorrectness }) =>
+        formCorrectness === true ? "flex" : "none"};
       width: 100%;
       margin-left: 0;
     }
@@ -104,13 +107,9 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   }
 `;
 
-const RegistrationForm = ({ user, onChange, validation, onSubmit }) => {
-  const { password, repeatedPassword, email } = user;
-  const {
-    emailValidation,
-    passwordValidation,
-    repeatedPasswordValidation,
-  } = validation;
+const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness}) => {
+  const {password, repeatedPassword, email } = user;
+  const {emailValidation, passwordValidation, repeatedPasswordValidation} = validation;
 
   const validations = {
     email: emailValidation,
@@ -124,13 +123,19 @@ const RegistrationForm = ({ user, onChange, validation, onSubmit }) => {
     repeatedPassword,
   };
 
-  const calculateCorrectness = validationSet => {
-    return validationSet.fieldCorrectness ? validationSet.fieldCorrectness : false;
-  }
+  const calculateCorrectness = (validationSet) => {
+    return validationSet.fieldCorrectness
+      ? validationSet.fieldCorrectness
+      : false;
+  };
 
   const calculateVisibility = (validation, specValidation) => {
-    return validation.type === "submit" ? true: specValidation.hasOwnProperty("fieldCorrectness") ? true : false;
-  }
+    return validation.type === "submit"
+      ? true
+      : specValidation.hasOwnProperty("fieldCorrectness")
+      ? true
+      : false;
+  };
   const inputFieldsData = [
     {
       name: names.email,
@@ -162,10 +167,10 @@ const RegistrationForm = ({ user, onChange, validation, onSubmit }) => {
   ];
 
   const infoArea = document.getElementsByClassName(
-    "registration-form-info-side"
+    "form-info-side"
   )[0];
   const inputFieldsArea = document.getElementsByClassName(
-    "registration-form-user-input-side"
+    "fields"
   )[0];
 
   const onClickHandleMobile = (e) => {
@@ -191,20 +196,27 @@ const RegistrationForm = ({ user, onChange, validation, onSubmit }) => {
   });
 
   return (
-    <FormStyle>
+    <FormStyle formCorrectness={formCorrectness}>
       <form onSubmit={onSubmit}>
         <AppInfoSide
-          className="registration-form-info-side"
+          className="form-info-side"
           onClick={onClickHandleMobile}
         />
- {/*        <RegistrationInputSide
-          className="registration-form-user-input-side"
-          inputFieldsData={inputFieldsData}
-          onClick={onSubmit}
-          onChange={onChange}
-          user={user}
-        /> */}
-        <SuccessWindow className="registration-form-user-input-side" successMessage="Account successfully created!"/>
+        {!formCorrectness && (
+          <RegistrationInputSide
+            className="form-user-input-side fields"
+            inputFieldsData={inputFieldsData}
+            onClick={onSubmit}
+            onChange={onChange}
+            user={user}
+          />
+        )}
+        {formCorrectness && (
+          <SuccessWindow
+            className="form-user-input-side success"
+            successMessage="Account successfully created!"
+          />
+        )}
       </form>
     </FormStyle>
   );
@@ -215,6 +227,7 @@ RegistrationForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   validation: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  formCorrectness: PropTypes.bool.isRequired
 };
 
 export default RegistrationForm;

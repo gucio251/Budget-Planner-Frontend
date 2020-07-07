@@ -64,6 +64,18 @@ const StyledInputFields = styled(motion.div).attrs(({ className }) => ({
     }
   }
 
+  @media (max-width: 961px) and (min-width: 577px) and (min-height: 599px) {
+    .wrapper{
+      padding: 50px 0 0 50px;
+    }
+    .registration-create-acc {
+      font-size: 14px;
+    }
+    .login-switch{
+      font-size: 14px;
+    }
+  }
+
   @media (max-width: 576px) {
     .wrapper {
       width: 100%;

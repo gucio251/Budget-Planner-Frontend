@@ -8,6 +8,13 @@ export function loadUsersSuccess(users){
     }
 }
 
+export function createUserSuccess(user){
+    return {
+        type: types.CREATE_USER_SUCCESS,
+        user
+    }
+}
+
 export function loadUsers(){
     return function (dispatch){
         return userApi.getAllUsers()
@@ -17,6 +24,18 @@ export function loadUsers(){
             })
             .catch(error => {
                 throw error
+            })
+    }
+}
+
+export function addUser(user){
+    return function(dispatch){
+        return userApi.saveUser(user)
+            .then((savedUser) => {
+                dispatch(createUserSuccess(savedUser.email))
+            })
+            .catch(error => {
+                throw error;
             })
     }
 }

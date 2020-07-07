@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import RegistrationForm from "./RegistrationForm";
-import {
-  emailValidation,
-  passwordValidation,
-  repeatedPasswordValidation,
-} from "./manageRegistrationFormData";
-import { loadUsers } from "../../redux/actions/userActions";
+import { emailValidation, passwordValidation, repeatedPasswordValidation} from "./manageRegistrationFormData";
+import { loadUsers, addUser } from "../../redux/actions/userActions";
 import { connect } from "react-redux";
 import { validationManager } from "../../components/validationManager/validationManager";
-import { names } from "./registrationFormData";
 
-const ManageRegistrationForm = ({ loadUsers, users }) => {
+
+const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -18,6 +14,8 @@ const ManageRegistrationForm = ({ loadUsers, users }) => {
   });
 
   const [firstRender, setFirstRender] = useState(true);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [formCorrectness, setFormCorrectness] = useState(false);
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -37,10 +35,10 @@ const ManageRegistrationForm = ({ loadUsers, users }) => {
     repeatedPassword: validationNames.repeatedPassword,
   };
 
-  const prepareValueObj = (singleValidation) => {
+  const prepareValueToValidation = (validationName) => {
     const { email, password, repeatedPassword } = validationNames;
     let value = {};
-    switch (singleValidation) {
+    switch (validationName) {
       case email:
         value = {
           valueToBeValidated: user.email,
@@ -64,37 +62,41 @@ const ManageRegistrationForm = ({ loadUsers, users }) => {
     return value;
   };
 
-  const updateSingleValidationInState = (
-    newSingleValidationState,
-    validationToBeUpdated
-  ) => {
+  const getValuesFromNestedObjects = (obj, keyName) => {
+    return Object.keys(obj).map((objProp) => obj[objProp][keyName]);
+  }
+
+  const checkIfAllFieldsAreCorrect = fieldsStatuses => {
+    return fieldsStatuses.every((val) => val === true);
+  }
+
+  const performSingleFieldValidation = () => {
+    const fieldModified = user.lastModifiedField;
+    const result = performSingleValidation(fieldModified);
+    const validationName = Object.keys(result)[0];
+    const validatedObj = Object.values(result)[0];
     setValidation((prevState) => {
       return {
         ...prevState,
-        [validationToBeUpdated]: newSingleValidationState,
+        [validationName]: validatedObj,
       };
     });
+  }
+
+  const performSingleValidation = (modifiedFieldName) => {
+    const valuetoBeValidated = prepareValueToValidation(
+      validationNames[modifiedFieldName]
+    );
+
+    return validationManager.validate(modifiedFieldName, valuetoBeValidated);
   };
 
   useEffect(() => {
     if (firstRender) {
       setFirstRender(false);
-      validationManager.setValidations(validation);
-      validationManager.setDependencies(
-        dependencyBetweenInputNameAndValidation
-      );
+      validationManager.configureInitialSetup(validation, dependencyBetweenInputNameAndValidation);
     } else {
-      const valuetoBeValidated = prepareValueObj(
-        validationNames[user.hasChanged]
-      );
-      const validatedForm = validationManager.validate(
-        user.hasChanged,
-        valuetoBeValidated
-      );
-      updateSingleValidationInState(
-        validatedForm,
-        validationNames[user.hasChanged]
-      );
+      performSingleFieldValidation();
     }
 
     if (users.registeredUsers.length === 0) {
@@ -102,22 +104,46 @@ const ManageRegistrationForm = ({ loadUsers, users }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if(isFormSubmitted){
+      const temp = {...user};
+      delete temp.lastModifiedField;
+
+      const dataForValidation = Object.keys(temp).map(fieldName => {
+        const valueToBeValidated = prepareValueToValidation(validationNames[fieldName]);
+        valueToBeValidated.fieldName = fieldName;
+        return valueToBeValidated;
+      })
+
+      const validationsArray = validationManager.performAllValidations(dataForValidation);
+
+      const finalResult = Object.assign(validationsArray[0], validationsArray[1], validationsArray[2])
+
+      setValidation(finalResult);
+
+      const inputFieldsStates = getValuesFromNestedObjects(finalResult, "fieldCorrectness");
+
+      const isFormCorrect = checkIfAllFieldsAreCorrect(inputFieldsStates);
+
+      setFormCorrectness(isFormCorrect);
+
+      isFormCorrect === true ? addUser(user) : setIsFormSubmitted(false);
+    }
+  }, [isFormSubmitted])
+
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     setUser((prevState) => ({
       ...prevState,
       [name]: value,
-      hasChanged: name,
+      lastModifiedField: name,
     }));
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    setValidation((prevState) => ({
-      ...prevState,
-      ["type"]:"submit"
-    }));
+    setIsFormSubmitted(true);
   };
 
   return (
@@ -126,6 +152,7 @@ const ManageRegistrationForm = ({ loadUsers, users }) => {
       onChange={onChangeHandler}
       validation={validation}
       onSubmit={onSubmit}
+      formCorrectness={formCorrectness}
     />
   );
 };
@@ -138,6 +165,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   loadUsers,
+  addUser
 };
 
 export default connect(
