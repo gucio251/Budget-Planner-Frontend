@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
+import {motion} from "framer-motion";
 import PropTypes from 'prop-types';
 
-const StyledRedirectComponent = styled.span.attrs(({ className, linkColor }) => ({ className, linkColor }))`
+const StyledRedirectComponent = styled(motion.span).attrs(({ className, linkColor }) => ({ className, linkColor }))`
 display: flex;
 justify-content: flex-start;
   .form-link {
@@ -11,9 +12,9 @@ justify-content: flex-start;
   }
 `
 
-const RedirectComponent = ({className, spanText, linkText, href, linkColor}) => {
+const RedirectComponent = ({className, spanText, linkText, href, linkColor, variants}) => {
     return (
-        <StyledRedirectComponent className={className} linkColor={linkColor}>
+        <StyledRedirectComponent className={className} linkColor={linkColor} initial="initial" animate="final" variants={variants}>
             <div>
                 {spanText}{" "}
                 <a href={href} className="form-link">{linkText}</a>
@@ -27,7 +28,8 @@ StyledRedirectComponent.propTypes = {
   spanText: PropTypes.string.isRequired,
   linkText: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
-  linkColor: PropTypes.string.isRequired
+  linkColor: PropTypes.string.isRequired,
+  variants: PropTypes.object
 };
 
 export default RedirectComponent;

@@ -46,6 +46,14 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
     perspective: 1000px;
   }
 
+  #pig-body {
+    z-index: 10
+  }
+
+  #success-coin {
+    z-index: 5
+  }
+
   .mobile-button {
     display: none;
   }
@@ -156,9 +164,41 @@ const WelcomeTextVariants = {
     },
     final: {
         x: 0,
-        transition: { delay: 1.4, type: "tween" },
+        transition: {delay: 1.4, type: "tween" },
     },
 };
+
+/* const coinSuccessVariants = {
+  start: {
+    y: -200,
+    x: 241.638,
+  },
+  final: {
+    y: 122.6,
+    x: 241.638,
+    transition: { delay: 2, type: "tween" },
+  },
+};
+ */
+const mobilebuttonVariants = {
+    initial: {
+      scale: 0,
+    },
+    final: {
+      scale: 1,
+      transition: {delay: 1.7, type: "tween"}
+    }
+}
+
+const redirectComponentVariants = {
+  initial: {
+    y: 300
+  },
+  final: {
+    y: 0,
+    transition: {delay: 2, type: "tween"}
+  }
+}
 const AppInfoSide = ({onClick, className}) => {
     return (
       <StyledAppInfoSide className={className}>
@@ -686,7 +726,7 @@ const AppInfoSide = ({onClick, className}) => {
                     opacity="0.2"
                   />
                   <path
-                    id="Path-40"
+                    id="pig-body"
                     data-name="Path"
                     d="M224.782,107.126c0,59.164-20.014,107.126-112.376,107.126C50.343,214.252,2.328,198.831.031,107.126-1.45,47.98,50.343,0,112.407,0S224.782,47.962,224.782,107.126Z"
                     transform="translate(105.798 114.456)"
@@ -768,24 +808,33 @@ const AppInfoSide = ({onClick, className}) => {
                     transform="translate(323.362 236.511)"
                     fill="#03dac5"
                   />
-                  <path
-                    id="Path-49"
+                  <motion.path
+                    id="success-coin"
                     data-name="Path"
                     d="M24.116,12.789a13.1,13.1,0,0,1-1.4,5.926,12.591,12.591,0,0,1-5.65,5.637A131.637,131.637,0,0,0,0,9.066,12.86,12.86,0,0,1,2.822,4.019,12.1,12.1,0,0,1,11.792,0,12.563,12.563,0,0,1,24.116,12.789Z"
                     transform="translate(241.638 122.6)"
                     fill="#fad46f"
+                    //initial="start"
+                    //animate="final"
+                    //variants={coinSuccessVariants}
                   />
                 </g>
               </motion.g>
             </g>
           </svg>
-          <Button className="mobile-button" title="Sign in" onClick={onClick} />
+          <Button
+            className="mobile-button"
+            title="Sign in"
+            onClick={onClick}
+            variants={mobilebuttonVariants}
+          />
           <RedirectComponent
             className="login-switch-mobile span-text"
             spanText="Already have an account?"
             linkText="Log in"
             href="/heheh"
             linkColor="darkGray"
+            variants={redirectComponentVariants}
           />
         </div>
       </StyledAppInfoSide>

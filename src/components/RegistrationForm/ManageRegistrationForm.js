@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+
 import RegistrationForm from "./RegistrationForm";
 import { emailValidation, passwordValidation, repeatedPasswordValidation} from "./manageRegistrationFormData";
 import { loadUsers, addUser } from "../../redux/actions/userActions";
-import { connect } from "react-redux";
 import { validationManager } from "../../components/validationManager/validationManager";
 
 
@@ -62,14 +63,6 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
     return value;
   };
 
-  const getValuesFromNestedObjects = (obj, keyName) => {
-    return Object.keys(obj).map((objProp) => obj[objProp][keyName]);
-  }
-
-  const checkIfAllFieldsAreCorrect = fieldsStatuses => {
-    return fieldsStatuses.every((val) => val === true);
-  }
-
   const performSingleFieldValidation = () => {
     const fieldModified = user.lastModifiedField;
     const result = performSingleValidation(fieldModified);
@@ -94,7 +87,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   useEffect(() => {
     if (firstRender) {
       setFirstRender(false);
-      validationManager.configureInitialSetup(validation, dependencyBetweenInputNameAndValidation);
+      validationManager.configureInitialSetup(validation,dependencyBetweenInputNameAndValidation,prepareValueToValidation);
     } else {
       performSingleFieldValidation();
     }
@@ -106,25 +99,9 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
 
   useEffect(() => {
     if(isFormSubmitted){
-      const temp = {...user};
-      delete temp.lastModifiedField;
-
-      const dataForValidation = Object.keys(temp).map(fieldName => {
-        const valueToBeValidated = prepareValueToValidation(validationNames[fieldName]);
-        valueToBeValidated.fieldName = fieldName;
-        return valueToBeValidated;
-      })
-
-      const validationsArray = validationManager.performAllValidations(dataForValidation);
-
-      const finalResult = Object.assign(validationsArray[0], validationsArray[1], validationsArray[2])
+      const [finalResult, isFormCorrect ] = validationManager.submitForm(user, validationNames);
 
       setValidation(finalResult);
-
-      const inputFieldsStates = getValuesFromNestedObjects(finalResult, "fieldCorrectness");
-
-      const isFormCorrect = checkIfAllFieldsAreCorrect(inputFieldsStates);
-
       setFormCorrectness(isFormCorrect);
 
       isFormCorrect === true ? addUser(user) : setIsFormSubmitted(false);

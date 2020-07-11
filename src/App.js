@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import ManageRegistrationForm from './components/RegistrationForm/ManageRegistrationForm'
+import GlobalStyle from './assets/styles/globalStyles'
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import styled from 'styled-components'
 
@@ -23,6 +24,7 @@ function App() {
 
 
       <AppStyle>
+        <GlobalStyle />
         <ManageRegistrationForm />
       </AppStyle>
     </BrowserRouter>

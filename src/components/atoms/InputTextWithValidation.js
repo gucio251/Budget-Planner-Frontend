@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ValidationItem from "./ValidationItem";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -20,7 +20,7 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
     border: none;
     outline: none;
     width: 100%;
-    height: 20px;
+    height: 30px;
     font-size: 12px;
     color: ${({ theme }) => theme.darkGray};
     background-color: transparent;
@@ -73,7 +73,7 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
 
   .underline::after {
     content: "";
-    width: ${({ visibility }) => visibility ? 100 : 0}%;
+    width: ${({ visibility }) => (visibility ? 100 : 0)}%;
     height: 100%;
     background: ${({ theme }) => theme.darkGray};
     display: inline-block;
@@ -117,12 +117,21 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
 
   input:not(:focus) ~ #tick {
    display: ${({ visibility, fieldCorrectness }) =>
-     visibility === true ? fieldCorrectness === true ? "block" : "none" : "none"};
+     visibility === true
+       ? fieldCorrectness === true
+         ? "block"
+         : "none"
+       : "none"};
   }
   }
 
   input:not(:focus) ~ #error {
-    display: ${({ visibility, fieldCorrectness }) => visibility === true ? fieldCorrectness === false ? "block" : "none" : "none"}
+    display: ${({ visibility, fieldCorrectness }) =>
+      visibility === true
+        ? fieldCorrectness === false
+          ? "block"
+          : "none"
+        : "none"}
   }
 
   input:focus ~ #tick,
@@ -141,9 +150,19 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
       stroke-dashoffset: 0;
     }
   }
-`
+`;
 
-const TextInputWithValidation = ({ className, name, value, label, onChange, validation, type, visibility, fieldCorrectness}) => {
+const TextInputWithValidation = ({
+  className,
+  name,
+  value,
+  label,
+  onChange,
+  validation,
+  type,
+  visibility,
+  fieldCorrectness,
+}) => {
   return (
     <StyledTextInput
       className={className}

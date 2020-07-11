@@ -1,6 +1,7 @@
 export const validationManager = {
   validations: {},
   fieldNameValidationNameDependency: {},
+  func: {},
 
   validate(inputFieldName, value) {
     const validationName = this.fieldNameValidationNameDependency[inputFieldName];
@@ -16,9 +17,10 @@ export const validationManager = {
     this.fieldNameValidationNameDependency = { ...dependencyObj };
   },
 
-  configureInitialSetup(validations, dependencyObj){
+  configureInitialSetup(validations, dependencyObj, objectPrepFunc){
     this.setValidations(validations);
     this.setDependencies(dependencyObj);
+    this.func = objectPrepFunc;
   },
 
   performSingleValidation(validation, valueToBeValidated) {
@@ -60,5 +62,36 @@ export const validationManager = {
     })
 
     return results;
+  },
+
+  getValuesFromNestedObjects(obj, keyName){
+    return Object.keys(obj).map((objProp) => obj[objProp][keyName]);
+  },
+
+  checkIfAllFieldsAreCorrect(fieldsStatuses){
+    return fieldsStatuses.every((val) => val === true);
+  },
+
+  submitForm(objectToBeValidated, validationNames){
+    const temp = { ...objectToBeValidated };
+    delete temp.lastModifiedField;
+
+    const dataForValidation = Object.keys(temp).map((fieldName) => {
+      const valueToBeValidated = this.func(
+        validationNames[fieldName]
+      );
+      valueToBeValidated.fieldName = fieldName;
+      return valueToBeValidated;
+    });
+
+    const validationsArray = this.performAllValidations(dataForValidation);
+
+    const finalResult = Object.assign(...validationsArray);
+
+    const inputFieldsStates = this.getValuesFromNestedObjects(finalResult, "fieldCorrectness");
+
+    const isFormCorrect = this.checkIfAllFieldsAreCorrect(inputFieldsStates);
+
+    return [finalResult, isFormCorrect];
   }
 };
