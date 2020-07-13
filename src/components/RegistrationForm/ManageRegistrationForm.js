@@ -17,6 +17,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   const [firstRender, setFirstRender] = useState(true);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formCorrectness, setFormCorrectness] = useState(false);
+  const [formModified, setFormModified] = useState(false);
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -89,6 +90,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       setFirstRender(false);
       validationManager.configureInitialSetup(validation,dependencyBetweenInputNameAndValidation,prepareValueToValidation);
     } else {
+      setFormModified(true);
       performSingleFieldValidation();
     }
 
@@ -104,6 +106,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       setValidation(finalResult);
       setFormCorrectness(isFormCorrect);
 
+      setFormModified(true);
       isFormCorrect === true ? addUser(user) : setIsFormSubmitted(false);
     }
   }, [isFormSubmitted])
@@ -130,6 +133,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       validation={validation}
       onSubmit={onSubmit}
       formCorrectness={formCorrectness}
+      formModified={formModified}
     />
   );
 };
