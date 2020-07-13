@@ -38,6 +38,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   };
 
   const prepareValueToValidation = (validationName) => {
+    console.log(validationName);
     const { email, password, repeatedPassword } = validationNames;
     let value = {};
     switch (validationName) {
@@ -101,8 +102,16 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
 
   useEffect(() => {
     if(isFormSubmitted){
-      const [finalResult, isFormCorrect ] = validationManager.submitForm(user, validationNames);
+    const temp = { ...user };
+    delete temp.lastModifiedField;
 
+    const dataForValidation = Object.keys(temp).map((fieldName) => {
+      const valueToBeValidated = prepareValueToValidation(validationNames[fieldName]);
+      valueToBeValidated.fieldName = fieldName;
+      return valueToBeValidated;
+    });
+
+      const [finalResult, isFormCorrect ] = validationManager.submitForm(dataForValidation);
       setValidation(finalResult);
       setFormCorrectness(isFormCorrect);
 

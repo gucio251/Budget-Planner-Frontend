@@ -72,19 +72,11 @@ export const validationManager = {
     return fieldsStatuses.every((val) => val === true);
   },
 
-  submitForm(objectToBeValidated, validationNames){
-    const temp = { ...objectToBeValidated };
-    delete temp.lastModifiedField;
-
-    const dataForValidation = Object.keys(temp).map((fieldName) => {
-      const valueToBeValidated = this.func(
-        validationNames[fieldName]
-      );
-      valueToBeValidated.fieldName = fieldName;
-      return valueToBeValidated;
-    });
+  submitForm(dataForValidation){
 
     const validationsArray = this.performAllValidations(dataForValidation);
+
+    debugger;
 
     const finalResult = Object.assign(...validationsArray);
 
