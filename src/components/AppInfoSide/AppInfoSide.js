@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {motion} from "framer-motion";
 import styled from "styled-components";
 
@@ -21,6 +21,8 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    overflow: hidden;
   }
 
   svg {
@@ -40,18 +42,18 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
   }
 
   #pig {
-    animation: shake 3s 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+    /* animation: shake 3s 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    perspective: 1000px;
+    perspective: 1000px; */
   }
 
   #pig-body {
-    z-index: 10
+    z-index: 10;
   }
 
   #success-coin {
-    z-index: 5
+    z-index: 5;
   }
 
   .mobile-button {
@@ -96,11 +98,11 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
       overflow: hidden;
     }
 
-    h1{
+    h1 {
       font-size: 32px;
     }
 
-    .app-purpose{
+    .app-purpose {
       font-size: 12px;
     }
   }
@@ -129,22 +131,23 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
 
   @media (max-width: 576px) {
     .wrapper-info-side {
-      width: 70%;
+      width: 100%;
       height: 85%;
       margin-top: 20px;
       display: flex;
       flex: 0 0 100%;
+      align-items: center;
     }
 
     .mobile-button {
       display: block;
-      width: 100%;
-      margin-top: 20%;
+      width: 272px;
+      margin-top: 80px;
     }
 
     #pig-with-background {
-      width: 317px;
-      height: 229px;
+      width: 300px;
+      height: 212px;
     }
 
     .margin-button {
@@ -153,7 +156,7 @@ const StyledAppInfoSide = styled.div.attrs(({ className }) => ({
 
     .login-switch-mobile {
       display: block;
-      width: 100%;
+      width: 272px;
     }
   }
 `;
@@ -168,18 +171,18 @@ const WelcomeTextVariants = {
     },
 };
 
-/* const coinSuccessVariants = {
+const coinSuccessVariants = {
   start: {
-    y: -200,
-    x: 241.638,
+    y: "-100vh",
+    x: 243.638,
   },
   final: {
-    y: 122.6,
-    x: 241.638,
-    transition: { delay: 2, type: "tween" },
+    y: 155.6,
+    x: 243.638,
+    transition: { delay: 2, duration: 2, type: "tween" },
   },
 };
- */
+
 const mobilebuttonVariants = {
     initial: {
       scale: 0,
@@ -199,7 +202,47 @@ const redirectComponentVariants = {
     transition: {delay: 2, type: "tween"}
   }
 }
-const AppInfoSide = ({onClick, className}) => {
+
+const ovalComponentVariant = {
+  initial: {
+    x: "-100vh",
+    y: 296
+  },
+  final: {
+    x: 0,
+    y: 296,
+    transition:{ duration: 0.7 }
+  },
+};
+
+const pathComponentVariant = {
+  initial: {
+    scale: 0.1,
+    x: 70,
+  },
+  final: {
+    scale: 1,
+    x: 70,
+    transition:{ duration: 0.7 }
+  },
+};
+
+const pigComponentVariant = {
+  initial: {
+    y: -1000,
+    z: 100,
+  },
+  final: {
+    y: 0,
+    z: 100,
+    transition:{
+      duration: 0.7,
+      delay: 0.7,
+      type: "tween",
+    }
+  },
+};
+const AppInfoSide = ({onClick, className, formCorrectness, firstRender}) => {
     return (
       <StyledAppInfoSide className={className}>
         <div className="wrapper-info-side">
@@ -207,7 +250,7 @@ const AppInfoSide = ({onClick, className}) => {
             className="text-container"
             initial="start"
             final="final"
-            variants={WelcomeTextVariants}
+            variants={firstRender ?  WelcomeTextVariants : null}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -224,9 +267,9 @@ const AppInfoSide = ({onClick, className}) => {
                 transform="translate(0 295.911)"
                 fill="#03dac5"
                 opacity="0.1"
-                initial={{ x: "-100vh", y: 296 }}
-                animate={{ x: 0, y: 296 }}
-                transition={{ duration: 0.7 }}
+                initial="initial"
+                animate="final"
+                variants={firstRender ? ovalComponentVariant : null}
               />
               <motion.path
                 id="Path"
@@ -234,18 +277,14 @@ const AppInfoSide = ({onClick, className}) => {
                 transform="translate(78.057)"
                 fill="#03dac5"
                 opacity="0.1"
-                initial={{ scale: 0.1, x: 70 }}
-                animate={{ scale: 1, x: 70 }}
-                transition={{ duration: 0.7 }}
+                initial="initial"
+                animate="final"
+                variants={firstRender ? pathComponentVariant : null}
               />
               <motion.g
-                initial={{ y: -1000, z: 100 }}
-                animate={{ y: 0, z: 100 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.7,
-                  type: "tween",
-                }}
+                initial="initial"
+                animate="final"
+                variants={firstRender ? pigComponentVariant : null}
               >
                 <ellipse
                   id="Oval-2"
@@ -808,15 +847,25 @@ const AppInfoSide = ({onClick, className}) => {
                     transform="translate(323.362 236.511)"
                     fill="#03dac5"
                   />
-                  <motion.path
-                    id="success-coin"
-                    data-name="Path"
-                    d="M24.116,12.789a13.1,13.1,0,0,1-1.4,5.926,12.591,12.591,0,0,1-5.65,5.637A131.637,131.637,0,0,0,0,9.066,12.86,12.86,0,0,1,2.822,4.019,12.1,12.1,0,0,1,11.792,0,12.563,12.563,0,0,1,24.116,12.789Z"
-                    transform="translate(241.638 122.6)"
-                    fill="#fad46f"
-                    //initial="start"
-                    //animate="final"
-                    //variants={coinSuccessVariants}
+                  {formCorrectness && (
+                    <motion.circle
+                      id="success-coin"
+                      data-name="Oval"
+                      cx="8.5"
+                      cy="8.5"
+                      r="14"
+                      transform="translate(270.638 78)"
+                      fill="#fad46f"
+                      initial="start"
+                      animate="final"
+                      variants={coinSuccessVariants}
+                    />
+                  )}
+                  <path
+                    id="Rectangle"
+                    d="M8.777,0a45.825,45.825,0,0,1,4.516,2.561C15.329,3.97,23.973,11.9,25.275,13a68.07,68.07,0,0,1,8.265,9.311C38.709,29.1,44.526,37.9,44.526,37.9l-15.8,21.657L-.462,50.244S-15.908,39.3-16.05,33.818c0-.093,12.79-10.675,12.764-10.881-.275-2.149,2.523-4.149,4.538-5.666.812-.611,2.376-2.577,3.614-3.153,1.469-.683,2.561.034,2.537-.576A64.493,64.493,0,0,1,8.777,0Z"
+                    transform="translate(227 128)"
+                    fill="#03dac5"
                   />
                 </g>
               </motion.g>

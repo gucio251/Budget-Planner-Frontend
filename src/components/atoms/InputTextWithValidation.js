@@ -86,7 +86,6 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
     display: block;
     position: relative;
     font-size: 15px;
-    font-style: italic;
     margin-top: 10px;
   }
 
@@ -176,6 +175,7 @@ const TextInputWithValidation = ({
         onChange={onChange}
         type={type}
         placeholder=" "
+        autocomplete="off"
       />
       <label className="placeholder-control" htmlFor={name}>
         {label}

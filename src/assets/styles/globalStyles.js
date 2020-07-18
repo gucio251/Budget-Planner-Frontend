@@ -26,25 +26,38 @@ const GlobalStyle = createGlobalStyle`
     width: 50%;
   }
 
+  .success-window {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+  }
+
   @media (max-width: 961px) and (min-width: 577px) and (min-height: 599px) {
     form {
       display: flex;
       flex-direction: column;
-      width: 100%;
       overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .form-info-side {
-      width: 100%;
+      width: 100vw;
       height: 50vh;
     }
 
     .form-user-input-side {
-      width: 100%;
+      width: 100vw;
       height: 50vh;
       justify-content: flex-start;
       align-items: center;
       margin-left: 0;
+    }
+
+    .success-window {
+      width: 100%;
     }
   }
 
@@ -52,6 +65,7 @@ const GlobalStyle = createGlobalStyle`
     form {
       display: flex;
       margin: 0;
+      overflow-y: auto;
     }
 
     .form-info-side {
@@ -71,18 +85,23 @@ const GlobalStyle = createGlobalStyle`
   @media (max-width: 576px) {
     .form-info-side {
       width: 100%;
-      display: ${({ formCorrectness }) =>
-        formCorrectness === true ? "none" : "flex"};
+      display: "flex";
       justify-content: flex-start;
       align-items: center;
       overflow: hidden;
     }
 
     .form-user-input-side {
-      display: ${({ formCorrectness }) =>
-        formCorrectness === true ? "flex" : "none"};
+      display: "flex";
       width: 100%;
       margin-left: 0;
+    }
+
+    .success-window{
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
     }
   }
 

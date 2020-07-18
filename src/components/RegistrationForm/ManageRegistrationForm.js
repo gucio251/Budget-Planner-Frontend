@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 
 import RegistrationForm from "./RegistrationForm";
@@ -18,6 +18,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formCorrectness, setFormCorrectness] = useState(false);
   const [formModified, setFormModified] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -86,9 +87,23 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
     return validationManager.validate(modifiedFieldName, valuetoBeValidated);
   };
 
+  const handleResize = () => {
+    window.visualViewport.width > 576 ? setIsMobile(false) : setIsMobile(true);
+  };
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+
   useEffect(() => {
     if (firstRender) {
       setFirstRender(false);
+      handleResize();
       validationManager.configureInitialSetup(validation,dependencyBetweenInputNameAndValidation,prepareValueToValidation);
     } else {
       setFormModified(true);
@@ -135,6 +150,11 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
     setIsFormSubmitted(true);
   };
 
+  const onClickHandleMobile = (e) => {
+    e.preventDefault();
+    setFormModified(true);
+  };
+
   return (
     <RegistrationForm
       user={user}
@@ -142,7 +162,10 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       validation={validation}
       onSubmit={onSubmit}
       formCorrectness={formCorrectness}
-      formModified={formModified}
+      isModified={formModified}
+      isMobile={isMobile}
+      onClickHandleMobile={onClickHandleMobile}
+      firstRender={firstRender}
     />
   );
 };

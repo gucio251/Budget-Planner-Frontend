@@ -77,6 +77,9 @@ const StyledInputFields = styled(motion.div).attrs(({ className }) => ({
   }
 
   @media (max-width: 576px) {
+    .registration-create-acc{
+      width: 320px;
+    }
     .wrapper {
       width: 100%;
       height: 85%;
@@ -96,16 +99,29 @@ const StyledInputVariants = {
     }
 }
 
-const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className}) => {
+const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender}) => {
     return (
-      <StyledInputFields className={className} initial="initial" animate="final" variants={StyledInputVariants}>
+      <StyledInputFields
+        className={className}
+        initial={firstRender ? "initial" : null}
+        animate={firstRender ? "final" : null}
+        variants={StyledInputVariants}
+      >
         <div className="wrapper">
           <span className="registration-create-acc">
             Create an account to start tracking your budget
           </span>
           <div className="input-fields-area">
             {inputFieldsData.map(
-              ({ name, value, label, specValidation, type, visibility, fieldCorrectness }) => {
+              ({
+                name,
+                value,
+                label,
+                specValidation,
+                type,
+                visibility,
+                fieldCorrectness,
+              }) => {
                 return (
                   <InputTextWithValidation
                     key={name}

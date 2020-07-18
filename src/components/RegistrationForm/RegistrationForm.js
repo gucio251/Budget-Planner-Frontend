@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import RegistrationInputSide from "./../RegistrationInputSide/RegistrationInputSide";
 import AppInfoSide from "./../AppInfoSide/AppInfoSide";
 import SuccessWindow from "./../SuccessWindow/SuccessWindow";
 import { names, labels, types} from "./registrationFormData";
-import { useTapGesture } from "framer-motion";
+
 
 const FormStyle = styled.div.attrs(({ className }) => ({
-  className
+  className,
 }))`
   display: flex;
   width: 100%;
   height: 100%;
-
-  .fields{
-    display: ${({inputFieldsMobileVisibility}) => inputFieldsMobileVisibility == null ? "flex" : inputFieldsMobileVisibility ? "flex" : "none"};
-  }
-
-  .info{
-    display: ${({infoMobileVisibility}) => infoMobileVisibility == null ? "flex" : infoMobileVisibility ? "flex" : "none"};;
-  }
 `;
 
-const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness, formModified}) => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isMoved, setIsMoved] = useState(false);
+const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender}) => {
   const {password, repeatedPassword, email } = user;
   const {emailValidation, passwordValidation, repeatedPasswordValidation} = validation;
 
@@ -55,23 +45,29 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
       : false;
   };
 
-  const calculateMobileVisibility = (form) => {
-    const visibilityRequirements = {
-      "info": [{"isMobile":true, "isMoved":false, "isModified":false}],
-      "fields": [{"isMobile":true, "isMoved":true, "isModified":false},{"isMobile":true, "isMoved":false, "isModified":true}, {"isMobile":true, "isMoved":true, "isModified":true}]
+  const calculateFormItemsVisibility = (form) => {
+    const {name, isMobile, isModified, formCorrectness} = form;
+
+    const notMobileVisibilityRequirements = {
+      "info": [{isMobile: false}],
+      "fields": [{ formCorrectness: false }],
+      "success": [{ formCorrectness: true }]
+    };
+
+    const mobileVisibilityRequirements = {
+      "info": [{isModified: false},{formCorrectness: false}],
+      "fields": [{isModified: true},{formCorrectness: false}],
+      "success": [{formCorrectness: true}]
     }
 
-    if(form.isMobile !== true){
-      return null;
-    }
-    const requirements = visibilityRequirements[form.name];
+    const requirements = isMobile===true ? mobileVisibilityRequirements[name] : notMobileVisibilityRequirements[name];
     delete form.name;
 
-    let resultArr = requirements.map(requirement => {return Object.keys(form).map(formItem => requirement[formItem] === form[formItem])});
+    let resultArr = requirements.map(requirement => {return Object.keys(requirement).map(property => requirement[property] === form[property])});
 
-    const finalArr = resultArr.map(singleRes => singleRes.every((val) => val === true));
+    resultArr = resultArr.flat();
 
-    return finalArr.includes(true);
+    return resultArr.every((val) => val === true);
   };
 
   const inputFieldsData = [
@@ -104,54 +100,28 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
     },
   ];
 
-  const infoArea = document.getElementsByClassName(
-    "form-info-side"
-  )[0];
-  const inputFieldsArea = document.getElementsByClassName(
-    "fields"
-  )[0];
-
-  const onClickHandleMobile = (e) => {
-    e.preventDefault();
-    setIsMoved(true);
-
-  };
-
-  const handleResize = () => {
-    window.innerWidth > 576 ? setIsMobile(false) : setIsMobile(true);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  });
-
   return (
-    <FormStyle
-      formCorrectness={formCorrectness}
-      infoMobileVisibility={calculateMobileVisibility({"isModified":formModified, "isMobile": isMobile, "isMoved": isMoved, "name": "info"})}
-      inputFieldsMobileVisibility={calculateMobileVisibility({"isModified":formModified, "isMobile": isMobile, "isMoved": isMoved, "name": "fields"})}
-    >
+    <FormStyle>
       <form onSubmit={onSubmit}>
-        <AppInfoSide
-          className="form-info-side info"
+        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"info", "formCorrectness": formCorrectness}) && (<AppInfoSide
+          className="form-info-side"
           onClick={onClickHandleMobile}
-        />
-        {!formCorrectness && (
+          formCorrectness={formCorrectness}
+          firstRender={firstRender}
+        />)}
+        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"fields", "formCorrectness": formCorrectness}) && (
           <RegistrationInputSide
-            className="form-user-input-side fields"
+            className="form-user-input-side"
             inputFieldsData={inputFieldsData}
             onClick={onSubmit}
             onChange={onChange}
             user={user}
+            firstRender={firstRender}
           />
         )}
-        {formCorrectness && (
+        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"success", "formCorrectness": formCorrectness}) && (
           <SuccessWindow
-            className="form-user-input-side success"
+            className="success-window"
             successMessage="Account successfully created!"
           />
         )}
