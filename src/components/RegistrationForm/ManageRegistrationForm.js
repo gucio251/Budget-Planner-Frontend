@@ -19,6 +19,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   const [formCorrectness, setFormCorrectness] = useState(false);
   const [formModified, setFormModified] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [coinAnimation, setCoinAnimation] = useState(false)
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -39,7 +40,6 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   };
 
   const prepareValueToValidation = (validationName) => {
-    console.log(validationName);
     const { email, password, repeatedPassword } = validationNames;
     let value = {};
     switch (validationName) {
@@ -115,6 +115,14 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
     }
   }, [user]);
 
+  useEffect(()=>{
+    if(isFormSubmitted && formCorrectness && !coinAnimation){
+      setCoinAnimation(true);
+    }else if(isFormSubmitted && formCorrectness && coinAnimation){
+      setCoinAnimation({status: "done"});
+    }
+  }, [isFormSubmitted, formCorrectness, isMobile])
+
   useEffect(() => {
     if(isFormSubmitted){
     const temp = { ...user };
@@ -166,6 +174,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       isMobile={isMobile}
       onClickHandleMobile={onClickHandleMobile}
       firstRender={firstRender}
+      animation={coinAnimation}
     />
   );
 };

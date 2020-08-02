@@ -7,7 +7,7 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
   position: relative;
   label {
     position: absolute;
-    top: 5px;
+    top: 12px;
     display: block;
     font-size: 12px;
     transition: all 200ms ease-out;

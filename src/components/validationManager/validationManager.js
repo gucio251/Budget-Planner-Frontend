@@ -73,10 +73,7 @@ export const validationManager = {
   },
 
   submitForm(dataForValidation){
-
     const validationsArray = this.performAllValidations(dataForValidation);
-
-    debugger;
 
     const finalResult = Object.assign(...validationsArray);
 

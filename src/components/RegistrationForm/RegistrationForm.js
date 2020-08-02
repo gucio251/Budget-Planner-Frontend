@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import RegistrationInputSide from "./../RegistrationInputSide/RegistrationInputSide";
@@ -15,7 +15,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   height: 100%;
 `;
 
-const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender}) => {
+const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender, animation}) => {
   const {password, repeatedPassword, email } = user;
   const {emailValidation, passwordValidation, repeatedPasswordValidation} = validation;
 
@@ -103,12 +103,15 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
   return (
     <FormStyle>
       <form onSubmit={onSubmit}>
-        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"info", "formCorrectness": formCorrectness}) && (<AppInfoSide
-          className="form-info-side"
-          onClick={onClickHandleMobile}
-          formCorrectness={formCorrectness}
-          firstRender={firstRender}
-        />)}
+        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"info", "formCorrectness": formCorrectness}) && (
+          <AppInfoSide
+            className="form-info-side"
+            onClick={onClickHandleMobile}
+            formCorrectness={formCorrectness}
+            firstRender={firstRender}
+            animation={animation}
+          />)
+        }
         {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"fields", "formCorrectness": formCorrectness}) && (
           <RegistrationInputSide
             className="form-user-input-side"
@@ -136,7 +139,8 @@ RegistrationForm.propTypes = {
   validation: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
   formCorrectness: PropTypes.bool.isRequired,
-  formModified: PropTypes.bool.isRequired
+  formModified: PropTypes.bool.isRequired,
+  animation:PropTypes.bool.isRequired
 };
 
 export default RegistrationForm;

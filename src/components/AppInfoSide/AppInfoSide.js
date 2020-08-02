@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {motion} from "framer-motion";
 import styled from "styled-components";
 
@@ -173,7 +173,7 @@ const WelcomeTextVariants = {
 
 const coinSuccessVariants = {
   start: {
-    y: "-100vh",
+    y: '-100vh',
     x: 243.638,
   },
   final: {
@@ -242,7 +242,8 @@ const pigComponentVariant = {
     }
   },
 };
-const AppInfoSide = ({onClick, className, formCorrectness, firstRender}) => {
+const AppInfoSide = ({onClick, className, formCorrectness, firstRender, animation}) => {
+    console.log(animation);
     return (
       <StyledAppInfoSide className={className}>
         <div className="wrapper-info-side">
@@ -250,7 +251,7 @@ const AppInfoSide = ({onClick, className, formCorrectness, firstRender}) => {
             className="text-container"
             initial="start"
             final="final"
-            variants={firstRender ?  WelcomeTextVariants : null}
+            variants={firstRender ? WelcomeTextVariants : null}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -847,14 +848,13 @@ const AppInfoSide = ({onClick, className, formCorrectness, firstRender}) => {
                     transform="translate(323.362 236.511)"
                     fill="#03dac5"
                   />
-                  {formCorrectness && (
+                  {animation === true && (
                     <motion.circle
                       id="success-coin"
                       data-name="Oval"
                       cx="8.5"
                       cy="8.5"
                       r="14"
-                      transform="translate(270.638 78)"
                       fill="#fad46f"
                       initial="start"
                       animate="final"

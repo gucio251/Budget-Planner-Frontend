@@ -11,7 +11,7 @@ const StyledValidationItem = styled.li.attrs((props) => ({
   }
 
   .valid {
-    color: ${({ theme }) => theme.mint};
+    color: ${({ theme }) => theme.darkMint};
   }
 
   .invalid {
