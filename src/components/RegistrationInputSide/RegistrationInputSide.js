@@ -99,7 +99,7 @@ const StyledInputVariants = {
     }
 }
 
-const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender}) => {
+const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData}) => {
     return (
       <StyledInputFields
         className={className}
@@ -109,7 +109,7 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
       >
         <div className="wrapper">
           <span className="registration-create-acc">
-            Create an account to start tracking your budget
+            {title}
           </span>
           <div className="input-fields-area">
             {inputFieldsData.map(
@@ -145,8 +145,8 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
             />
             <RedirectComponent
               className="login-switch span-text"
-              spanText="Already have an account?"
-              linkText="Log in"
+              spanText={linkData.text}
+              linkText={linkData.linkText}
               href="/heheh"
               linkColor="mainBlue"
             />

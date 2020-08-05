@@ -100,6 +100,8 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
     },
   ];
 
+  const linkData = { text: "Already have an account?", linkText: "Log in" };
+
   return (
     <FormStyle>
       <form onSubmit={onSubmit}>
@@ -107,9 +109,9 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
           <AppInfoSide
             className="form-info-side"
             onClick={onClickHandleMobile}
-            formCorrectness={formCorrectness}
             firstRender={firstRender}
             animation={animation}
+            linkData={linkData}
           />)
         }
         {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"fields", "formCorrectness": formCorrectness}) && (
@@ -120,6 +122,8 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
             onChange={onChange}
             user={user}
             firstRender={firstRender}
+            title="Create an account to start tracking your budget"
+            linkData={linkData}
           />
         )}
         {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"success", "formCorrectness": formCorrectness}) && (

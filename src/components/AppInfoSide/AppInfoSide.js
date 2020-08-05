@@ -242,8 +242,7 @@ const pigComponentVariant = {
     }
   },
 };
-const AppInfoSide = ({onClick, className, formCorrectness, firstRender, animation}) => {
-    console.log(animation);
+const AppInfoSide = ({onClick, className, firstRender, animation, linkData}) => {
     return (
       <StyledAppInfoSide className={className}>
         <div className="wrapper-info-side">
@@ -879,8 +878,8 @@ const AppInfoSide = ({onClick, className, formCorrectness, firstRender, animatio
           />
           <RedirectComponent
             className="login-switch-mobile span-text"
-            spanText="Already have an account?"
-            linkText="Log in"
+            spanText={linkData.text}
+            linkText={linkData.linkText}
             href="/heheh"
             linkColor="darkGray"
             variants={redirectComponentVariants}
