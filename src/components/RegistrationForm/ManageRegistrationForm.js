@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import RegistrationForm from "./RegistrationForm";
 import { emailValidation, passwordValidation, repeatedPasswordValidation} from "./manageRegistrationFormData";
-import { loadUsers, addUser } from "../../redux/actions/userActions";
+import {userActions} from "../../redux/actions/userActions";
 import { validationManager } from "../../components/validationManager/validationManager";
 
 
-const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
+const ManageRegistrationForm = () => {
+  const registeredUsers = useSelector(state => state.users);
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -19,7 +22,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   const [formCorrectness, setFormCorrectness] = useState(false);
   const [formModified, setFormModified] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [coinAnimation, setCoinAnimation] = useState(false)
+  const [coinAnimation, setCoinAnimation] = useState(false);
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -46,7 +49,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       case email:
         value = {
           valueToBeValidated: user.email,
-          arr: users.registeredUsers,
+          arr: registeredUsers,
         };
         break;
       case password:
@@ -110,8 +113,8 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       performSingleFieldValidation();
     }
 
-    if (users.registeredUsers.length === 0) {
-      loadUsers();
+    if (registeredUsers.length === 0) {
+      dispatch(userActions.loadUsers());
     }
   }, [user]);
 
@@ -139,7 +142,7 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
       setFormCorrectness(isFormCorrect);
 
       setFormModified(true);
-      isFormCorrect === true ? addUser(user) : setIsFormSubmitted(false);
+      isFormCorrect === true ? dispatch(userActions.addUser(user)) : setIsFormSubmitted(false);
     }
   }, [isFormSubmitted])
 
@@ -179,18 +182,4 @@ const ManageRegistrationForm = ({ loadUsers, users, addUser }) => {
   );
 };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    users: state.users,
-  };
-}
-
-const mapDispatchToProps = {
-  loadUsers,
-  addUser
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManageRegistrationForm);
+export { ManageRegistrationForm };

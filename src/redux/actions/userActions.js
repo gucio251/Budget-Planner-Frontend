@@ -1,41 +1,40 @@
-import * as types from './actionTypes';
+import {userConstants} from './actionTypes';
 import * as userApi from '../../api/userApi';
 
-export function loadUsersSuccess(users){
-    return {
-        type: types.LOAD_USERS_SUCCESS,
-        users
-    }
+export const userActions = {
+    loadUsers,
+    addUser
 }
 
-export function createUserSuccess(user){
-    return {
-        type: types.CREATE_USER_SUCCESS,
-        user
+function loadUsers(){
+    return dispatch => {
+        dispatch(request());
+
+        userApi.getAllUsers()
+            .then(
+                allUsers => {dispatch(success(allUsers.users))},
+                error => {dispatch(failure(error))}
+            );
     }
+
+    function request() {return {type: userConstants.GETUSERS_REQUEST}}
+    function success(users) {return {type: userConstants.GETUSERS_SUCCESS, users}}
+    function failure(error) {return {type: userConstants.GETUSERS_FAILURE, error}}
 }
 
-export function loadUsers(){
-    return function (dispatch){
-        return userApi.getAllUsers()
-            .then((users) => {
-                const {users: usersLogins}= users;
-                dispatch(loadUsersSuccess(usersLogins));
-            })
-            .catch(error => {
-                throw error
-            })
+function addUser(user){
+    return dispatch => {
+        dispatch(request());
+
+        userApi.saveUser(user)
+            .then(
+                savedUser => {dispatch(success(savedUser))},
+                error => {dispatch(failure(error))}
+            );
     }
+
+    function request() {return {type: userConstants.REGISTER_REQUEST}}
+    function success(user) {return {type: userConstants.REGISTER_SUCCESS, user}}
+    function failure(error) {return {type: userConstants.REGISTER_FAILURE, error}}
 }
 
-export function addUser(user){
-    return function(dispatch){
-        return userApi.saveUser(user)
-            .then((savedUser) => {
-                dispatch(createUserSuccess(savedUser.email))
-            })
-            .catch(error => {
-                throw error;
-            })
-    }
-}

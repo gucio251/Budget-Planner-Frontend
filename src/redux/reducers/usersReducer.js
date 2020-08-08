@@ -1,14 +1,17 @@
-import * as types from "../actions/actionTypes";
-import initialState from "./initialState";
+import {userConstants} from "../actions/actionTypes";
 
-export default function usersReducer(state = initialState.users, action) {
+export default function users(state = [], action) {
   switch (action.type) {
-    case types.LOAD_USERS_SUCCESS:
-      return { ...state, registeredUsers: action.users };
-    case types.CREATE_USER_SUCCESS:
-      const newRegisteredUsers = [...state.registeredUsers];
-      newRegisteredUsers.push(action.user);
-      return { ...state, registeredUsers: newRegisteredUsers};
+    case userConstants.GETUSERS_REQUEST:
+      return {
+        loading: true
+      };
+    case userConstants.GETUSERS_SUCCESS:
+      return [...action.users];
+    case userConstants.GETUSERS_FAILURE:
+      return {
+        error: action.error
+      };
     default:
       return state;
   }
