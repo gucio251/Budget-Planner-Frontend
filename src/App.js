@@ -1,33 +1,20 @@
 import React from "react";
 import "./App.css";
-import ManageRegistrationForm from './components/RegistrationForm/ManageRegistrationForm'
-import GlobalStyle from './assets/styles/globalStyles'
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import styled from 'styled-components'
+import {Switch, Route} from "react-router-dom";
+import {ProtectedRoutes} from "./components/ProtectedRoutes/ProtectedRoutes"
+import {routes} from './routes';
+import {ManageRegistrationForm} from './components/RegistrationForm/ManageRegistrationForm';
+import {ManageLoginForm} from './components/ManageLoginForm/ManageLoginForm';
+import {Dashboard} from './components/Dashboard/Dashboard';
 
-const AppStyle = styled.div`
-  display: flex;
-`
 
 function App() {
   return (
-    <BrowserRouter>
-
     <Switch>
-
-    <Route  path='/'  />
-
-
-
+      <Route exact path={routes.registrationPage} component={ManageRegistrationForm}/>
+      <Route path={routes.loginPage} component={ManageLoginForm}/>
+      <ProtectedRoutes path={routes.dashboard} component={Dashboard}/>
     </Switch>
-
-
-
-      <AppStyle>
-        <GlobalStyle />
-        <ManageRegistrationForm />
-      </AppStyle>
-    </BrowserRouter>
   );
 }
 

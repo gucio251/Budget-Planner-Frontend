@@ -99,7 +99,7 @@ const StyledInputVariants = {
     }
 }
 
-const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData}) => {
+const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData, buttonName}) => {
     return (
       <StyledInputFields
         className={className}
@@ -140,14 +140,14 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
             )}
             <Button
               className="margin-button"
-              title="Sign up"
+              title={buttonName}
               onClick={onClick}
             />
             <RedirectComponent
               className="login-switch span-text"
               spanText={linkData.text}
               linkText={linkData.linkText}
-              href="/heheh"
+              href="/login"
               linkColor="mainBlue"
             />
           </div>

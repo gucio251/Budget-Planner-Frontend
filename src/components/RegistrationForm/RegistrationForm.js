@@ -101,20 +101,24 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
   ];
 
   const linkData = { text: "Already have an account?", linkText: "Log in" };
+  const buttonName = "Sign up";
+  const linkForRedirection = "/login";
 
   return (
     <FormStyle>
       <form onSubmit={onSubmit}>
-        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"info", "formCorrectness": formCorrectness}) && (
+        {calculateFormItemsVisibility({isMobile, isModified, "name":"info", formCorrectness}) && (
           <AppInfoSide
             className="form-info-side"
             onClick={onClickHandleMobile}
             firstRender={firstRender}
             animation={animation}
             linkData={linkData}
+            buttonName={buttonName}
+            href={linkForRedirection}
           />)
         }
-        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"fields", "formCorrectness": formCorrectness}) && (
+        {calculateFormItemsVisibility({isMobile, isModified, "name":"fields", formCorrectness}) && (
           <RegistrationInputSide
             className="form-user-input-side"
             inputFieldsData={inputFieldsData}
@@ -124,12 +128,14 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
             firstRender={firstRender}
             title="Create an account to start tracking your budget"
             linkData={linkData}
+            buttonName={buttonName}
           />
         )}
-        {calculateFormItemsVisibility({"isMobile":isMobile,"isModified": isModified, "name":"success", "formCorrectness": formCorrectness}) && (
+        {calculateFormItemsVisibility({isMobile, isModified, "name":"success", formCorrectness}) && (
           <SuccessWindow
             className="success-window"
             successMessage="Account successfully created!"
+            href={linkForRedirection}
           />
         )}
       </form>

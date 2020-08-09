@@ -1,9 +1,11 @@
 import {userConstants} from './actionTypes';
+import {useHistory} from 'react-router-dom';
 import * as userApi from '../../api/userApi';
 
 export const userActions = {
     loadUsers,
-    addUser
+    addUser,
+    login
 }
 
 function loadUsers(){
@@ -38,3 +40,22 @@ function addUser(user){
     function failure(error) {return {type: userConstants.REGISTER_FAILURE, error}}
 }
 
+function login(user, history){
+    return dispatch => {
+        dispatch(request());
+
+        userApi.authLogin(user)
+            .then(
+                userInfo => {
+                    history.push("/dashboard");
+                    userInfo.email = user.email;
+                    dispatch(success(userInfo));
+                },
+                error => {dispatch(failure(error))}
+            )
+    }
+
+    function request() {return {type: userConstants.LOGIN_REQUEST}}
+    function success(user) {return {type: userConstants.LOGIN_SUCCESS, user}}
+    function failure(error) {return {type: userConstants.LOGIN_FAILURE, error}}
+}

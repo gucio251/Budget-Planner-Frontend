@@ -1,7 +1,9 @@
 import React from "react";
-import Button from "./../atoms/Button";
+import PropTypes from "prop-types";
 import styled from "styled-components";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { useHistory } from "react-router-dom";
+import Button from "./../atoms/Button";
 
 const StyledSuccessWindow = styled.div.attrs(({ className }) => ({
   className,
@@ -140,9 +142,12 @@ const buttonVariants = {
   }
 }
 
-const onClick = () => {alert("xoxo")}
+const SuccessWindow = ({ className, successMessage, href }) => {
+  const history = useHistory();
 
-const SuccessWindow = ({ className, successMessage }) => {
+  const onClick = () => {
+    history.push(href);
+  }
   return (
     <StyledSuccessWindow className={className}>
       <div className="wrapper">
@@ -331,5 +336,11 @@ const SuccessWindow = ({ className, successMessage }) => {
     </StyledSuccessWindow>
   );
 };
+
+SuccessWindow.propTypes = {
+  className: PropTypes.string.isRequired,
+  successMessage: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired
+}
 
 export default SuccessWindow;

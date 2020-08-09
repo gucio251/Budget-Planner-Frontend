@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {motion} from "framer-motion";
 import styled from "styled-components";
-
+import PropTypes from "prop-types";
 import WelcomeText from "./../WelcomeText/WelcomeText";
 import RedirectComponent from "../atoms/RedirectComponent";
 import Button from "../atoms/Button";
@@ -242,7 +242,7 @@ const pigComponentVariant = {
     }
   },
 };
-const AppInfoSide = ({onClick, className, firstRender, animation, linkData}) => {
+const AppInfoSide = ({onClick, className, firstRender, animation, linkData, buttonName, href}) => {
     return (
       <StyledAppInfoSide className={className}>
         <div className="wrapper-info-side">
@@ -872,21 +872,31 @@ const AppInfoSide = ({onClick, className, firstRender, animation, linkData}) => 
           </svg>
           <Button
             className="mobile-button"
-            title="Sign in"
+            title={buttonName}
             onClick={onClick}
-            variants={mobilebuttonVariants}
+            variants={firstRender ? mobilebuttonVariants : null}
           />
           <RedirectComponent
             className="login-switch-mobile span-text"
             spanText={linkData.text}
             linkText={linkData.linkText}
-            href="/heheh"
+            href={href}
             linkColor="darkGray"
-            variants={redirectComponentVariants}
+            variants={firstRender ? redirectComponentVariants : null}
           />
         </div>
       </StyledAppInfoSide>
     );
 };
+
+AppInfoSide.propTypes = {
+  onclick: PropTypes.func.isRequired,
+  className: PropTypes.string.isRequired,
+  firstRender: PropTypes.bool.isRequired,
+  animation: PropTypes.bool,
+  linkData: PropTypes.object.isRequired,
+  buttonName: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired
+}
 
 export default AppInfoSide;
