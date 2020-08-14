@@ -1,10 +1,10 @@
-import React from 'react';
+import React , {useState} from 'react';
+import {ManageSidebar} from './../ManageSidebar/ManageSidebar'
 
 const Dashboard = () => {
+
     return (
-        <div>
-            <h1>Hello</h1>
-        </div>
+        <ManageSidebar/>
     );
 };
 

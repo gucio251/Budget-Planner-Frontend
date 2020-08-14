@@ -9,4 +9,5 @@ export const theme = {
          white: "#fff",
          darkGray: "#75767F",
          lightGray: "#D3D7DB",
+         grayForDashboard: "#b3b8d9",
        };
