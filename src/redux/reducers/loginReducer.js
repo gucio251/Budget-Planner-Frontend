@@ -1,6 +1,6 @@
 import {userConstants} from './../actions/actionTypes'
 
-export default function login(state = {}, action) {
+export default function login(state = {"loggedIn": false}, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
@@ -14,7 +14,10 @@ export default function login(state = {}, action) {
           email: action.user.email
       };
     case userConstants.LOGIN_FAILURE:
-      return {};
+      return {
+        loggedIn: false,
+        errorMsg: action.error
+      };
     default:
       return state;
   }

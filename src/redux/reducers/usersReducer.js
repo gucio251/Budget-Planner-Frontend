@@ -9,9 +9,10 @@ export default function users(state = [], action) {
     case userConstants.GETUSERS_SUCCESS:
       return [...action.users];
     case userConstants.GETUSERS_FAILURE:
+      const errorMsg =  action.error ? "Unable to connect to the database" : "";
       return {
-        error: action.error
-      };
+          errorMsg: errorMsg
+        };
     default:
       return state;
   }

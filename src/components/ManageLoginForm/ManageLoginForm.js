@@ -9,6 +9,7 @@ import { validationManager } from "../../components/validationManager/validation
 
 const ManageLoginForm = () => {
   const users = useSelector((state) => state.users);
+  const loginStatus = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -19,9 +20,10 @@ const ManageLoginForm = () => {
 
   const [firstRender, setFirstRender] = useState(true);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formCorrectness, setFormCorrectness] = useState(false);
+  const [formCorrectness, setFormCorrectness] = useState(loginStatus.loggedIn);
   const [formModified, setFormModified] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(loginStatus.errorMsg);
 
   const [validation, setValidation] = useState({
     emailLoginValidation,
@@ -114,6 +116,11 @@ const ManageLoginForm = () => {
     }
   }, [user]);
 
+  useEffect(()=> {
+    loginStatus.errorMsg && setErrorMsg({msg: loginStatus.errorMsg});
+    users.errorMsg && setErrorMsg({msg: users.errorMsg, link: "/login"});
+  }, [loginStatus, users])
+
 
   useEffect(() => {
     if (isFormSubmitted) {
@@ -131,14 +138,22 @@ const ManageLoginForm = () => {
       const [finalResult, isFormCorrect] = validationManager.submitForm(
         dataForValidation
       );
-      setValidation(finalResult);
-      setFormCorrectness(isFormCorrect);
 
-      setFormModified(true);
+      setValidation(finalResult);
 
       if(isFormCorrect === true){
         dispatch(userActions.login(user, history));
+        if(!loginStatus.LoggedIn){
+          setUser({
+            email: user.email,
+            password: "",
+            lastModifiedField: "password"
+          });
+          setIsFormSubmitted(false);
+          setErrorMsg({msg: loginStatus.errorMsg});
+        }
       }else{
+        setErrorMsg({msg: "Login or password doesn't match requirements"});
         setIsFormSubmitted(false);
       }
     }
@@ -159,7 +174,7 @@ const ManageLoginForm = () => {
     setIsFormSubmitted(true);
   };
 
-  const onClickHandleMobile = (e) => {
+  const handleClickOnMobile = (e) => {
     e.preventDefault();
     setFormModified(true);
   };
@@ -173,8 +188,8 @@ const ManageLoginForm = () => {
       formCorrectness={formCorrectness}
       isModified={formModified}
       isMobile={isMobile}
-      onClickHandleMobile={onClickHandleMobile}
-      firstRender={firstRender}
+      handleClickOnMobile={handleClickOnMobile}
+      errorMsg={errorMsg}
     />
   );
 };

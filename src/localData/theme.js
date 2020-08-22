@@ -5,6 +5,7 @@ export const theme = {
          mint: "#03DAC5",
          darkMint: "#02AE9D",
          errorRed: "#db0b0b",
+         errorText: "#1C245D",
          yellow: "#edd052",
          white: "#fff",
          darkGray: "#75767F",

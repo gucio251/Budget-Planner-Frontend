@@ -2,6 +2,7 @@ import React from 'react';
 import InputTextWithValidation from "../atoms/InputTextWithValidation";
 import RedirectComponent from "../atoms/RedirectComponent";
 import Button from "../atoms/Button";
+import ErrorMessageBox from "../atoms/ErrorMessageBox"
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -99,7 +100,7 @@ const StyledInputVariants = {
     }
 }
 
-const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData, buttonName}) => {
+const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData, buttonName, errorMsg}) => {
     return (
       <StyledInputFields
         className={className}
@@ -150,6 +151,7 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
               href="/login"
               linkColor="mainBlue"
             />
+            {errorMsg && (<ErrorMessageBox errorMsg={errorMsg}/>)}
           </div>
         </div>
       </StyledInputFields>

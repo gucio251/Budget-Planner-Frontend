@@ -43,7 +43,6 @@ function addUser(user){
 function login(user, history){
     return dispatch => {
         dispatch(request());
-
         userApi.authLogin(user)
             .then(
                 userInfo => {
@@ -51,7 +50,9 @@ function login(user, history){
                     userInfo.email = user.email;
                     dispatch(success(userInfo));
                 },
-                error => {dispatch(failure(error))}
+                error => {
+                    dispatch(failure(error.message));
+                }
             )
     }
 
@@ -59,3 +60,4 @@ function login(user, history){
     function success(user) {return {type: userConstants.LOGIN_SUCCESS, user}}
     function failure(error) {return {type: userConstants.LOGIN_FAILURE, error}}
 }
+

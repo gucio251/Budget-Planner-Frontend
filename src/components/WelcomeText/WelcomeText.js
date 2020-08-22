@@ -65,7 +65,7 @@ WelcomeText.propTypes = {
     className: PropTypes.string.isRequired,
     initial: PropTypes.string.isRequired,
     final: PropTypes.string.isRequired,
-    variants: PropTypes.object.isRequired
+    variants: PropTypes.object
 }
 
 export default WelcomeText;

@@ -15,12 +15,21 @@ export function saveUser(user) {
     .catch(handleError);
 }
 
+async function handleErrors(response){
+  if(!response.ok){
+    const body = await response.json();
+    throw Error(body.message);
+  }
+  return response;
+}
+
 export function authLogin(user){
   return fetch(baseUrl + "signin", {
     method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(user)
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
   })
+    .then(handleErrors)
     .then(handleResponse)
     .catch(handleError);
 }

@@ -242,7 +242,7 @@ const pigComponentVariant = {
     }
   },
 };
-const AppInfoSide = ({onClick, className, firstRender, animation, linkData, buttonName, href}) => {
+const AppInfoSide = ({handleClickOnMobile, className, firstRender, animation, linkData, buttonName, href}) => {
     return (
       <StyledAppInfoSide className={className}>
         <div className="wrapper-info-side">
@@ -873,7 +873,7 @@ const AppInfoSide = ({onClick, className, firstRender, animation, linkData, butt
           <Button
             className="mobile-button"
             title={buttonName}
-            onClick={onClick}
+            onClick={handleClickOnMobile}
             variants={firstRender ? mobilebuttonVariants : null}
           />
           <RedirectComponent
@@ -890,7 +890,7 @@ const AppInfoSide = ({onClick, className, firstRender, animation, linkData, butt
 };
 
 AppInfoSide.propTypes = {
-  onclick: PropTypes.func.isRequired,
+  handleClickOnMobile: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
   firstRender: PropTypes.bool.isRequired,
   animation: PropTypes.bool,

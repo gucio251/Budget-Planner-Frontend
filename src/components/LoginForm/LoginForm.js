@@ -13,17 +13,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   height: 100%;
 `;
 
-const LoginForm = ({
-  user,
-  onChange,
-  validation,
-  onSubmit,
-  formCorrectness,
-  isModified,
-  isMobile,
-  onClickHandleMobile,
-  firstRender,
-}) => {
+const LoginForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, handleClickOnMobile, errorMsg}) => {
   const { email, password } = user;
   const { emailLoginValidation, passwordLoginValidation } = validation;
 
@@ -117,7 +107,7 @@ const LoginForm = ({
         }) && (
           <AppInfoSide
             className="form-info-side"
-            onClick={onClickHandleMobile}
+            handleClickOnMobile={handleClickOnMobile}
             firstRender={false}
             linkData={linkData}
             buttonName={buttonName}
@@ -140,6 +130,7 @@ const LoginForm = ({
             title="Welcome again!"
             linkData={linkData}
             buttonName="Sign in"
+            errorMsg={errorMsg}
           />
         )}
       </form>
@@ -153,7 +144,8 @@ LoginForm.propTypes = {
   validation: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
   formCorrectness: PropTypes.bool.isRequired,
-  formModified: PropTypes.bool.isRequired,
+  isModified: PropTypes.bool.isRequired,
+  errorMsg: PropTypes.string
 };
 
 export default LoginForm;

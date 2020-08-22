@@ -4,7 +4,7 @@ import Proptypes from 'prop-types';
 import {motion} from 'framer-motion';
 
 const StyledButton = styled(motion.button).attrs(({ className }) => ({ className }))`
-  width: 23em;
+  width: 100%;
   height: 3.5em;
   border-radius: 0.4em;
   display: flex;

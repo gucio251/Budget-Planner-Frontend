@@ -9,7 +9,7 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
     position: absolute;
     top: 12px;
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     transition: all 200ms ease-out;
     color: ${({ theme }) => theme.darkGray};
     z-index: -1;
