@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import {ReactComponent as ErrorIcon} from './../../assets/icons/errorIcon.svg'
 
 const StyledErrorMsg = styled.div`
@@ -40,6 +41,7 @@ const StyledErrorMsg = styled.div`
     font-size: 12px;
     font-weight: 500;
     color: ${({ theme }) => theme.errorText};
+    flex-grow: ${({ retryPresence }) => retryPresence ? 1: 3}
   }
 
   .error-retry {
@@ -51,7 +53,7 @@ const StyledErrorMsg = styled.div`
 const ErrorMessageBox = ({errorMsg}) => {
     const {msg, link} = errorMsg;
     return (
-       <StyledErrorMsg>
+       <StyledErrorMsg retryPresence={link ? true : false}>
            <div className="left-side-item"></div>
            <div className="error-content">
             <ErrorIcon className="error-icon"/>
@@ -61,5 +63,12 @@ const ErrorMessageBox = ({errorMsg}) => {
        </StyledErrorMsg>
     );
 };
+
+ErrorMessageBox.propTypes = {
+  errorMsg: PropTypes.shape({
+    msg: PropTypes.string.isRequired,
+    link: PropTypes.string
+  }).isRequired
+}
 
 export default ErrorMessageBox;

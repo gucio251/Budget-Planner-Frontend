@@ -149,19 +149,9 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
       stroke-dashoffset: 0;
     }
   }
-`;
+`
 
-const TextInputWithValidation = ({
-  className,
-  name,
-  value,
-  label,
-  onChange,
-  validation,
-  type,
-  visibility,
-  fieldCorrectness,
-}) => {
+const TextInputWithValidation = ({className,name,value,label,onChange,validation,type,visibility,fieldCorrectness}) => {
   return (
     <StyledTextInput
       className={className}
@@ -279,6 +269,7 @@ TextInputWithValidation.propTypes = {
   validation: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   visibility: PropTypes.string.isRequired,
+  fieldCorrectness: PropTypes.bool.isRequired
 };
 
 export default TextInputWithValidation;

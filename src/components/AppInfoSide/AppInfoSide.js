@@ -894,7 +894,10 @@ AppInfoSide.propTypes = {
   className: PropTypes.string.isRequired,
   firstRender: PropTypes.bool.isRequired,
   animation: PropTypes.bool,
-  linkData: PropTypes.object.isRequired,
+  linkData: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    linkText: PropTypes.string.isRequired
+  }).isRequired,
   buttonName: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired
 }

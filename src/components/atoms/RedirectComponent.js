@@ -29,7 +29,10 @@ StyledRedirectComponent.propTypes = {
   linkText: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
   linkColor: PropTypes.string.isRequired,
-  variants: PropTypes.object
+  variants: PropTypes.shape({
+    initial: PropTypes.object.isRequired,
+    final: PropTypes.object.isRequired
+  })
 };
 
 export default RedirectComponent;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {motion} from 'framer-motion';
 
 const StyledButton = styled(motion.button).attrs(({ className }) => ({ className }))`
@@ -39,11 +39,14 @@ const Button = ({title, onClick, className, type, variants}) => {
 };
 
 Button.propTypes = {
-  title: Proptypes.string.isRequired,
-  onClick: Proptypes.func.isRequired,
-  className: Proptypes.string,
-  type: Proptypes.string,
-  variants: Proptypes.object
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  type: PropTypes.string,
+  variants: PropTypes.shape({
+    initial: PropTypes.object.isRequired,
+    final: PropTypes.object.isRequired
+  })
 };
 
 export default Button;
