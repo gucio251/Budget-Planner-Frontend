@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import RegistrationInputSide from "./../RegistrationInputSide/RegistrationInputSide";
+import FormInputSide from "../FormInputSide/FormInputSide";
+import {routes} from './../../routes'
 import AppInfoSide from "./../AppInfoSide/AppInfoSide";
 import { names, labels, types } from "./loginFormData";
 
@@ -13,7 +14,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   height: 100%;
 `;
 
-const LoginForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, handleClickOnMobile, errorMsg}) => {
+const LoginForm = ({user, handleFieldUpdate, validation, handleFormSubmit, formCorrectness, isModified, isMobile, handleClickOnMobile, errorMsg}) => {
   const { email, password } = user;
   const { emailLoginValidation, passwordLoginValidation } = validation;
 
@@ -92,13 +93,13 @@ const LoginForm = ({user, onChange, validation, onSubmit, formCorrectness, isMod
     }
   ];
 
-  const linkData = { text: "Don't have an account?", linkText: "Sign up" };
+  const linkData = { text: "Don't have an account?", linkText: "Sign up", href: routes.registrationPage };
   const buttonName = "Sign in";
   const linkForRedirection = "/";
 
   return (
     <FormStyle>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleFormSubmit}>
         {calculateFormItemsVisibility({
           isMobile: isMobile,
           isModified: isModified,
@@ -120,16 +121,15 @@ const LoginForm = ({user, onChange, validation, onSubmit, formCorrectness, isMod
           name: "fields",
           formCorrectness: formCorrectness,
         }) && (
-          <RegistrationInputSide
+          <FormInputSide
             className="form-user-input-side"
             inputFieldsData={inputFieldsData}
-            onClick={onSubmit}
-            onChange={onChange}
-            user={user}
+            handleFormSubmit={handleFormSubmit}
+            handleFieldUpdate={handleFieldUpdate}
             firstRender={false}
             title="Welcome again!"
             linkData={linkData}
-            buttonName="Sign in"
+            buttonName="Log in"
             errorMsg={errorMsg}
           />
         )}
@@ -140,12 +140,15 @@ const LoginForm = ({user, onChange, validation, onSubmit, formCorrectness, isMod
 
 LoginForm.propTypes = {
   user: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
+  handleFieldUpdate: PropTypes.func.isRequired,
   validation: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  handleFormSubmit: PropTypes.func.isRequired,
   formCorrectness: PropTypes.bool.isRequired,
   isModified: PropTypes.bool.isRequired,
-  errorMsg: PropTypes.string
+  errorMsg: PropTypes.shape({
+    msg: PropTypes.string.isRequired,
+    link: PropTypes.string
+  })
 };
 
 export default LoginForm;

@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import RegistrationInputSide from "./../RegistrationInputSide/RegistrationInputSide";
+import {routes} from "./../../routes"
+import FormInputSide from "./../FormInputSide/FormInputSide";
 import AppInfoSide from "./../AppInfoSide/AppInfoSide";
 import SuccessWindow from "./../SuccessWindow/SuccessWindow";
 import { names, labels, types} from "./registrationFormData";
@@ -15,7 +16,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   height: 100%;
 `;
 
-const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender, animation}) => {
+const RegistrationForm = ({user, handleFieldUpdate, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender, animation}) => {
   const {password, repeatedPassword, email } = user;
   const {emailValidation, passwordValidation, repeatedPasswordValidation} = validation;
 
@@ -100,7 +101,7 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
     },
   ];
 
-  const linkData = { text: "Already have an account?", linkText: "Log in" };
+  const linkData = { text: "Already have an account?", linkText: "Log in", href: routes.loginPage };
   const buttonName = "Sign up";
   const linkForRedirection = "/login";
 
@@ -119,11 +120,11 @@ const RegistrationForm = ({user, onChange, validation, onSubmit, formCorrectness
           />)
         }
         {calculateFormItemsVisibility({isMobile, isModified, "name":"fields", formCorrectness}) && (
-          <RegistrationInputSide
+          <FormInputSide
             className="form-user-input-side"
             inputFieldsData={inputFieldsData}
             onClick={onSubmit}
-            onChange={onChange}
+            handleFieldUpdate={handleFieldUpdate}
             user={user}
             firstRender={firstRender}
             title="Create an account to start tracking your budget"

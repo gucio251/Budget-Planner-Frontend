@@ -146,7 +146,7 @@ const ManageRegistrationForm = () => {
     }
   }, [isFormSubmitted])
 
-  const onChangeHandler = (event) => {
+  const handleFieldUpdate = (event) => {
     const { name, value } = event.target;
     setUser((prevState) => ({
       ...prevState,
@@ -169,7 +169,7 @@ const ManageRegistrationForm = () => {
   return (
     <RegistrationForm
       user={user}
-      onChange={onChangeHandler}
+      handleFieldUpdate={handleFieldUpdate}
       validation={validation}
       onSubmit={onSubmit}
       formCorrectness={formCorrectness}

@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
+import {motion} from "framer-motion";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import Button from "../atoms/Button";
+import ErrorMessageBox from "../atoms/ErrorMessageBox";
 import InputTextWithValidation from "../atoms/InputTextWithValidation";
 import RedirectComponent from "../atoms/RedirectComponent";
-import Button from "../atoms/Button";
-import ErrorMessageBox from "../atoms/ErrorMessageBox"
-import styled from "styled-components";
-import { motion } from "framer-motion";
 
 const StyledInputFields = styled(motion.div).attrs(({ className }) => ({
   className,
@@ -100,7 +101,9 @@ const StyledInputVariants = {
     }
 }
 
-const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, className, firstRender, title, linkData, buttonName, errorMsg}) => {
+const FormInputSide = ({inputFieldsData, handleFormSubmit, handleFieldUpdate, className, firstRender, title, linkData, buttonName, errorMsg}) => {
+    const {text, linkText, href} = linkData;
+    const disabled = typeof(errorMsg)=== "undefined" ? false : errorMsg.link ? true : false;
     return (
       <StyledInputFields
         className={className}
@@ -130,11 +133,12 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
                     value={value}
                     label={label}
                     className="input-field"
-                    onChange={onChange}
+                    handleFieldUpdate={handleFieldUpdate}
                     validation={specValidation}
                     type={type}
                     visibility={visibility}
                     fieldCorrectness={fieldCorrectness}
+                    disabled={disabled}
                   />
                 );
               }
@@ -142,13 +146,14 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
             <Button
               className="margin-button"
               title={buttonName}
-              onClick={onClick}
+              handleFormSubmit={handleFormSubmit}
+              disabled={disabled}
             />
             <RedirectComponent
               className="login-switch span-text"
-              spanText={linkData.text}
-              linkText={linkData.linkText}
-              href="/login"
+              spanText={text}
+              linkText={linkText}
+              href={href}
               linkColor="mainBlue"
             />
             {errorMsg && (<ErrorMessageBox errorMsg={errorMsg}/>)}
@@ -158,4 +163,33 @@ const RegistrationInputSide = ({inputFieldsData, onClick, onChange, user, classN
     );
 };
 
-export default RegistrationInputSide;
+FormInputSide.propTypes = {
+  className: PropTypes.string.isRequired,
+  inputFieldsData: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      specValidation: PropTypes.object.isRequred,
+      type: PropTypes.string.isRequired,
+      visibility: PropTypes.bool.isRequired,
+      fieldCorrectness: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  handleFormSubmit: PropTypes.func.isRequired,
+  handleFieldUpdate: PropTypes.func.isRequired,
+  firstRender: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  linkData: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    linkText: PropTypes.string.isRequired,
+    href: PropTypes.string.isRequired,
+  }).isRequired,
+  buttonName: PropTypes.string.isRequired,
+  errorMsg: PropTypes.shape({
+    msg: PropTypes.string.isRequired,
+    link: PropTypes.string,
+  }),
+};
+
+export default FormInputSide;

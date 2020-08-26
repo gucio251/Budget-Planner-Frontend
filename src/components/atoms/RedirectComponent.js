@@ -31,7 +31,7 @@ StyledRedirectComponent.propTypes = {
   linkColor: PropTypes.string.isRequired,
   variants: PropTypes.shape({
     initial: PropTypes.object.isRequired,
-    final: PropTypes.object.isRequired
+    final: PropTypes.object.isRequired,
   })
 };
 

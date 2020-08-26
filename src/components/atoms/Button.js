@@ -10,29 +10,31 @@ const StyledButton = styled(motion.button).attrs(({ className }) => ({ className
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.darkMint};
+  background-color: ${({ theme, disabled }) => disabled ? theme.lightGrayDisabledButton : theme.darkMint};
   text-decoration: none;
   border: none;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: ${({disabled}) => disabled ? "translateY(0px)" : "translateY(-5px)"};
     transition: 0.7 ease-in;
+    cursor: ${({disabled}) => disabled ? "not-allowed" : "context-menu"};
   }
 
   &:focus {
     border: none;
-    outline-color: red;
+    outline: none;
   }
 
   .text {
-    color: white;
+    color: ${({disabled}) => disabled ? "#CCCAD2" : "white"};
     font-size: 16px;
   }
 `;
 
-const Button = ({title, onClick, className, type, variants}) => {
+const Button = ({title, onClick, className, type, variants, disabled}) => {
+  console.log(disabled)
   return (
-    <StyledButton type={type ? "submit" : ""} onClick={onClick} className={className} initial="initial" animate="final" variants={variants}>
+    <StyledButton type={type ? "submit" : ""} onClick={onClick} className={className} initial="initial" animate="final" variants={variants} disabled={disabled}>
       <div className="text">{title}</div>
     </StyledButton>
   );
@@ -46,7 +48,8 @@ Button.propTypes = {
   variants: PropTypes.shape({
     initial: PropTypes.object.isRequired,
     final: PropTypes.object.isRequired
-  })
+  }),
+  disabled: PropTypes.bool
 };
 
 export default Button;

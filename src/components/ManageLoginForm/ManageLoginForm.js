@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {useHistory, Redirect} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 import LoginForm from "./../LoginForm/LoginForm";
 import {emailLoginValidation, passwordLoginValidation} from "./manageLoginFormData";
 import {userActions} from "../../redux/actions/userActions";
 import { validationManager } from "../../components/validationManager/validationManager";
+import { types } from "../LoginForm/loginFormData";
 
 const ManageLoginForm = () => {
   const users = useSelector((state) => state.users);
@@ -20,7 +21,7 @@ const ManageLoginForm = () => {
 
   const [firstRender, setFirstRender] = useState(true);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formCorrectness, setFormCorrectness] = useState(loginStatus.loggedIn);
+  const [formCorrectness, setFormCorrectness] = useState(false);
   const [formModified, setFormModified] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [errorMsg, setErrorMsg] = useState(loginStatus.errorMsg);
@@ -143,23 +144,23 @@ const ManageLoginForm = () => {
 
       if(isFormCorrect === true){
         dispatch(userActions.login(user, history));
-        if(!loginStatus.LoggedIn){
+        if (loginStatus.errorMsg) {
           setUser({
             email: user.email,
             password: "",
-            lastModifiedField: "password"
+            lastModifiedField: "password",
           });
           setIsFormSubmitted(false);
-          setErrorMsg({msg: loginStatus.errorMsg});
+          setErrorMsg({ msg: loginStatus.errorMsg });
         }
       }else{
-        setErrorMsg({msg: "Login or password doesn't match requirements"});
+        dispatch(userActions.setError("Login or password doesn't match requirements"));
         setIsFormSubmitted(false);
       }
     }
   }, [isFormSubmitted]);
 
-  const onChangeHandler = (event) => {
+  const handleFieldUpdate = (event) => {
     const { name, value } = event.target;
     setUser((prevState) => ({
       ...prevState,
@@ -168,7 +169,7 @@ const ManageLoginForm = () => {
     }));
   };
 
-  const onSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
     setIsFormSubmitted(true);
@@ -182,9 +183,9 @@ const ManageLoginForm = () => {
   return (
     <LoginForm
       user={user}
-      onChange={onChangeHandler}
+      handleFieldUpdate={handleFieldUpdate}
+      handleFormSubmit={handleFormSubmit}
       validation={validation}
-      onSubmit={onSubmit}
       formCorrectness={formCorrectness}
       isModified={formModified}
       isMobile={isMobile}

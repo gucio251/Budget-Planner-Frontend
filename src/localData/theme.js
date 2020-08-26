@@ -10,5 +10,6 @@ export const theme = {
          white: "#fff",
          darkGray: "#75767F",
          lightGray: "#D3D7DB",
+         lightGrayDisabledButton: "#EFEFF3",
          grayForDashboard: "#b3b8d9",
        };

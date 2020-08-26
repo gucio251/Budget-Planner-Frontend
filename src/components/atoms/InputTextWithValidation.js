@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ValidationItem from "./ValidationItem";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -24,6 +24,10 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
     font-size: 12px;
     color: ${({ theme }) => theme.darkGray};
     background-color: transparent;
+  }
+
+  input:hover {
+    cursor: ${({disabled}) => disabled ? "not-allowed" : "context-menu"}
   }
 
   input:focus ~ .underline {
@@ -149,23 +153,25 @@ const StyledTextInput = styled.div.attrs(({ className }) => ({ className }))`
       stroke-dashoffset: 0;
     }
   }
-`
+`;
 
-const TextInputWithValidation = ({className,name,value,label,onChange,validation,type,visibility,fieldCorrectness}) => {
+const TextInputWithValidation = ({className,name,value,label,handleFieldUpdate,validation,type,visibility,fieldCorrectness, disabled}) => {
   return (
     <StyledTextInput
       className={className}
       visibility={visibility}
       fieldCorrectness={fieldCorrectness}
+      disabled={disabled}
     >
       <input
         id={name}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={handleFieldUpdate}
         type={type}
         placeholder=" "
         autocomplete="off"
+        disabled={disabled ? true : false}
       />
       <label className="placeholder-control" htmlFor={name}>
         {label}
@@ -269,7 +275,8 @@ TextInputWithValidation.propTypes = {
   validation: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   visibility: PropTypes.string.isRequired,
-  fieldCorrectness: PropTypes.bool.isRequired
+  fieldCorrectness: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool
 };
 
 export default TextInputWithValidation;
