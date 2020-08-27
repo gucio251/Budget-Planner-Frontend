@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import {routes} from "./../../routes"
 
 import RegistrationForm from "./RegistrationForm";
 import { emailValidation, passwordValidation, repeatedPasswordValidation} from "./manageRegistrationFormData";
@@ -9,6 +10,7 @@ import { validationManager } from "../../components/validationManager/validation
 
 const ManageRegistrationForm = () => {
   const registeredUsers = useSelector(state => state.users);
+  const registrationStatus = useSelector(state => state.registration);
   const dispatch = useDispatch();
 
   const [user, setUser] = useState({
@@ -23,6 +25,7 @@ const ManageRegistrationForm = () => {
   const [formModified, setFormModified] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [coinAnimation, setCoinAnimation] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(registrationStatus.errorMsg);
 
   const [validation, setValidation] = useState({
     emailValidation,
@@ -48,7 +51,7 @@ const ManageRegistrationForm = () => {
     switch (validationName) {
       case email:
         value = {
-          valueToBeValidated: user.email,
+          valueToBeValidated: user.email || " ",
           arr: registeredUsers,
         };
         break;
@@ -118,6 +121,10 @@ const ManageRegistrationForm = () => {
     }
   }, [user]);
 
+  useEffect(()=> {
+    registeredUsers.errorMsg && setErrorMsg({msg: registeredUsers.errorMsg, link: routes.registrationPage})
+  })
+
   useEffect(()=>{
     if(isFormSubmitted && formCorrectness && !coinAnimation){
       setCoinAnimation(true);
@@ -155,7 +162,7 @@ const ManageRegistrationForm = () => {
     }));
   };
 
-  const onSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
     setIsFormSubmitted(true);
@@ -171,13 +178,14 @@ const ManageRegistrationForm = () => {
       user={user}
       handleFieldUpdate={handleFieldUpdate}
       validation={validation}
-      onSubmit={onSubmit}
+      handleFormSubmit={handleFormSubmit}
       formCorrectness={formCorrectness}
       isModified={formModified}
       isMobile={isMobile}
       onClickHandleMobile={onClickHandleMobile}
       firstRender={firstRender}
       animation={coinAnimation}
+      errorMsg={errorMsg}
     />
   );
 };

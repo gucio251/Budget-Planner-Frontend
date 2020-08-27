@@ -218,11 +218,11 @@ const ovalComponentVariant = {
 const pathComponentVariant = {
   initial: {
     scale: 0.1,
-    x: 70,
+    x: 78,
   },
   final: {
     scale: 1,
-    x: 70,
+    x: 78,
     transition:{ duration: 0.7 }
   },
 };
@@ -264,7 +264,7 @@ const AppInfoSide = ({handleClickOnMobile, className, firstRender, animation, li
                 cy="29.964"
                 rx="246.519"
                 ry="29.964"
-                transform="translate(0 295.911)"
+                transform="translate(0 296)"
                 fill="#03dac5"
                 opacity="0.1"
                 initial="initial"

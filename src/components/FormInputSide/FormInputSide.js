@@ -80,7 +80,7 @@ const StyledInputFields = styled(motion.div).attrs(({ className }) => ({
 
   @media (max-width: 576px) {
     .registration-create-acc{
-      width: 320px;
+      width: 43%;
     }
     .wrapper {
       width: 100%;

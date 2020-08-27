@@ -16,7 +16,7 @@ const FormStyle = styled.div.attrs(({ className }) => ({
   height: 100%;
 `;
 
-const RegistrationForm = ({user, handleFieldUpdate, validation, onSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender, animation}) => {
+const RegistrationForm = ({user, handleFieldUpdate, validation, handleFormSubmit, formCorrectness, isModified, isMobile, onClickHandleMobile, firstRender, animation, errorMsg}) => {
   const {password, repeatedPassword, email } = user;
   const {emailValidation, passwordValidation, repeatedPasswordValidation} = validation;
 
@@ -107,11 +107,11 @@ const RegistrationForm = ({user, handleFieldUpdate, validation, onSubmit, formCo
 
   return (
     <FormStyle>
-      <form onSubmit={onSubmit}>
+      <form handleFormSubmit={handleFormSubmit}>
         {calculateFormItemsVisibility({isMobile, isModified, "name":"info", formCorrectness}) && (
           <AppInfoSide
             className="form-info-side"
-            onClick={onClickHandleMobile}
+            handleClickOnMobile={onClickHandleMobile}
             firstRender={firstRender}
             animation={animation}
             linkData={linkData}
@@ -123,13 +123,14 @@ const RegistrationForm = ({user, handleFieldUpdate, validation, onSubmit, formCo
           <FormInputSide
             className="form-user-input-side"
             inputFieldsData={inputFieldsData}
-            onClick={onSubmit}
+            handleFormSubmit={handleFormSubmit}
             handleFieldUpdate={handleFieldUpdate}
             user={user}
             firstRender={firstRender}
             title="Create an account to start tracking your budget"
             linkData={linkData}
             buttonName={buttonName}
+            errorMsg={errorMsg}
           />
         )}
         {calculateFormItemsVisibility({isMobile, isModified, "name":"success", formCorrectness}) && (
