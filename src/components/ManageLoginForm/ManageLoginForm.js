@@ -9,8 +9,8 @@ import { validationManager } from "../../components/validationManager/validation
 import { types } from "../LoginForm/loginFormData";
 
 const ManageLoginForm = () => {
-  const users = useSelector((state) => state.users);
-  const loginStatus = useSelector((state) => state.login);
+  const users = useSelector(state => state.users);
+  const loginStatus = useSelector(state => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -102,11 +102,7 @@ const ManageLoginForm = () => {
     if (firstRender) {
       setFirstRender(false);
       handleResize();
-      validationManager.configureInitialSetup(
-        validation,
-        dependencyBetweenInputNameAndValidation,
-        prepareValueToValidation
-      );
+      validationManager.configureInitialSetup(validation, dependencyBetweenInputNameAndValidation, prepareValueToValidation);
     } else {
       setFormModified(true);
       performSingleFieldValidation();

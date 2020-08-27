@@ -55,10 +55,7 @@ const LoginForm = ({user, handleFieldUpdate, validation, handleFormSubmit, formC
       fields: [{ isModified: true }, { formCorrectness: false }]
     };
 
-    const requirements =
-      isMobile === true
-        ? mobileVisibilityRequirements[name]
-        : notMobileVisibilityRequirements[name];
+    const requirements = isMobile === true ? mobileVisibilityRequirements[name] : notMobileVisibilityRequirements[name];
     delete form.name;
 
     let resultArr = requirements.map((requirement) => {
