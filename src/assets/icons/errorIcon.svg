@@ -1,0 +1,10 @@
+<svg id="Error" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_6" data-name="Group 6">
+    <g id="Oval_Copy_25" data-name="Oval Copy 25" fill="none" stroke="#db0b0b" stroke-miterlimit="10" stroke-width="2">
+      <circle cx="12" cy="12" r="12" stroke="none"/>
+      <circle cx="12" cy="12" r="11" fill="none"/>
+    </g>
+    <path id="Line_2" data-name="Line 2" d="M0,.5H8" transform="translate(9.525 8.818) rotate(45)" fill="none" stroke="#db0b0b" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Line_2-2" data-name="Line 2" d="M.5,0V8" transform="translate(14.475 8.818) rotate(45)" fill="none" stroke="#db0b0b" stroke-miterlimit="10" stroke-width="2"/>
+  </g>
+</svg>
