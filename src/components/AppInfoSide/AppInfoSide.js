@@ -23,7 +23,9 @@ const coinSuccessVariants = {
   },
 };
 
-const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonName, href, animated}) => {
+const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonName, animated}) => {
+  const { href, text, linkText } = linkData;
+
   const wrapper = useRef(null);
   const welcomeText = useRef();
   const mobileButton = useRef();
@@ -56,6 +58,7 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
     setAnimationFinished(true);
   });
   return (
+
     <StyledAppInfoSide displayedOnMobile={displayedOnMobile}>
       <div ref={welcomeText}>
         <WelcomeText />
@@ -68,8 +71,8 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
       </StyledButtonWrapper>
       <StyledSwitchMobile ref={redirectComponent}>
         <RedirectComponent
-          spanText={linkData.text}
-          linkText={linkData.linkText}
+          spanText={text}
+          linkText={linkText}
           href={href}
           linkColor="darkGray"
         />
@@ -86,7 +89,6 @@ AppInfoSide.propTypes = {
   }).isRequired,
   animated: PropTypes.bool.isRequired,
   buttonName: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
 };
 
 export default AppInfoSide;

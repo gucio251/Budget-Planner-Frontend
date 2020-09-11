@@ -32,27 +32,21 @@ const addUser = (user, history) => dispatch => {
     );
 }
 
-const login = (user) => {
+const login = (user) => dispatch => {
     const request = () => { return { type: userConstants.LOGIN_REQUEST }}
     const success = (user) => { return { type: userConstants.LOGIN_SUCCESS, user }}
     const failure = (error) => { return { type: userConstants.LOGIN_FAILURE, error }}
 
-    return dispatch => {
-        return new Promise((resolve, reject) => {
-            dispatch(request());
-            userApi.authLogin(user).then(
-                (userInfo) => {
-                    userInfo.email = user.email;
-                    dispatch(success(userInfo));
-                    resolve(user);
-                },
-                (error) => {
-                    dispatch(failure(error.message));
-                    reject(error);
-                }
-            );
-        })
-    }
+    dispatch(request());
+    userApi.authLogin(user).then(
+        (userInfo) => {
+            userInfo.email = user.email;
+            dispatch(success(userInfo));
+        },
+        (error) => {
+            dispatch(failure(error.message));
+        }
+    );
 }
 
 

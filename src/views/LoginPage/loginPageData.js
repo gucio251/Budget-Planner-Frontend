@@ -1,3 +1,6 @@
+import { validations } from "components/validationSchemas-yup/validationSchemas-yup";
+import { routes } from "routes"
+
 const names = {
   email: "email",
   password: "password"
@@ -38,7 +41,13 @@ const formInformation = [
   },
 ];
 
-
-export const loginData = {
-  formInformation,
-};
+export const formSettings = {
+  linkData: { text: "Don't have an account?", linkText: "Sign up", href: routes.registrationPage },
+  buttonName: "Log in",
+  initialValues: { email: "", password: "" },
+  inputFieldsInformation: formInformation,
+  animatedInfoSide: false,
+  animatedInputSide: false,
+  header: "Welcome again!",
+  validationSchema: validations.getLoginValidationSchema
+}

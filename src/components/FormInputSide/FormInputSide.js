@@ -23,6 +23,8 @@ const StyledInputVariants = {
     }
 }
 
+window.MyComponentRef = React.createRef();
+
 const detectFieldsStatuses = (validationErrors, fieldsData, values) => {
   const validationErrorsArr = Object.keys(validationErrors).map((key) => validationErrors[key]) || [];
   const formInitialized = Object.values(values).reduce((values, value)=> values+=value);
@@ -59,6 +61,7 @@ const configureDisplayOnMobile = (fieldsStatues, func) => {
 const FormContainter = ({yupValidationSchema, loginFormData, linkData, buttonName, initialValues, additionalValidationData, handleFormSubmit, error, header, displayedOnMobile, handleMobileDisplay, animated}) => {
   return (
     <Formik
+      innerRef={window.MyComponentRef}
       initialValues={initialValues}
       validate={validate(yupValidationSchema, additionalValidationData)}
       validationSchemaOptions={{ showMultipleFieldErrors: true }}
