@@ -10,14 +10,29 @@ export default function validate(getValidationSchema, arrayOfUsers){
     }
 }
 
-function getErrorsFromValidationError(validationError) {
+const getErrorsFromValidationError = (validationError) => {
     const FIRST_ERROR = 0;
-    return  validationError.inner.reduce((results, error) => {
-        const found = results.find(a=> a.name === error.path);
-        const value = error.errors[FIRST_ERROR];
 
-        typeof(found) === 'undefined' ? results.push({name: error.path, errorMsgs: [value]}) : found.errorMsgs.push(value);
+    return  validationError.inner.reduce((result, error) => {
+        const fieldName = error.path;
+        if(checkIfObjectIsEmpty(result)|| !checkIfOjectHasPropertyAlready(result, fieldName)){
+          return {
+            ...result,
+            [fieldName]: [error.errors[FIRST_ERROR]],
+          };
+        }else{
+          return {
+            ...result,
+            [fieldName]: [].concat(result[fieldName], error.errors[FIRST_ERROR])
+          }
+        }
+    }, {});
+}
 
-        return results;
-    }, []);
+const checkIfObjectIsEmpty = (obj) => {
+  return Object.keys(obj).length === 0 ? true : false;
+}
+
+const checkIfOjectHasPropertyAlready = (obj, property) => {
+  return obj.hasOwnProperty(property) ? true : false;
 }

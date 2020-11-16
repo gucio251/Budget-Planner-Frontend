@@ -129,21 +129,24 @@ export const StyledInput = styled.input`
     will-change: transform;
   }
 
-  &:focus ~ ${StyledTickIcon},
+  &:focus ~ ${StyledTickIcon}{
+    display: ${({fieldCorrectness }) =>  fieldCorrectness ? "block" : "none"};
+  }
+
   &:focus ~ ${StyledErrorIcon}{
     display: none;
   }
 
   &:not(:focus) ~ ${StyledTickIcon} {
-   display: ${({ touched, fieldCorrectness }) => touched && fieldCorrectness ? "block" : "none"};
+   display: ${({fieldCorrectness }) =>  fieldCorrectness ? "block" : "none"};
   }
 
   &:not(:focus) ~ ${StyledErrorIcon} {
-    display: ${({ touched, fieldCorrectness }) => touched && !fieldCorrectness ? "block" : "none"};
+    display: ${({ fieldCorrectness, fieldInitialized }) => !fieldInitialized ? "none" : !fieldCorrectness ? "block" : "none"};
   }
 
   &:not(:focus) ~ ${StyledUnderline}:after {
-    background-color: ${({ fieldCorrectness, theme }) => fieldCorrectness ? theme.darkMint : theme.errorRed};
+    background-color: ${({ fieldCorrectness, fieldInitialized, theme }) => !fieldInitialized ? theme.lightGray : fieldCorrectness ? theme.darkMint : theme.errorRed};
   }
 
   &:focus ~ ${StyledUnderline} {

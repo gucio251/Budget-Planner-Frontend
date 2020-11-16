@@ -67,7 +67,7 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
         <StyledPigLogo />
       </div>
       <StyledButtonWrapper ref={mobileButton}>
-        <Button title={buttonName} onClick={handleClickOnMobile} />
+        <Button onClick={handleClickOnMobile}>{buttonName}</Button>
       </StyledButtonWrapper>
       <StyledSwitchMobile ref={redirectComponent}>
         <RedirectComponent

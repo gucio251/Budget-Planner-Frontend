@@ -9,12 +9,14 @@ const login = (state = {}, action) => {
       user: action.user
       };
     case userConstants.LOGIN_SUCCESS:
+      const key = 'errorMsg';
+      const {[key]: err, ...oldState} = state;
       localStorage.setItem('token', action.user.token)
       return {
-        ...state,
+        ...oldState,
         loggedIn: true,
         logginIn: false,
-        email: action.user.email
+        email: action.user.email,
       };
     case userConstants.LOGIN_FAILURE:
       return {

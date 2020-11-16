@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>add_circle-24px</title>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01_Dashboard" transform="translate(-829.000000, -24.000000)">
+            <g id="add_circle-24px" transform="translate(829.000000, 24.000000)">
+                <polygon id="Path" points="0 0 21 0 21 21 0 21"></polygon>
+                <path d="M11,2 C6.032,2 2,6.032 2,11 C2,15.968 6.032,20 11,20 C15.968,20 20,15.968 20,11 C20,6.032 15.968,2 11,2 Z M14.6,11.9 L11.9,11.9 L11.9,14.6 C11.9,15.095 11.495,15.5 11,15.5 C10.505,15.5 10.1,15.095 10.1,14.6 L10.1,11.9 L7.4,11.9 C6.905,11.9 6.5,11.495 6.5,11 C6.5,10.505 6.905,10.1 7.4,10.1 L10.1,10.1 L10.1,7.4 C10.1,6.905 10.505,6.5 11,6.5 C11.495,6.5 11.9,6.905 11.9,7.4 L11.9,10.1 L14.6,10.1 C15.095,10.1 15.5,10.505 15.5,11 C15.5,11.495 15.095,11.9 14.6,11.9 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

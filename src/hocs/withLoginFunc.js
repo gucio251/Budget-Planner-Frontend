@@ -27,7 +27,7 @@ const withLoginFunc = Component => props => {
         <Component
             {...props}
             handleFormSubmit={handleFormSubmit}
-            loginErrors={errors === "" ? "" : errors}/>
+            errors={errors === "" ? "" : errors}/>
     );
 };
 

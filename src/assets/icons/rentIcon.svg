@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g id="Group_13" data-name="Group 13" transform="translate(-55 -767)">
+    <g id="Icon_home" transform="translate(55 767)">
+      <circle id="Oval" cx="16" cy="16" r="16" fill="#ffcaa2"/>
+      <g id="home-run" transform="translate(8 9)">
+        <path id="Path" d="M15.731,6.664,8.553.212a.825.825,0,0,0-1.105,0L.269,6.664a.8.8,0,0,0-.212.89.815.815,0,0,0,.765.517H1.968v6.464A.467.467,0,0,0,2.438,15H6.373a.467.467,0,0,0,.471-.464V10.611H9.156v3.925A.467.467,0,0,0,9.627,15h3.935a.467.467,0,0,0,.471-.464V8.072h1.147a.815.815,0,0,0,.765-.517A.8.8,0,0,0,15.731,6.664Z" fill="#fff"/>
+        <path id="Path-2" data-name="Path" d="M3.482,0H0L4,3V.428A.48.48,0,0,0,3.482,0Z" transform="translate(10 2)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

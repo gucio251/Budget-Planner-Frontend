@@ -12,8 +12,8 @@ const StyledButton = styled(motion.button).attrs(({ className }) => ({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.lightGrayDisabledButton : theme.darkMint};
+  background-color: ${({ theme, disabled, color }) =>
+    disabled ? theme.lightGrayDisabledButton : color};
   text-decoration: none;
   border: none;
 
@@ -33,27 +33,25 @@ const StyledButton = styled(motion.button).attrs(({ className }) => ({
     color: ${({ theme, disabled }) => (disabled ? theme.darkGray : "white")};
     opacity: ${({ theme, disabled }) => (disabled ? 0.6 : 1)};
     font-size: 16px;
+    display: flex;
+    align-items: center;
   }
 `;
 
-const Button = ({title, onClick, className, type, variants, disabled}) => {
+const Button = ({onClick, type, disabled, children, color="#02AE9D"}) => {
   return (
-    <StyledButton type={type ? "submit" : ""} onClick={onClick} className={className} initial="initial" animate="final" variants={variants} disabled={disabled}>
-      <div className="text">{title}</div>
+    <StyledButton type={type ? "submit" : ""} onClick={onClick} disabled={disabled} color={color}>
+      <div className="text">{children}</div>
     </StyledButton>
   );
 };
 
 Button.propTypes = {
-  title: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
   type: PropTypes.string,
-  variants: PropTypes.shape({
-    initial: PropTypes.object.isRequired,
-    final: PropTypes.object.isRequired
-  }),
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  children: PropTypes.string.isRequired
 };
 
 export default Button;

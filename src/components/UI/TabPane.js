@@ -1,11 +1,11 @@
 import React from 'react';
 
-const withFormData = () => {
+const TabPane = ({children}) => {
     return (
         <div>
-            
+            {children}
         </div>
     );
 };
 
-export default withFormData;
+export default TabPane;

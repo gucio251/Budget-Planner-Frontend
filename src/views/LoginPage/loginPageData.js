@@ -16,28 +16,16 @@ const types = {
   text: "text"
 };
 
-const loginEmailErrorMsgs = [
-  "E-mail shall be registered"
-];
-
-const loginPasswordErrorMsgs = [
-  "Minimum 8 characters",
-  "One uppercase character",
-  "One special character"
-];
-
 const formInformation = [
   {
     name: names.email,
     label: labels.email,
-    type: types.text,
-    errorMsgs: loginEmailErrorMsgs
+    type: types.text
   },
   {
     name: names.password,
     label: labels.password,
-    type: types.password,
-    errorMsgs: loginPasswordErrorMsgs
+    type: types.password
   },
 ];
 

@@ -6,9 +6,17 @@ import { compose } from "recompose"
 import { formSettings } from "./loginPageData"
 import Form from "components/Form/Form"
 
-const LoginPageTemplate = ({ users, handleFormSubmit, loginErrors, displayInfoSide, handleMobileDisplay, handleMovingToInputSide}) => {
+const LoginPageTemplate = ({ users, handleFormSubmit, errors, displayInfoSide, handleMobileDisplay, handleMovingToInputSide}) => {
   return (
-    <Form settings={formSettings} users={users} handleFormSubmit={handleFormSubmit} loginErrors={loginErrors} displayInfoSide={displayInfoSide} handleMovingToInputSide={handleMovingToInputSide} handleMobileDisplay={handleMobileDisplay}/>
+    <Form
+      settings={formSettings}
+      users={users}
+      handleFormSubmit={handleFormSubmit}
+      errors={errors}
+      displayInfoSide={displayInfoSide}
+      handleMovingToInputSide={handleMovingToInputSide}
+      handleMobileDisplay={handleMobileDisplay}
+    />
   );
 };
 

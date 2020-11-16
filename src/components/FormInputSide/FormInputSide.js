@@ -14,43 +14,9 @@ import ErrorMessageBox from "components/UI/ErrorMessageBox";
 import InputTextWithValidation from "components/UI/InputTextWithValidation/InputTextWithValidation";
 import RedirectComponent from "components/UI/RedirectComponent";
 import validate from "components/validate-yup/validate-yup";
-
-const StyledInputVariants = {
-    initial: {x:1000},
-    final: {
-        x: 0,
-        transition: { delay: 1.4, type: "tween" }
-    }
-}
+import ValidationContainer from "Containers/ValidationContainer"
 
 window.MyComponentRef = React.createRef();
-
-const detectFieldsStatuses = (validationErrors, fieldsData, values) => {
-  const validationErrorsArr = Object.keys(validationErrors).map((key) => validationErrors[key]) || [];
-  const formInitialized = Object.values(values).reduce((values, value)=> values+=value);
-
-  return fieldsData.map((fieldData) => {
-    const validationErrorsForSpecificField = validationErrorsArr.find((validationErr) => validationErr.name === fieldData.name) || [];
-    const fieldCorrectness = validationErrorsForSpecificField.length === 0 ? true : false;
-
-    const modifiedErrorMsgs = fieldData.errorMsgs.map((errorMsg) => {
-      if (fieldCorrectness && formInitialized) {
-        return { errorMsg: errorMsg, correctness: true };
-      } else if (fieldCorrectness && !formInitialized) {
-        return { errorMsg: errorMsg, correctness: false };
-      } else {
-        const isCorrect = !validationErrorsForSpecificField.errorMsgs.includes(errorMsg);
-        return { errorMsg: errorMsg, correctness: isCorrect };
-      }
-    });
-
-    return {
-      ...fieldData,
-      ["errorMsgs"]: modifiedErrorMsgs,
-      ["fieldCorrectness"]: formInitialized ? fieldCorrectness : null,
-    };
-  });
-};
 
 const configureDisplayOnMobile = (fieldsStatues, func) => {
   if (Object.keys(fieldsStatues).length !== 0) {
@@ -58,7 +24,7 @@ const configureDisplayOnMobile = (fieldsStatues, func) => {
   }
 }
 
-const FormContainter = ({yupValidationSchema, loginFormData, linkData, buttonName, initialValues, additionalValidationData, handleFormSubmit, error, header, displayedOnMobile, handleMobileDisplay, animated}) => {
+const FormContainter = ({yupValidationSchema, formData, linkData, buttonName, initialValues, additionalValidationData, handleFormSubmit, error, header, displayedOnMobile, handleMobileDisplay, animated}) => {
   return (
     <Formik
       innerRef={window.MyComponentRef}
@@ -70,7 +36,7 @@ const FormContainter = ({yupValidationSchema, loginFormData, linkData, buttonNam
       render={(formikProps) => (
         <FormInputSide
           {...formikProps}
-          loginFormData={loginFormData}
+          formData={formData}
           linkData={linkData}
           buttonName={buttonName}
           error={error}
@@ -85,69 +51,97 @@ const FormContainter = ({yupValidationSchema, loginFormData, linkData, buttonNam
 }
 
 
-const FormInputSide = ({loginFormData, linkData, buttonName, handleSubmit, handleChange, handleBlur, errors, values, touched, error, header, handleMobileDisplay, animated}) => {
+const FormInputSide = ({
+  formData,
+  linkData,
+  displayedOnMobile,
+  buttonName,
+  handleSubmit,
+  handleChange,
+  handleBlur,
+  errors,
+  values,
+  touched,
+  error,
+  header,
+  handleMobileDisplay,
+  animated,
+}) => {
   configureDisplayOnMobile(touched, handleMobileDisplay);
   const inputSide = useRef();
   const [animationFinished, setAnimationFinished] = useState(false);
 
-  useLayoutEffect(()=>{
-    if(animated && !animationFinished){
+  useLayoutEffect(() => {
+    if (animated && !animationFinished) {
       const [elements] = inputSide.current.children;
 
       gsap.set([elements], { autoAlpha: 0 });
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } });
 
-      tl.fromTo(elements, { x: "600" }, { x: 0, autoAlpha: 1 }, "+=3");
+      tl.fromTo(elements, { x: '600' }, { x: 0, autoAlpha: 1 }, '+=3');
 
       setAnimationFinished(true);
     }
   });
-  const {text, linkText, href} = linkData;
-  const validatedFieldsStatuses = detectFieldsStatuses(errors, loginFormData, values);
+  const { text, linkText, href } = linkData;
+
   return (
-    <div ref={inputSide}>
-      <StyledInputSide>
-        <StyledForm onSubmit={handleSubmit}>
-          <StyledInputSideHeader>{header}</StyledInputSideHeader>
-          <StyledInputFields>
-            {validatedFieldsStatuses.map(
-              ({ name, label, type, errorMsgs, fieldCorrectness }) => {
-                return (
-                  <InputTextWithValidation
-                    key={name}
-                    name={name}
-                    label={label}
-                    value={values[name]}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    type={type}
-                    errorsStatuses={errorMsgs}
-                    fieldCorrectness={fieldCorrectness}
-                    touched={touched[name]}
-                    disabled={error.disabled || false}
+    <ValidationContainer touched={touched} errors={errors} values={values}>
+      {({ fieldsInitialized, fieldsCorrectness, buttonDisabled }) => (
+        <div ref={inputSide}>
+          <StyledInputSide>
+            <StyledForm onSubmit={handleSubmit}>
+              <StyledInputSideHeader>{header}</StyledInputSideHeader>
+              <StyledInputFields>
+                {formData.map(({ name, label, type }) => {
+                  return (
+                    <InputTextWithValidation
+                      key={name}
+                      name={name}
+                      label={label}
+                      value={values[name]}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      type={type}
+                      errorsStatuses={
+                        Object.keys(errors).length === 0 ||
+                        !errors.hasOwnProperty(name)
+                          ? []
+                          : errors[name]
+                      }
+                      fieldCorrectness={
+                        Object.keys(fieldsCorrectness).length === 0
+                          ? false
+                          : fieldsCorrectness[name]
+                      }
+                      fieldInitialized={fieldsInitialized[name]}
+                      touched={touched[name]}
+                      disabled={error.disabled || false}
+                    />
+                  );
+                })}
+                <Button
+                  handleSubmit={handleSubmit}
+                  disabled={error.disabled || buttonDisabled}
+                >
+                  {buttonName}
+                </Button>
+                <RedirectComponentWrapper>
+                  <RedirectComponent
+                    spanText={text}
+                    linkText={linkText}
+                    href={href}
+                    linkColor="mainBlue"
                   />
-                );
-              }
-            )}
-            <Button
-              title={buttonName}
-              handleFormSubmit={handleSubmit}
-              disabled={error.disabled || false}
-            />
-            <RedirectComponentWrapper>
-              <RedirectComponent
-                spanText={text}
-                linkText={linkText}
-                href={href}
-                linkColor="mainBlue"
-              />
-            </RedirectComponentWrapper>
-            {error && (<ErrorMessageBox error={error} />)}
-          </StyledInputFields>
-        </StyledForm>
-      </StyledInputSide>
-    </div>
+                </RedirectComponentWrapper>
+                {error && <ErrorMessageBox error={error} />}
+              </StyledInputFields>
+            </StyledForm>
+          </StyledInputSide>
+        </div>
+      )}
+    </ValidationContainer>
   );
 };
 
@@ -169,7 +163,7 @@ FormInputSide.propTypes = {
   initialValues: PropTypes.object.isRequired,
   header: PropTypes.string.isRequired,
   additionalValidationData: PropTypes.array,
-  handleFormSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   errorMsgs: PropTypes.string,
   displayedOnMobile: PropTypes.bool.isRequired,
   animated: PropTypes.bool.isRequired

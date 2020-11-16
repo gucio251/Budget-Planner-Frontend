@@ -14,6 +14,7 @@ const StyledWelcomeTextWrapper = styled.div`
   ${({theme}) => theme.devices.mobile}{
     font-size: 24px;
     width: 50vw;
+    margin-top: 30px;
   }
 `;
 

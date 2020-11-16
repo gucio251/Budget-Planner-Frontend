@@ -1,31 +1,49 @@
 import React, {useState} from 'react';
-import {Sidebar} from './../Sidebar/Sidebar'
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const ManageSidebar = () => {
-    const [hoveredEl, sethoveredEl] = useState();
-    const [activeElement, setActiveEl] = useState(0);
+import { SidebarItem } from 'components/UI/SidebarItem';
+import { Icon } from '@material-ui/core';
 
-    const onClick = (id) => {
-        setActiveEl(id);
-    };
+const NavigationList = styled.ul`
+  margin-top: 47px;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  list-style-type: none;
+  box-sizing: border-box;
+`;
 
-    const onmouseEnterHandler = id => {
-        sethoveredEl(id);
-    }
-
-    const onmouseLeaveHandler = () => {
-        sethoveredEl(null);
-    }
+const ManageSidebar = ({children}) => {
+    const [activeSidebarEl, setActiveSidebarEl] = useState(0);
+    const [hoveredSidebarEl, setHoveredSidebarEl] = useState();
 
     return (
-      <Sidebar
-        onClick={onClick}
-        onmouseEnterHandler={onmouseEnterHandler}
-        onmouseLeaveHandler={onmouseLeaveHandler}
-        hoveredEl={hoveredEl}
-        activeElement={activeElement}
-      />
+      <NavigationList>
+        {children.map((el, i) => {
+        const {props} = el;
+        const {Icon, name, href, num} = props;
+
+        return (
+          <SidebarItem
+            key={i}
+            href={href}
+            Icon={Icon}
+            name={name}
+            isActive={activeSidebarEl === parseInt(num)}
+            isHover = {hoveredSidebarEl === parseInt(num)}
+            onMouseEnter={()=> setHoveredSidebarEl(parseInt(num))}
+            onMouseLeave={()=> setHoveredSidebarEl(null)}
+            onClick={() => setActiveSidebarEl(parseInt(num))}
+          />
+        );
+        })}
+      </NavigationList>
     );
 };
 
-export {ManageSidebar};
+ManageSidebar.propTypes = {
+    
+};
+
+export default ManageSidebar;

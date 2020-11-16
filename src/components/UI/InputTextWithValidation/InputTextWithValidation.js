@@ -13,7 +13,7 @@ import {
 
 
 
-const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,type, touched, disabled, errorsStatuses, fieldCorrectness}) => {
+const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,type, touched, disabled, errorsStatuses, fieldCorrectness, fieldInitialized}) => {
   return (
     <StyledTextInput>
       <StyledInput
@@ -28,17 +28,17 @@ const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,
         disabled={disabled ? true : false}
         touched={touched}
         fieldCorrectness={fieldCorrectness}
+        fieldInitialized={fieldInitialized}
       />
       <StyledLabel htmlFor={name}>{label}</StyledLabel>
       <StyledTickIcon />
       <StyledErrorIcon />
       <StyledUnderline touched={touched} />
       <StyledValidations>
-        {errorsStatuses.map(({ errorMsg, correctness }) => (
+        {fieldInitialized && errorsStatuses.map((errorMsg) => (
             <ValidationItem
               key={errorMsg}
               text={errorMsg}
-              correctness={correctness}
             />
         ))}
       </StyledValidations>
@@ -54,9 +54,7 @@ TextInputWithValidation.propTypes = {
   handleBlur: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   touched: PropTypes.bool,
-  fieldCorrectness: PropTypes.oneOf([
-    PropTypes.bool, PropTypes.instanceOf(null)
-  ]),
+  fieldCorrectness: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
   errorStatuses: PropTypes.shape({
     errorMsg: PropTypes.string.isRequired,
