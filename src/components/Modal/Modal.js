@@ -1,53 +1,25 @@
-import React, {useRef, useEffect, useState, createContext} from 'react';
-import gsap from 'gsap';
-import styled from 'styled-components';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { ReactComponent as CloseSign } from 'assets/icons/closeSign.svg';
-
-
-const ModalWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(180, 185, 217, 0.7);
-  position: absolute;
-  display: block;
-  left: 0;
-  z-index: 0;
-`;
-
-const StyledCloseSign = styled(CloseSign)`
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-
-    &:hover {
-        transform: scale(1.3);
-    }
-`
-
-const StyledModal = styled.div`
-    width: 500px;
-    height: 100%;
-    display: block;
-    position: absolute;
-    left: 42%;
-    top: 15%;
-    z-index: 1;
-    border-radius: 100%;
-`
+import { makeStyles } from '@material-ui/core/styles';
+import Backdrop from '@material-ui/core/Backdrop';
+import Grow from '@material-ui/core/Grow';
+import Modal from '@material-ui/core/Modal';
 
 export const ModalContext = React.createContext({});
 
 const ModalProvider = ModalContext.Provider;
 
-const Modal = ({children,show, setShow}) => {
-    const modalBackground = useRef(null);
-    const modalForm = useRef(null);
+const useStyles = makeStyles(() => ({
+  backDrop: {
+    background: 'rgba(180, 185, 217, 0.7)',
+  },
+}));
 
+const ModalTemplate = ({children, open, handleClose}) => {
+    const classes = useStyles();
     const onEscapeClick = e => {
       if(e.keyCode === 27){
-        setShow(false);
+        handleClose()
       }
     }
 
@@ -58,42 +30,40 @@ const Modal = ({children,show, setShow}) => {
         document.removeEventListener('keydown', onEscapeClick)
       }
     })
-    useEffect(() => {
-      const modalBackgroundEl = modalBackground.current.children[0];
-      const modalFormEl = modalForm.current.children[0];
-
-      gsap.set([modalBackgroundEl, ,modalFormEl], { autoAlpha: 0 });
-
-      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut', reversed: false} });
-
-      tl.fromTo(modalBackgroundEl,{y: -2000 }, {duration: 0.25, y: 0, autoAlpha: 1 }, "+=0.1")
-          .fromTo(modalFormEl, {y:-2000}, {duration: 0.25, y: 0, autoAlpha: 1 })
-
-      show === true ?  tl.play() : tl.progress(1).reverse();
-    },[show]);
 
     return (
       <ModalProvider
         value={{
-          show: show,
-          setShow: setShow
+          open: open,
+          handleClose: handleClose,
         }}
       >
-        <div ref={modalForm}>
-          <StyledModal>
-            {show && <StyledCloseSign onClick={() => setShow(false)} />}
-            {show && children}
-          </StyledModal>
-        </div>
-        <div ref={modalBackground}>
-          <ModalWrapper onClick={() => setShow(false)} />
-        </div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+            classes: {
+              root: classes.backDrop
+            }
+          }}
+        >
+          <Grow in={open}>
+            {children}
+          </Grow>
+        </Modal>
       </ModalProvider>
     );
 };
 
-Modal.propTypes = {
-    children: PropTypes.element.isRequired
+ModalTemplate.propTypes = {
+  children: PropTypes.element.isRequired,
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired
 };
 
-export default Modal;
+export default ModalTemplate;

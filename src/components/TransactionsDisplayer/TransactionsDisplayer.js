@@ -5,6 +5,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
+import Modal from 'components/Modal/Modal';
+import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
+import {expensesActions} from 'redux/actions/expensesActions';
+import {useDispatch} from 'react-redux';
 
 
 const useStyles = makeStyles({
@@ -16,9 +20,42 @@ const useStyles = makeStyles({
 
 
 const TransactionsDisplayer = ({transactionList = []}) => {
+      const dispatch = useDispatch();
       const classes = useStyles();
-    
+      const [open, setOpen] = useState(false);
+      const [clickedElementData, setClickedElementData] = useState({})
+
+      const handleClose = () => {
+        setOpen(false);
+      }
+
+      const handleOpen = () => {
+        setOpen(true);
+      }
+
+      const onIconClickHandler = e => {
+        handleOpen();
+        const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
+        const transactionData =  transactionList.find(singleTransaction => singleTransaction.id === clickedTransactionId );
+        setClickedElementData(transactionData);
+      }
+
+      const deleteTransaction = (id) => {
+        dispatch(expensesActions.deleteSingle(localStorage.getItem('token'), {id}));
+        handleClose();
+      }
+
+
       return (
+        <>
+          <Modal open={open} handleClose={handleClose}>
+            <DeleteTransactionContent
+              id={clickedElementData.id}
+              category={clickedElementData.category}
+              subcategory={clickedElementData.subcategory}
+              submitHandler={deleteTransaction}
+            />
+          </Modal>
           <TableContainer>
             <Table className={classes.table} aria-label="simple table">
               <TableBody>
@@ -32,7 +69,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                       amount,
                       comments,
                       transaction_date,
-                      type
+                      type,
                     },
                     index
                   ) => {
@@ -48,6 +85,8 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                         comments={comments}
                         index={index}
                         type={type}
+                        openDeleteModal={handleOpen}
+                        onIconClickHandler={onIconClickHandler}
                       />
                     );
                   }
@@ -55,6 +94,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
               </TableBody>
             </Table>
           </TableContainer>
+        </>
       );
 };
 

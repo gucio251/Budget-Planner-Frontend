@@ -41,6 +41,13 @@ const expenses = (state = {expenses:[]}, action) => {
           expenses: [].concat(state.expenses, expenseWithSvg),
           adding: false,
         };
+    case expensesConstants.DELETEEXPENSE_SUCCESS:
+      return {
+        ...state,
+        expenses: state.expenses.filter(expense => {
+          return parseInt(expense.id) !== parseInt(action.expenseId)
+        })
+      }
     default:
       return state;
   }

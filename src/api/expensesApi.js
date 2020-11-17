@@ -1,7 +1,7 @@
 import { handleResponse, handleError } from './apiUtils';
 const baseUrl = 'http://localhost:4000/api/';
 
-export const load = (token) => {
+export function load(token){
   return fetch(baseUrl + 'expenses', {
     method: 'GET',
     headers: {
@@ -26,7 +26,21 @@ export function save(token, expense) {
     .catch(handleError);
 }
 
+export function deleteSingle(token, expenseId ){
+  return fetch(baseUrl + 'expenses/' + (expenseId.id), {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(expenseId),
+  })
+    .then(handleResponse)
+    .catch(handleError);
+}
+
 export const Expenses = {
     load,
-    save
+    save,
+    deleteSingle
 }

@@ -69,13 +69,21 @@ const StyledDisplay = styled.div`
 `
 
 const Dashboard = () => {
-    const [show, setShow] = useState(false);
+    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const expenseTypes = useSelector(state => state.expenseTypes);
     const incomeTypes = useSelector((state) => state.incomeTypes);
     const currencies = useSelector(state => state.currencies);
     const expenses = useSelector (state => state.expenses);
     const incomes = useSelector (state => state.incomes);
+
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
 
     useEffect(()=> {
         if(!expenseTypes.hasOwnProperty('expenseTypes')){
@@ -114,10 +122,10 @@ const Dashboard = () => {
         </StyledSideBar>
         <StyledReportsSide>
           <RowWithoutMargins>
-            <DashboardMenu onClickButton={setShow}/>
+            <DashboardMenu onClickButton={handleOpen}/>
           </RowWithoutMargins>
           <Row>
-            <Modal show={show} setShow={setShow}>
+            <Modal open={open} handleClose={handleClose}>
               <AddTransactionContent />
             </Modal>
           </Row>

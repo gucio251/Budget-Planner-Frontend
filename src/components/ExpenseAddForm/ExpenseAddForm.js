@@ -28,7 +28,7 @@ const ExpenseFormWithValidation = () => {
 
   const handleExpenseAdd = (expense) => {
     dispatch(expensesActions.add(localStorage.getItem('token'), expense));
-    Modal.setShow(false);
+    Modal.handleClose();
   };
 
   return (
