@@ -10,7 +10,6 @@ import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
 import {useDispatch} from 'react-redux';
-import { incomesConstants } from 'redux/actions/actionTypes';
 
 
 const useStyles = makeStyles({
@@ -42,7 +41,8 @@ const TransactionsDisplayer = ({transactionList = []}) => {
         setClickedElementData(transactionData);
       }
 
-      const deleteTransaction = (id, type) => {
+      const deleteTransaction = () => {
+        const {id, type} = clickedElementData;
         const token = localStorage.getItem('token');
         if(type === "income"){
           dispatch(incomesActions.deleteSingle(token, {id}));
@@ -56,8 +56,6 @@ const TransactionsDisplayer = ({transactionList = []}) => {
         <>
           <Modal open={open} handleClose={handleClose}>
             <DeleteTransactionContent
-              id={clickedElementData.id}
-              type={clickedElementData.type}
               category={clickedElementData.category}
               subcategory={clickedElementData.subcategory}
               submitHandler={deleteTransaction}

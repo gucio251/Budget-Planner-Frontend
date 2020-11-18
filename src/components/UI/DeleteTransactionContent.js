@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Button from 'components/UI/Button';
 import {ModalContext} from 'components/Modal/Modal';
 import OutlinedButton from 'components/UI/OutlinedButton';
@@ -39,7 +39,7 @@ const ButtonsWrapper = styled.div`
 `;
 
 
-const DeleteTransactionContent = ({id, category, subcategory, submitHandler, type}) => {
+const DeleteTransactionContent = ({category, subcategory, submitHandler}) => {
     const Modal = useContext(ModalContext);
     return (
       <Wrapper>
@@ -51,7 +51,7 @@ const DeleteTransactionContent = ({id, category, subcategory, submitHandler, typ
         <ButtonsRow>
           <ButtonsWrapper>
             <OutlinedButton size="large" onClick={Modal.handleClose}>Cancel</OutlinedButton>
-            <Button color="#1665D8" onClick={() => submitHandler(id, type)}>Delete</Button>
+            <Button color="#1665D8" onClick={submitHandler}>Delete</Button>
           </ButtonsWrapper>
         </ButtonsRow>
       </Wrapper>
@@ -59,7 +59,9 @@ const DeleteTransactionContent = ({id, category, subcategory, submitHandler, typ
 };
 
 DeleteTransactionContent.propTypes = {
-    
+  category: PropTypes.string.isRequired,
+  subcategory: PropTypes.string.isRequired,
+  submitHandler: PropTypes.string.isRequired,
 };
 
 export default DeleteTransactionContent;
