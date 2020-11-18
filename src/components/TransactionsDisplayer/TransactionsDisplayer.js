@@ -8,7 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
+import {incomesActions} from 'redux/actions/incomesActions'
 import {useDispatch} from 'react-redux';
+import { incomesConstants } from 'redux/actions/actionTypes';
 
 
 const useStyles = makeStyles({
@@ -40,17 +42,22 @@ const TransactionsDisplayer = ({transactionList = []}) => {
         setClickedElementData(transactionData);
       }
 
-      const deleteTransaction = (id) => {
-        dispatch(expensesActions.deleteSingle(localStorage.getItem('token'), {id}));
+      const deleteTransaction = (id, type) => {
+        const token = localStorage.getItem('token');
+        if(type === "income"){
+          dispatch(incomesActions.deleteSingle(token, {id}));
+        }else if(type === "expense"){
+          dispatch(expensesActions.deleteSingle(token, { id }));
+        }
         handleClose();
       }
-
 
       return (
         <>
           <Modal open={open} handleClose={handleClose}>
             <DeleteTransactionContent
               id={clickedElementData.id}
+              type={clickedElementData.type}
               category={clickedElementData.category}
               subcategory={clickedElementData.subcategory}
               submitHandler={deleteTransaction}

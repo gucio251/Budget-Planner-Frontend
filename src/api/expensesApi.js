@@ -26,14 +26,14 @@ export function save(token, expense) {
     .catch(handleError);
 }
 
-export function deleteSingle(token, expenseId ){
-  return fetch(baseUrl + 'expenses/' + (expenseId.id), {
+export function deleteSingle(token, expense){
+  return fetch(baseUrl + 'expenses/' + expense.id, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${token}`
+      authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(expenseId),
+    body: JSON.stringify(expense),
   })
     .then(handleResponse)
     .catch(handleError);

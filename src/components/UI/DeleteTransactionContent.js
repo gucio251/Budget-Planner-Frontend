@@ -39,7 +39,7 @@ const ButtonsWrapper = styled.div`
 `;
 
 
-const DeleteTransactionContent = ({id, category, subcategory, submitHandler}) => {
+const DeleteTransactionContent = ({id, category, subcategory, submitHandler, type}) => {
     const Modal = useContext(ModalContext);
     return (
       <Wrapper>
@@ -51,7 +51,7 @@ const DeleteTransactionContent = ({id, category, subcategory, submitHandler}) =>
         <ButtonsRow>
           <ButtonsWrapper>
             <OutlinedButton size="large" onClick={Modal.handleClose}>Cancel</OutlinedButton>
-            <Button color="#1665D8" onClick={() => submitHandler(id)}>Delete</Button>
+            <Button color="#1665D8" onClick={() => submitHandler(id, type)}>Delete</Button>
           </ButtonsWrapper>
         </ButtonsRow>
       </Wrapper>

@@ -26,7 +26,21 @@ export function save(token, expense) {
     .catch(handleError);
 }
 
+export function deleteSingle(token, income) {
+  return fetch(baseUrl + 'incomes/' + income.id, {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(income),
+  })
+    .then(handleResponse)
+    .catch(handleError);
+}
+
 export const Incomes = {
   load,
   save,
+  deleteSingle
 };

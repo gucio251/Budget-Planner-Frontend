@@ -19,7 +19,11 @@ const incomes = (state = { incomes: [] }, action) => {
         'category',
         incomeTypeSvgCorrelation
       );
-      const finalIncomes = addPropertyLoListOfObjects('type', 'income',incomesWithSvg);
+      const finalIncomes = addPropertyLoListOfObjects(
+        'type',
+        'income',
+        incomesWithSvg
+      );
       return {
         ...state,
         loading: false,
@@ -48,6 +52,13 @@ const incomes = (state = { incomes: [] }, action) => {
         ...state,
         incomes: [].concat(state.incomes, incomeWithSvg),
         adding: false,
+      };
+    case incomesConstants.DELETEINCOME_SUCCESS:
+      return {
+        ...state,
+        incomes: state.incomes.filter((income) => {
+          return parseInt(income.id) !== parseInt(action.incomeId);
+        }),
       };
     default:
       return state;

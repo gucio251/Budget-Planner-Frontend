@@ -50,7 +50,31 @@ const add = (token, expense) => (dispatch) => {
   );
 };
 
+const deleteSingle = (token, incomeId) => (dispatch) => {
+  const request = () => {
+    return { type: incomesConstants.DELETEINCOME_REQUEST };
+  };
+  const success = (incomeId) => {
+    return { type: incomesConstants.DELETEINCOME_SUCCESS, incomeId };
+  };
+  const failure = (error) => {
+    return { type: incomesConstants.DELETEINCOME_FAILURE, error };
+  };
+
+  dispatch(request());
+
+  incomesApi.deleteSingle(token, incomeId).then(
+    ({ id }) => {
+      dispatch(success(id));
+    },
+    (error) => {
+      dispatch(failure(error));
+    }
+  );
+};
+
 export const incomesActions = {
   load,
   add,
+  deleteSingle
 };

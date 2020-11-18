@@ -28,7 +28,7 @@ const IncomeFormWithValidation = () => {
 
   const handleIncomeAdd = (income) => {
     dispatch(incomesActions.add(localStorage.getItem('token'), income));
-    Modal.setShow(false);
+    Modal.handleClose(false);
   };
 
   return (
