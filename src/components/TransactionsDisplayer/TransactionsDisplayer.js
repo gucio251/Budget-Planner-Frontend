@@ -7,9 +7,12 @@ import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
+import ModifyTransactionContent from 'components/ModifyTransactionContent/ModifyTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import validate from 'components/validate-yup/validate-yup';
+import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
 
 
 const useStyles = makeStyles({
@@ -23,19 +26,37 @@ const useStyles = makeStyles({
 const TransactionsDisplayer = ({transactionList = []}) => {
       const dispatch = useDispatch();
       const classes = useStyles();
-      const [open, setOpen] = useState(false);
+      const expenseTypesState = useSelector((state) => state.expenseTypes);
+      const incomeTypesState = useSelector((state) => state.incomeTypes);
+      const [openDeleteModal, setOpenDeleteModal] = useState(false);
+      const [openModifyModal, setOpenModifyModal] = useState(false)
       const [clickedElementData, setClickedElementData] = useState({})
 
-      const handleClose = () => {
-        setOpen(false);
+      const handleCloseDeleteModal = () => {
+        setOpenDeleteModal(false);
       }
 
-      const handleOpen = () => {
-        setOpen(true);
+      const handleOpenDeleteModal = () => {
+        setOpenDeleteModal(true);
+      }
+
+      const handleOpenModifyModal = () => {
+        setOpenModifyModal(true);
+      }
+
+      const handleCloseModifyModal = () => {
+        setOpenModifyModal(false)
       }
 
       const onIconClickHandler = e => {
-        handleOpen();
+        handleOpenDeleteModal();
+        const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
+        const transactionData =  transactionList.find(singleTransaction => singleTransaction.id === clickedTransactionId );
+        setClickedElementData(transactionData);
+      }
+
+      const handleModifyIconClick = e => {
+        handleOpenModifyModal();
         const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
         const transactionData =  transactionList.find(singleTransaction => singleTransaction.id === clickedTransactionId );
         setClickedElementData(transactionData);
@@ -49,16 +70,37 @@ const TransactionsDisplayer = ({transactionList = []}) => {
         }else if(type === "expense"){
           dispatch(expensesActions.deleteSingle(token, { id }));
         }
-        handleClose();
+        handleCloseDeleteModal();
+      }
+
+      const updateTransacton = (values) => {
+        const { type } = clickedElementData;
+        const token = localStorage.getItem('token');
+        if(type === "income"){
+          dispatch(incomesActions.update(token, values));
+        }else if (type === "expense"){
+          dispatch(expensesActions.update(token, values));
+        }
+        handleCloseModifyModal();
       }
 
       return (
         <>
-          <Modal open={open} handleClose={handleClose}>
+          <Modal open={openDeleteModal} handleClose={handleCloseDeleteModal}>
             <DeleteTransactionContent
               category={clickedElementData.category}
               subcategory={clickedElementData.subcategory}
               submitHandler={deleteTransaction}
+            />
+          </Modal>
+          <Modal open={openModifyModal} handleClose={handleCloseModifyModal}>
+            <ModifyTransactionContent
+              categories={clickedElementData.type === 'income' ? incomeTypesState.incomeTypes : expenseTypesState.expenseTypes}
+              initialValues={clickedElementData}
+              validate={validate}
+              validationSchema={validations.getTransactionAdditionValidationSchema}
+              type={clickedElementData.type}
+              handleSubmit={updateTransacton}
             />
           </Modal>
           <TableContainer>
@@ -73,7 +115,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                       subcategory,
                       amount,
                       comments,
-                      transaction_date,
+                      transaction_date_converted,
                       type,
                     },
                     index
@@ -86,12 +128,12 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                         Svg={Icon}
                         subcategory={subcategory}
                         amount={amount}
-                        transaction_date={transaction_date}
+                        transaction_date={transaction_date_converted}
                         comments={comments}
                         index={index}
                         type={type}
-                        openDeleteModal={handleOpen}
                         onIconClickHandler={onIconClickHandler}
+                        handleModifyIconClick={handleModifyIconClick}
                       />
                     );
                   }

@@ -15,6 +15,7 @@ const getErrorsFromValidationError = (validationError) => {
 
     return  validationError.inner.reduce((result, error) => {
         const fieldName = error.path;
+        console.log('jestem tu');
         if(checkIfObjectIsEmpty(result)|| !checkIfOjectHasPropertyAlready(result, fieldName)){
           return {
             ...result,

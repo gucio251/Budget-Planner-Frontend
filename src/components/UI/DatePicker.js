@@ -102,14 +102,25 @@ const myCustomLocale = {
 };
 
 const CustomDatePicker = ({name, onChange, value, handleBlur}) => {
-    const [selectedDate, setSelectedDate] = useState();
+  if (Object.prototype.toString.call(value) !== '[object Object]'){
+    if (value.includes('-')) {
+      const [year, month, day] = value.split('-');
+      value = {
+        year: parseInt(year),
+        month: parseInt(month),
+        day: parseInt(day),
+      };
+    }
+  }
+
+    const [selectedDate, setSelectedDate] = useState(value);
 
     const renderCustomInput = ({ ref }) => (
       <input
         readOnly
         ref={ref}
         name={name}
-        value={selectedDate ? `${selectedDate.day}/${selectedDate.month}/${selectedDate.year}` : value}
+        value={`${selectedDate.day}/${selectedDate.month}/${selectedDate.year}`}
         onBlur={handleBlur}
         style={{
           display: 'flex',
@@ -131,9 +142,8 @@ const CustomDatePicker = ({name, onChange, value, handleBlur}) => {
         <DatePicker
           selected={value}
           onChange={(val) => {
-            const chosenDate = new Date(`${val.month}/${val.day}/${val.year}`);
             setSelectedDate(val)
-            onChange(name, chosenDate);
+            onChange(name, `${val.year}-${val.month}-${val.day}`);
           }}
           value={selectedDate}
           renderInput={renderCustomInput}

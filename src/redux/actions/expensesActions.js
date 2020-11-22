@@ -48,6 +48,29 @@ const add = (token, expense) => (dispatch) => {
 
 }
 
+const update = (token, expense) => (dispatch) => {
+  const request = () => {
+    return { type: expensesConstants.UPDATEEXPENSE_REQUEST };
+  };
+  const success = (expense) => {
+    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, expense };
+  };
+  const failure = (error) => {
+    return { type: expensesConstants.UPDATEEXPENSE_FAILURE, error };
+  };
+
+  dispatch(request());
+
+  expensesApi.save(token, expense).then(
+    (result) => {
+      dispatch(success(expense));
+    },
+    (error) => {
+      dispatch(failure(error));
+    }
+  );
+};
+
 const deleteSingle = (token, expenseId) => (dispatch) => {
       const request = () => {
         return { type: expensesConstants.DELETEEXPENSE_REQUEST };
@@ -75,5 +98,6 @@ const deleteSingle = (token, expenseId) => (dispatch) => {
 export const expensesActions = {
   load,
   add,
+  update,
   deleteSingle
 };

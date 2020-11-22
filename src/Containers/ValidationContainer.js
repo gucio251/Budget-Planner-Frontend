@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 const ValidationContainer = ({children, touched, errors, values}) => {
-    debugger;
     const [fieldsInitialized, setFieldsInitialized] = useState({});
     const [fieldsCorrectness, setFieldsCorrectness] = useState({});
     const [buttonDisabled, setButtonDisabled] = useState(true);

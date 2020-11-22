@@ -16,7 +16,6 @@ import Dropdown from 'components/UI/Dropdown';
 import InputWithBorder from 'components/UI/InputWithBorder';
 import LabelWrapper from 'components/UI/LabelWrapper';
 import TextArea from 'components/UI/TextArea';
-import { transformToString } from 'Utils/functions';
 
 const ModifyTransaction = ({
   values,
@@ -92,8 +91,8 @@ const ModifyTransaction = ({
                 isSearchable={false}
                 value={values.subcategory ? { label: values.subcategory } : ''}
                 onChange={(selectedOption) => {
-                  setFieldValue('subcategory', selectedOption.value);
                   setFieldValue('category_id', selectedOption.id);
+                  setFieldValue('subcategory', selectedOption.value);
                 }}
                 handleBlur={handleBlur}
                 isLoading={false}
@@ -105,7 +104,7 @@ const ModifyTransaction = ({
             <LabelWrapper label="Date">
               <DatePicker
                 name="transaction_date"
-                value={transformToString(values.transaction_date)}
+                value={values.transaction_date}
                 handleBlur={handleBlur}
                 onChange={setFieldValue}
               />
@@ -134,4 +133,4 @@ const ModifyTransaction = ({
   );
 };
 
-export default ModifyTransaction;
+export default React.memo(ModifyTransaction);

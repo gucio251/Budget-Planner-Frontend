@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import DatesRangeContainer from 'Containers/DatesRangeContainer';
+import DatesRangeContainer from 'containers/DatesRangeContainer';
 import SingleDateMenuOption from 'components/UI/SingleDateMenuOption'
 
 const StyledMenu = styled.nav`

@@ -13,14 +13,14 @@ export const load = (token) => {
     .catch(handleError);
 };
 
-export function save(token, expense) {
-  return fetch(baseUrl + 'incomes' + (expense.id || ''), {
-    method: expense.id ? 'PUT' : 'POST',
+export function save(token, income) {
+  return fetch(baseUrl + 'incomes/' + (income.id || ''), {
+    method: income.id ? 'PUT' : 'POST',
     headers: {
       'content-type': 'application/json',
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(expense),
+    body: JSON.stringify(income),
   })
     .then(handleResponse)
     .catch(handleError);

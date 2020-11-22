@@ -15,12 +15,12 @@ const possibleOptionNames = {
 
 const returnDatesRangeForGivenMonth = (month) => {
     const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const lastDayOfGivenMonth = getLstDayOfMonFnc(new Date(currentYear, month+1, currentDate.getDate()));
-    const finishDate = new Date(currentYear, month, lastDayOfGivenMonth);
-    const startDate = new Date(currentYear, month, 1);
+    const year = currentDate.getFullYear();
+    const monthAsString = month + 1;
+    const lastDayOfGivenMonth = getLstDayOfMonFnc(new Date(year, monthAsString, currentDate.getDate()));
+    const coreDatePart = `${year}-${monthAsString}`;
 
-    return [startDate, finishDate];
+    return [`${coreDatePart}-01`, `${coreDatePart}-${lastDayOfGivenMonth}`];
 }
 
 const getDateRangeBasedOnOptionChosen = (optionChosen) => {

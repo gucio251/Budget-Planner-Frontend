@@ -41,10 +41,8 @@ const incomes = (state = { incomes: [] }, action) => {
         adding: true,
       };
     case incomesConstants.ADDINCOME_SUCCESS:
-      const date = convertDateToString(action.income.transaction_date);
-      const income = { ...action.income, transaction_date: date };
       const incomeWithSvg = handleSvgAddition(
-        income,
+        action.income,
         'category',
         incomeTypeSvgCorrelation
       );
@@ -60,6 +58,22 @@ const incomes = (state = { incomes: [] }, action) => {
           return parseInt(income.id) !== parseInt(action.incomeId);
         }),
       };
+    case incomesConstants.UPDATEINCOME_SUCCESS:
+      const updatedIncomeWithSvg = handleSvgAddition(
+        action.income,
+        'category',
+        incomeTypeSvgCorrelation
+      );
+      return {
+        ...state,
+        incomes: state.incomes.map((income) => {
+          if ((income.id === updatedIncomeWithSvg.id)) {
+            return Object.assign(income, updatedIncomeWithSvg);
+          } else {
+            return income;
+          }
+        })
+      }
     default:
       return state;
   }

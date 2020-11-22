@@ -16,6 +16,7 @@ const load = (token) => (dispatch) => {
 
   incomesApi.load(token).then(
     ({results}) => {
+      console.log(results);
       dispatch(success(results));
     },
     (error) => {
@@ -25,7 +26,7 @@ const load = (token) => (dispatch) => {
   );
 };
 
-const add = (token, expense) => (dispatch) => {
+const add = (token, income) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.ADDINCOME_REQUEST };
   };
@@ -38,13 +39,34 @@ const add = (token, expense) => (dispatch) => {
 
   dispatch(request());
 
-  incomesApi.save(token, expense).then(
-    ({ insertId }) => {
-      debugger;
-      dispatch(success({ ...expense, id: insertId }));
+  incomesApi.save(token, income).then(
+    ({id}) => {
+      dispatch(success({ ...income, id: id }));
     },
     (error) => {
-      debugger;
+      dispatch(failure(error));
+    }
+  );
+};
+
+const update = (token, income) => (dispatch) => {
+  const request = () => {
+    return { type: incomesConstants.UPDATEINCOME_REQUEST };
+  };
+  const success = (income) => {
+    return { type: incomesConstants.UPDATEINCOME_SUCCESS, income };
+  };
+  const failure = (error) => {
+    return { type: incomesConstants.UPDATEINCOME_FAILURE, error };
+  };
+
+  dispatch(request());
+
+  incomesApi.save(token, income).then(
+    (result) => {
+      dispatch(success(income));
+    },
+    (error) => {
       dispatch(failure(error));
     }
   );
@@ -76,5 +98,6 @@ const deleteSingle = (token, incomeId) => (dispatch) => {
 export const incomesActions = {
   load,
   add,
-  deleteSingle
+  deleteSingle,
+  update,
 };

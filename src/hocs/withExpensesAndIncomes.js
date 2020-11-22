@@ -18,7 +18,6 @@ const withExpensesAndIncomes = (Component) => props => {
                 const filteredExpensesByDates = filterTransactionsByDates(expensesState.expenses, datesRange.datesRange);
                 const filteredIncomesByDates = filterTransactionsByDates(incomesState.incomes, datesRange.datesRange);
                 const filteredTransactions = [].concat(filteredExpensesByDates, filteredIncomesByDates);
-                debugger
                 const sortedTransactions = sortTransactionsByChosenProperty(filteredTransactions, 'transaction_date');
                 const convertedTransactionDate = convertDate(sortedTransactions);
                 setTransactionList(convertedTransactionDate);

@@ -14,7 +14,7 @@ export function load(token){
 };
 
 export function save(token, expense) {
-  return fetch(baseUrl + 'expenses' + (expense.id || ''), {
+  return fetch(baseUrl + 'expenses/' + (expense.id || ''), {
     method: expense.id ? 'PUT' : 'POST', // POST for create, PUT to update when id already exists.
     headers: {
       'content-type': 'application/json',

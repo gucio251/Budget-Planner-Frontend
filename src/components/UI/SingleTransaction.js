@@ -42,8 +42,8 @@ const SingleTransaction = ({
   amount,
   comments,
   transaction_date,
-  openDeleteModal,
-  onIconClickHandler
+  onIconClickHandler,
+  handleModifyIconClick,
 }) => {
   return (
     <TableRow key={id}>
@@ -58,7 +58,7 @@ const SingleTransaction = ({
       <StyledTableCell>{comments}</StyledTableCell>
       <StyledTableCell align="right">
         <BootstrapTooltip title="Edit">
-          <EditIcon />
+          <EditIcon id={id} type={type} onClick={handleModifyIconClick} />
         </BootstrapTooltip>
       </StyledTableCell>
       <StyledTableCell>

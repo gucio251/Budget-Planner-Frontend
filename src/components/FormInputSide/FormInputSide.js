@@ -14,7 +14,7 @@ import ErrorMessageBox from "components/UI/ErrorMessageBox";
 import InputTextWithValidation from "components/UI/InputTextWithValidation/InputTextWithValidation";
 import RedirectComponent from "components/UI/RedirectComponent";
 import validate from "components/validate-yup/validate-yup";
-import ValidationContainer from "Containers/ValidationContainer"
+import ValidationContainer from "containers/ValidationContainer"
 
 window.MyComponentRef = React.createRef();
 

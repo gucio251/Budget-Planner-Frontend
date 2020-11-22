@@ -9,12 +9,27 @@ export const addSvg = (categories, correlationEl) => {
 
 export const filterTransactionsByDates = (transactions, datesRange) => {
   return transactions.filter(transaction => {
-    const [year, month, day] = transaction.transaction_date.split("-");
-    const transactionDate = new Date(year, month-1, day);
-    if(transactionDate >= datesRange.start && transactionDate <= datesRange.end){
+    const convertedTransactionDate = convertToDateFormatFromString(
+      transaction.transaction_date
+    );
+    const convertedStartDate = convertToDateFormatFromString(datesRange.start);
+    const convertedFinishDate = convertToDateFormatFromString(datesRange.end);
+    if (
+      (convertedTransactionDate > convertedStartDate || areDatesEqual(convertedTransactionDate, convertedStartDate)) &&
+      (convertedTransactionDate < convertedFinishDate || areDatesEqual(convertedTransactionDate, convertedFinishDate))
+      ){
       return transaction;
     }
   })
+}
+
+const convertToDateFormatFromString = (dateAsString, delimiter="-") => {
+  const [year, month, day] = dateAsString.split(delimiter);
+  return new Date(year, month - 1 , day);
+}
+
+const areDatesEqual = (d1, d2) => {
+  return d1.getTime() === d2.getTime();
 }
 
 export const convertDateToString = (date) => {
@@ -49,18 +64,18 @@ export const convertDate = (transactions) => {
        case 0:
          return {
            ...transaction,
-           transaction_date: 'Today'
+           transaction_date_converted: 'Today'
          };
         case 1:
           return {
             ...transaction,
-            transaction_date: 'Yestarday',
+            transaction_date_converted: 'Yestarday',
           };
         default:
-          const [year, month, day] = transaction.transaction_date.split("-");
+          const dateToConversion =  new Date(transaction.transaction_date);
           return{
             ...transaction,
-            transaction_date: `${day}.${month}`
+            transaction_date_converted: `${dateToConversion.getDate()}.${dateToConversion.getMonth()+1}`
           }
      }
    })
@@ -68,9 +83,9 @@ export const convertDate = (transactions) => {
 
 const howManyDaysBeforeToday = (someDate) => {
   const today = new Date();
-  const [year, month, day] = someDate.split("-");
+  const referenceDay = new Date(someDate);
 
-  return parseInt(today.getDate()) - parseInt(day);
+  return parseInt(today.getDate()) - parseInt(referenceDay.getDate());
 }
 
 const returnSvg = (transactionName, correlation) => correlation[transactionName];
@@ -104,18 +119,9 @@ export const addPropertyLoListOfObjects = (propertyName, value, listOfObjects) =
 
 export const getTodaysDate = () => {
   const todaysDate = new Date();
-  return `${todaysDate.getDate()}/${todaysDate.getMonth()+1}/${todaysDate.getFullYear()}`;
+  return {
+    day: todaysDate.getDate(),
+    month: todaysDate.getMonth() +1,
+    year: todaysDate.getFullYear()
+  };
 }
-
-
-export const transformToString = (date) => {
-  if (typeof date !== 'string') {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  }
-
-  return date;
-};

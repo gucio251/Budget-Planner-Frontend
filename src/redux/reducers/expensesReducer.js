@@ -10,7 +10,11 @@ const expenses = (state = {expenses:[]}, action) => {
         loading: true,
       };
     case expensesConstants.GETEXPENSES_SUCCESS:
-      const expensesWithSvg = handleSvgAddition(action.expenses, "category", expenseTypeSvgCorrelation);
+      const expensesWithSvg = handleSvgAddition(
+        action.expenses,
+        'category',
+        expenseTypeSvgCorrelation
+      );
       const finalExpenses = addPropertyLoListOfObjects(
         'type',
         'expense',
@@ -33,21 +37,39 @@ const expenses = (state = {expenses:[]}, action) => {
         adding: true,
       };
     case expensesConstants.ADDEXPENSE_SUCCESS:
-        const date = convertDateToString(action.expense.transaction_date);
-        const expense = {...action.expense, transaction_date: date}
-        const expenseWithSvg = handleSvgAddition(expense, "category", expenseTypeSvgCorrelation);
-        return {
-          ...state,
-          expenses: [].concat(state.expenses, expenseWithSvg),
-          adding: false,
-        };
+      const expenseWithSvg = handleSvgAddition(
+        action.expense,
+        'category',
+        expenseTypeSvgCorrelation
+      );
+      return {
+        ...state,
+        expenses: [].concat(state.expenses, expenseWithSvg),
+        adding: false,
+      };
     case expensesConstants.DELETEEXPENSE_SUCCESS:
       return {
         ...state,
-        expenses: state.expenses.filter(expense => {
-          return parseInt(expense.id) !== parseInt(action.expenseId)
-        })
-      }
+        expenses: state.expenses.filter((expense) => {
+          return parseInt(expense.id) !== parseInt(action.expenseId);
+        }),
+      };
+    case expensesConstants.UPDATEEXPENSE_SUCCESS:
+      const updatedExpenseWithSvg = handleSvgAddition(
+        action.expense,
+        'category',
+        expenseTypeSvgCorrelation
+      );
+      return {
+        ...state,
+        expenses: state.expenses.map((expense) => {
+          if (expense.id === updatedExpenseWithSvg.id) {
+            return Object.assign(expense, updatedExpenseWithSvg);
+          } else {
+            return expense;
+          }
+        }),
+      };
     default:
       return state;
   }
