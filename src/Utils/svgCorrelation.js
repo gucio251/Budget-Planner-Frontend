@@ -58,6 +58,9 @@ export const graphColors = {
   Restaurants: { base: '#FF9500', hovered: '#7f4a00' },
   Transport: { base: '#8261F5', hovered: '#2b0aa0' },
   Travel: { base: '#4CD964', hovered: '#197829' },
+  Award: { base: '#ffcc00', hovered: '#7f6600' },
+  Gift: { base: '#ff32c0', hovered: '#980069' },
+  Salary: { base: '#007aff', hovered: '#003d7f' },
 };
 
 export const incomeTypeSvgCorrelation = {

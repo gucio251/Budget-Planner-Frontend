@@ -1,6 +1,6 @@
 import { expensesConstants } from './../actions/actionTypes';
 import {expenseTypeSvgCorrelation} from 'Utils/svgCorrelation';
-import {handleSvgAddition, addPropertyLoListOfObjects, convertDateToString} from 'Utils/functions';
+import {handleSvgAddition, addPropertyLoListOfObjects} from 'Utils/functions';
 
 const expenses = (state = {expenses:[]}, action) => {
   switch (action.type) {

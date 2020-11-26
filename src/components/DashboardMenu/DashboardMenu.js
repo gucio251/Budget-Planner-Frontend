@@ -41,12 +41,12 @@ const UserSectionWrapper = styled.div`
   color: #1c245d;
 `;
 
-const DashboardMenu = ({onClickButton}) => {
+const DashboardMenu = ({handleButtonClick}) => {
     return (
       <StyledDashboardMenu>
         <MenuItemsWrapper>
           <ButtonWrapper>
-            <Button onClick={() => onClickButton(true)} color="#2F54F3">
+            <Button onClick={() => handleButtonClick(true)} color="#2F54F3">
               <ButtonItemsWrapper>
                 <AddSign />
                 Add new transaction
@@ -64,7 +64,7 @@ const DashboardMenu = ({onClickButton}) => {
 };
 
 DashboardMenu.propTypes = {
-    
+  handleButtonClick: PropTypes.func.isRequired
 };
 
 export default DashboardMenu;

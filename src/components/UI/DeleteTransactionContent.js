@@ -59,9 +59,14 @@ const DeleteTransactionContent = ({category, subcategory, submitHandler}) => {
 };
 
 DeleteTransactionContent.propTypes = {
-  category: PropTypes.string.isRequired,
-  subcategory: PropTypes.string.isRequired,
-  submitHandler: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  subcategory: PropTypes.string,
+  submitHandler: PropTypes.string,
 };
 
+DeleteTransactionContent.defaultProps = {
+  category: '',
+  subcategory: '',
+  submitHandler: '',
+};
 export default DeleteTransactionContent;

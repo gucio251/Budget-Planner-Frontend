@@ -2,7 +2,6 @@ import { incomesConstants } from './../actions/actionTypes';
 import { incomeTypeSvgCorrelation } from 'Utils/svgCorrelation';
 import {
   handleSvgAddition,
-  convertDateToString,
   addPropertyLoListOfObjects
 } from 'Utils/functions';
 

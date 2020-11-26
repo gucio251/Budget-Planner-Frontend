@@ -31,7 +31,19 @@ const TextArea = ({name, value, handleChange, placeholder, handleBlur}) => {
 };
 
 TextArea.propTypes = {
-    
+  name: PropTypes.string,
+  value: PropTypes.string,
+  placeholder: PropTypes.string,
+  handleChange: PropTypes.func,
+  handleBlur: PropTypes.func
 };
+
+TextArea.defaultProps = {
+  name: "",
+  value: "",
+  placeholder: "",
+  handleChange: ()=> {},
+  handleBlur: ()=>{}
+}
 
 export default TextArea;

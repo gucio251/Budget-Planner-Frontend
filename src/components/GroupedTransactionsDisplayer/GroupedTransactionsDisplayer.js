@@ -23,11 +23,13 @@ const TransactionCategoryName = styled.span`
 const GroupedTransactionsDisplayer = ({expensesGroupedByType}) => {
   return (
       <TransactionsList>
-        {expensesGroupedByType.map(({Icon, category})=> (
-          <TransactionsListItem>
+        {expensesGroupedByType.map(({Icon, name}, index)=> (
+          <TransactionsListItem
+            key={index}
+          >
             <Icon />
             <TransactionCategoryName>
-              {category}
+              {name}
             </TransactionCategoryName>
           </TransactionsListItem>
         ))}

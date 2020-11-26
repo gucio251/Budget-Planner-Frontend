@@ -1,4 +1,4 @@
-import { expensesConstants } from 'redux/actions/actionTypes';
+import { expensesConstants, groupedExpensesConstants } from 'redux/actions/actionTypes';
 import * as expensesApi from 'api/expensesApi';
 
 const load = (token) => (dispatch) => {
@@ -12,11 +12,16 @@ const load = (token) => (dispatch) => {
     return { type: expensesConstants.GETEXPENSES_FAILURE, error };
   };
 
+  const groupedExpensesAdd = (expenses) => {
+    return { type: groupedExpensesConstants.GROUPEDEXPENSES_LOAD, expenses };
+  }
+
   dispatch(request());
 
   expensesApi.load(token).then(
     ({ result }) => {
       dispatch(success(result));
+      dispatch(groupedExpensesAdd(result));
     },
     (error) => {
       dispatch(failure(error));

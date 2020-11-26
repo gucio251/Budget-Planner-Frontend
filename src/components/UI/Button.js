@@ -51,7 +51,11 @@ Button.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   disabled: PropTypes.bool,
-  children: PropTypes.string.isRequired
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.string,
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default Button;

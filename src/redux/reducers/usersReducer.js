@@ -30,7 +30,7 @@ const users = (state = [], action) => {
         addingUser: false,
         emails: [].concat(state.emails, action.user.email)
       }
-    case userConstants.REGISTER_SUCCESS:
+    case userConstants.REGISTER_FAILURE:
       return {
         ...state,
         addingUser: false,

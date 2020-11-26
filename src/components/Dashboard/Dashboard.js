@@ -122,7 +122,7 @@ const Dashboard = () => {
         </StyledSideBar>
         <StyledReportsSide>
           <RowWithoutMargins>
-            <DashboardMenu onClickButton={handleOpen}/>
+            <DashboardMenu handleButtonClick={handleOpen}/>
           </RowWithoutMargins>
           <Row>
             <Modal open={open} handleClose={handleClose}>

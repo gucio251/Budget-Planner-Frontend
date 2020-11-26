@@ -20,7 +20,6 @@ const StyledList = styled.ul`
     }
 `
 
-
 const DatesRangeMenu = ({children}) => {
     return (
       <DatesRangeContainer>
@@ -46,7 +45,11 @@ const DatesRangeMenu = ({children}) => {
 };
 
 DatesRangeMenu.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.element,
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default DatesRangeMenu;

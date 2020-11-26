@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { SidebarItem } from 'components/UI/SidebarItem';
-import { Icon } from '@material-ui/core';
 
 const NavigationList = styled.ul`
   margin-top: 47px;
@@ -43,7 +42,10 @@ const ManageSidebar = ({children}) => {
 };
 
 ManageSidebar.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default ManageSidebar;

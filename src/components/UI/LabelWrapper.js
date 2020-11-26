@@ -12,18 +12,22 @@ const Label = styled.label`
   color: ${({ theme }) => theme.labelGray};
 `
 
-const LabelWrapper = props => {
-    const {label} = props;
+const LabelWrapper = ({children, label}) => {
     return (
       <ComponentWithLabelWrapper>
         <Label htmlFor={label.toLowerCase()}>{label}</Label>
-        {props.children}
+        {children}
       </ComponentWithLabelWrapper>
     );
 };
 
 LabelWrapper.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.string,
+    PropTypes.node,
+  ]).isRequired,
+  label: PropTypes.string.isRequired
 };
 
 export default LabelWrapper;

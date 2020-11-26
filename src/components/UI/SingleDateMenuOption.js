@@ -20,7 +20,12 @@ const SingleDateMenuOption = ({children, active, onClick}) => {
 };
 
 SingleDateMenuOption.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  active: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default SingleDateMenuOption;

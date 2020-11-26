@@ -8,6 +8,9 @@ export const addSvg = (categories, correlationEl) => {
 };
 
 export const filterTransactionsByDates = (transactions, datesRange) => {
+  if(transactions.length === 0){
+    return [];
+  }
   return transactions.filter(transaction => {
     const convertedTransactionDate = convertToDateFormatFromString(
       transaction.transaction_date
@@ -21,6 +24,49 @@ export const filterTransactionsByDates = (transactions, datesRange) => {
       return transaction;
     }
   })
+}
+
+export const groupTransactionsByCategory = (transactions) => {
+  return transactions.reduce((groupedData, currentTransaction) => {
+    const { amount, category, Icon } = currentTransaction;
+
+    if (groupedData.hasOwnProperty(category)) {
+      return {
+        ...groupedData,
+        [category]: {
+          ...groupedData[category],
+          amount: groupedData[category].amount + currentTransaction.amount,
+          howManyOccurences: groupedData[category].howManyOccurences + 1,
+        },
+      };
+    } else {
+      return {
+        ...groupedData,
+        [category]: {
+          amount: amount,
+          howManyOccurences: 1,
+          Icon: Icon,
+        },
+      };
+    }
+  }, {});
+};
+
+export const prepareDataForGraph = (transactionGroupedBy, graphColors, valueToBeShownName) => {
+  const result = transactionGroupedBy.reduce((prevValue, currentTransaction) => {
+    const {name} = currentTransaction;
+    return {
+      ...prevValue,
+      labels: [].concat(prevValue.labels, name),
+      datasets: [{
+        backgroundColor: [].concat(prevValue.datasets[0].backgroundColor, graphColors[name].base),
+        hoverBackgroundColor: [].concat(prevValue.datasets[0].hoverBackgroundColor, graphColors[name].hovered),
+        data: [].concat(prevValue.datasets[0].data, currentTransaction[valueToBeShownName]),
+        }]
+    };
+  }, {labels: [], datasets: [{backgroundColor: [], hoverBackgroundColor: [], data: []}]})
+
+  return result;
 }
 
 const convertToDateFormatFromString = (dateAsString, delimiter="-") => {
@@ -38,7 +84,7 @@ export const convertDateToString = (date) => {
 
 const convertObjectOfObjectsToArrayOfObjects = (obj) => {
   return Object.keys(obj).map((propertyName) => {
-    return { ...obj[propertyName]};
+    return { ...obj[propertyName], name: propertyName};
   });
 }
 

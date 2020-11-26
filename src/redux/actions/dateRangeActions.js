@@ -14,7 +14,6 @@ const setDateRange = (datesRange) => (dispatch) => {
   dispatch(request());
 
   const {start, end} = datesRange;
-  debugger;
 
   if((start instanceof Date) === false || (end instanceof Date)  === false){
       dispatch(failure(new Error('Date is in wrong format')))

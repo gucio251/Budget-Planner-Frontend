@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components'
 import PropTypes from 'prop-types';
 
+import CountUp from 'react-countup';
+
 const Wrapper = styled.div`
   width: 100%;
   height: 186px;
@@ -24,22 +26,35 @@ const NameHolder = styled.span`
   font-size: 12px;
 `;
 
-const SingleSummaryField = ({Svg, amount, name}) => {
+const SingleSummaryField = ({children, amount, name}) => {
     return (
-        <Wrapper>
-            <Svg />
-            <AmountWrapper>
-                {amount}
-            </AmountWrapper>
-            <NameHolder>
-                {name}
-            </NameHolder>
-        </Wrapper>
+      <Wrapper>
+        {children}
+        <AmountWrapper>
+          <CountUp
+            className="account-balance"
+            start={0}
+            end={amount}
+            duration={2.75}
+            useEasing={true}
+            useGrouping={true}
+            separator="."
+            prefix="$"
+            decimals={0}
+          />
+        </AmountWrapper>
+        <NameHolder>{name}</NameHolder>
+      </Wrapper>
     );
 };
 
 SingleSummaryField.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  amount: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired
 };
 
 export default SingleSummaryField;
