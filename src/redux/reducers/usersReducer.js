@@ -1,40 +1,48 @@
 import {userConstants} from "../actions/actionTypes";
 
-const users = (state = [], action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  emails: [],
+  error: false,
+}
+
+const users = (state = initialState, action) => {
+  const {type, payload} = action;
+  switch (type) {
     case userConstants.GETUSERS_REQUEST:
       return {
         ...state,
-        loading: true
+        status: 'loading'
       };
     case userConstants.GETUSERS_SUCCESS:
       return {
         ...state,
-        emails: action.users,
-        loading: false
+        emails: payload,
+        status: 'succedded'
       }
     case userConstants.GETUSERS_FAILURE:
-      const errorMsg =  action.error ? "Unable to connect to the database" : "";
-      return {...state,
+      const errorMsg =  payload ? "Unable to connect to the database" : "";
+      return {
+        ...state,
         errorMsg: errorMsg,
-        loading: false
-        };
+        status: 'failed'
+      };
     case userConstants.REGISTER_REQUEST:
       return {
         ...state,
-        addingUser:true,
+        status:'adding',
       }
     case userConstants.REGISTER_SUCCESS:
       return {
         ...state,
-        addingUser: false,
-        emails: [].concat(state.emails, action.user.email)
+        emails: [].concat(state.emails, payload),
+        status: 'succedded'
       }
     case userConstants.REGISTER_FAILURE:
       return {
         ...state,
-        addingUser: false,
-        errorMsg: action.error
+        status: 'failed',
+        errorMsg: payload
       }
     default:
       return state;

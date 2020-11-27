@@ -22,7 +22,7 @@ const FormStyle = styled.div`
   }
 `;
 
-const Form = ({ users, handleFormSubmit, errors, displayInfoSide, handleMovingToInputSide, handleMobileDisplay, settings}) => {
+const Form = ({ users, handleFormSubmit, stateErrors, displayInfoSide, handleMovingToInputSide, handleMobileDisplay, settings}) => {
     const {validationSchema, linkData, buttonName, animatedInfoSide, animatedInputSide,inputFieldsInformation, initialValues, header} = settings;
     return (
         <FormStyle>
@@ -41,7 +41,7 @@ const Form = ({ users, handleFormSubmit, errors, displayInfoSide, handleMovingTo
                 header={header}
                 additionalValidationData={users.emails}
                 handleFormSubmit={handleFormSubmit}
-                error={errors}
+                stateErrors={stateErrors}
                 handleMobileDisplay={handleMobileDisplay}
                 displayedOnMobile={!displayInfoSide}
                 yupValidationSchema={validationSchema}

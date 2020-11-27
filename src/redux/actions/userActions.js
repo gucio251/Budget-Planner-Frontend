@@ -1,41 +1,43 @@
 import {userConstants} from 'redux/actions/actionTypes';
-import {routes} from 'routes'
+import { navigate } from '@reach/router';
+import { routes } from 'routes';
 import * as userApi from 'api/userApi';
 
-const loadUsers = () => dispatch => {
+const load = () => dispatch => {
     const request = () => { return { type: userConstants.GETUSERS_REQUEST } }
-    const success = users => { return { type: userConstants.GETUSERS_SUCCESS, users } }
-    const failure = error => { return { type: userConstants.GETUSERS_FAILURE, error } }
+    const success = users => { return { type: userConstants.GETUSERS_SUCCESS, payload: users } }
+    const failure = error => { return { type: userConstants.GETUSERS_FAILURE, payload: error } }
 
     dispatch(request());
 
     userApi.getAllUsers()
         .then(
-            allUsers => {dispatch(success(allUsers.users))},
+            ({users}) => {
+                dispatch(success(users));
+            },
             error => {dispatch(failure(error))}
         );
 }
 
-const addUser = (user, history) => dispatch => {
+const add = user => dispatch => {
     const request = () => { return { type: userConstants.REGISTER_REQUEST }}
-    const success = user => { return { type: userConstants.REGISTER_SUCCESS, user }}
-    const failure = error => { return { type: userConstants.REGISTER_FAILURE, error }}
+    const success = user => { return { type: userConstants.REGISTER_SUCCESS, payload: user }}
+    const failure = error => { return { type: userConstants.REGISTER_FAILURE, payload: error }}
 
     dispatch(request());
 
     userApi.saveUser(user).then(
-        savedUser => {
-            history.push(routes.successRegistrationPage);
-            dispatch(success(savedUser));
-        },
+        ({email}) => {
+            navigate(routes.successRegistrationPage);
+            dispatch(success(email));},
         error => {dispatch(failure(error))}
     );
 }
 
-const login = (user) => dispatch => {
+const login = user => dispatch => {
     const request = () => { return { type: userConstants.LOGIN_REQUEST }}
-    const success = (user) => { return { type: userConstants.LOGIN_SUCCESS, user }}
-    const failure = (error) => { return { type: userConstants.LOGIN_FAILURE, error }}
+    const success = user => { return { type: userConstants.LOGIN_SUCCESS, user }}
+    const failure = error => { return { type: userConstants.LOGIN_FAILURE, error }}
 
     dispatch(request());
     userApi.authLogin(user).then(
@@ -51,8 +53,8 @@ const login = (user) => dispatch => {
 
 
 export const userActions = {
-    loadUsers,
-    addUser,
+    load,
+    add,
     login,
 }
 

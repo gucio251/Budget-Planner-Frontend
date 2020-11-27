@@ -24,7 +24,7 @@ const configureDisplayOnMobile = (fieldsStatues, func) => {
   }
 }
 
-const FormContainter = ({yupValidationSchema, formData, linkData, buttonName, initialValues, additionalValidationData, handleFormSubmit, error, header, displayedOnMobile, handleMobileDisplay, animated}) => {
+const FormContainter = ({yupValidationSchema, formData, linkData, buttonName, initialValues, additionalValidationData, handleFormSubmit, stateErrors, header, displayedOnMobile, handleMobileDisplay, animated}) => {
   return (
     <Formik
       innerRef={window.MyComponentRef}
@@ -39,11 +39,11 @@ const FormContainter = ({yupValidationSchema, formData, linkData, buttonName, in
           formData={formData}
           linkData={linkData}
           buttonName={buttonName}
-          error={error}
           header={header}
           displayedOnMobile={displayedOnMobile}
           handleMobileDisplay={handleMobileDisplay}
           animated={animated}
+          stateErrors={stateErrors}
         />
       )}
     />
@@ -62,7 +62,7 @@ const FormInputSide = ({
   errors,
   values,
   touched,
-  error,
+  stateErrors,
   header,
   handleMobileDisplay,
   animated,
@@ -117,13 +117,13 @@ const FormInputSide = ({
                       }
                       fieldInitialized={fieldsInitialized[name]}
                       touched={touched[name]}
-                      disabled={error.disabled || false}
+                      disabled={stateErrors ? stateErrors.disabled : false}
                     />
                   );
                 })}
                 <Button
                   handleSubmit={handleSubmit}
-                  disabled={error.disabled || buttonDisabled}
+                  disabled={stateErrors.disabled || buttonDisabled}
                 >
                   {buttonName}
                 </Button>
@@ -135,7 +135,7 @@ const FormInputSide = ({
                     linkColor="mainBlue"
                   />
                 </RedirectComponentWrapper>
-                {error && <ErrorMessageBox error={error} />}
+                {stateErrors && <ErrorMessageBox error={stateErrors} />}
               </StyledInputFields>
             </StyledForm>
           </StyledInputSide>
