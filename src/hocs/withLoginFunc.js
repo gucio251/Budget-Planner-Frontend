@@ -7,27 +7,27 @@ import {routes} from 'routes';
 const withLoginFunc = Component => props => {
     const dispatch = useDispatch();
     const loginState = useSelector(state => state.login);
-    const [errors, setErrors] = useState("");
-    const history = useHistory();
+    const [errors, setErrors] = useState(false);
 
     const handleFormSubmit = (values) => {
         dispatch(userActions.login(values))
     }
 
     useEffect(() => {
-        if(loginState.hasOwnProperty("errorMsg")){
-            setErrors({msg: loginState.errorMsg})
+        if(loginState.error){
+            setErrors({msg: loginState.error})
             window.MyComponentRef.current.setFieldValue("password", "");
-        }else if (loginState.loggedIn === true){
-            history.push(routes.dashboard);
+        }else{
+            setErrors(false);
         }
-    }, [loginState.loggedIn, loginState.logginIn, loginState.errorMsg])
+    }, [loginState])
 
     return (
-        <Component
-            {...props}
-            handleFormSubmit={handleFormSubmit}
-            errors={errors === "" ? "" : errors}/>
+      <Component
+        {...props}
+        handleFormSubmit={handleFormSubmit}
+        stateErrors={errors}
+      />
     );
 };
 

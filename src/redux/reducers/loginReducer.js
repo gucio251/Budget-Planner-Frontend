@@ -1,29 +1,32 @@
 import {userConstants} from './../actions/actionTypes'
 
-const login = (state = {}, action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  loggedIn: false,
+  error: false
+}
+const login = (state = initialState, action) => {
+  const {type, payload} = action;
+  switch (type) {
     case userConstants.LOGIN_REQUEST:
       return {
-      ...state,
-      logginIn: true,
-      user: action.user
+        ...state,
+        status: 'loading'
       };
     case userConstants.LOGIN_SUCCESS:
-      const key = 'errorMsg';
-      const {[key]: err, ...oldState} = state;
-      localStorage.setItem('token', action.user.token)
+      localStorage.setItem('token', payload)
       return {
-        ...oldState,
+        ...state,
+        status: 'succedded',
         loggedIn: true,
-        logginIn: false,
-        email: action.user.email,
+        error: false
       };
     case userConstants.LOGIN_FAILURE:
       return {
         ...state,
+        status: 'failed',
         loggedIn: false,
-        logginIn: false,
-        errorMsg: action.error
+        error: payload
       };
     default:
       return state;

@@ -21,7 +21,7 @@ const load = () => dispatch => {
 
 const add = user => dispatch => {
     const request = () => { return { type: userConstants.REGISTER_REQUEST }}
-    const success = user => { return { type: userConstants.REGISTER_SUCCESS, payload: user }}
+    const success = token => { return { type: userConstants.REGISTER_SUCCESS, payload: token }}
     const failure = error => { return { type: userConstants.REGISTER_FAILURE, payload: error }}
 
     dispatch(request());
@@ -36,14 +36,14 @@ const add = user => dispatch => {
 
 const login = user => dispatch => {
     const request = () => { return { type: userConstants.LOGIN_REQUEST }}
-    const success = user => { return { type: userConstants.LOGIN_SUCCESS, user }}
-    const failure = error => { return { type: userConstants.LOGIN_FAILURE, error }}
+    const success = user => { return { type: userConstants.LOGIN_SUCCESS, payload: user }}
+    const failure = error => { return { type: userConstants.LOGIN_FAILURE, payload: error }}
 
     dispatch(request());
     userApi.authLogin(user).then(
-        (userInfo) => {
-            userInfo.email = user.email;
-            dispatch(success(userInfo));
+        ({token}) => {
+            dispatch(success(token));
+            navigate(routes.dashboard);
         },
         (error) => {
             dispatch(failure(error.message));

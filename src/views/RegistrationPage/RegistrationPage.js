@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { userActions } from 'redux/actions/userActions';
 import { useDispatch } from 'react-redux';
 
-import Form from 'components/Form/Form';
+import InitialPageTemplate from 'components/InitialPageTemplate/InitialPageTemplate';
 import { formSettings } from './registrationPageData';
 import withMobileHandling from 'hocs/withMobileHandling';
 import withUsers from 'hocs/withUsers';
@@ -11,21 +11,19 @@ import withUsers from 'hocs/withUsers';
 const RegistrationPageTemplate = ({
   users,
   stateErrors,
-  loginErrors,
   displayInfoSide,
   handleMobileDisplay,
   handleMovingToInputSide,
 }) => {
   const dispatch = useDispatch();
-  const handleFormSubmit = (values) => {
+  const handleUserRegistration = (values) => {
     dispatch(userActions.add(values));
   };
   return (
-    <Form
+    <InitialPageTemplate
       settings={formSettings}
       users={users}
-      handleFormSubmit={handleFormSubmit}
-      loginErrors={loginErrors}
+      handleFormSubmit={handleUserRegistration}
       displayInfoSide={displayInfoSide}
       handleMovingToInputSide={handleMovingToInputSide}
       handleMobileDisplay={handleMobileDisplay}

@@ -1,18 +1,18 @@
 import React from 'react';
-import withUsers from "hocs/withUsers";
-import withLoginFunc from "hocs/withLoginFunc";
-import withMobileHandling from "hocs/withMobileHandling";
-import { compose } from "recompose"
+import { compose } from 'recompose';
 import { formSettings } from "./loginPageData"
-import Form from "components/Form/Form"
+import InitialPageTemplate from 'components/InitialPageTemplate/InitialPageTemplate';
+import withUsers from 'hocs/withUsers';
+import withLoginFunc from 'hocs/withLoginFunc';
+import withMobileHandling from 'hocs/withMobileHandling';
 
-const LoginPageTemplate = ({ users, handleFormSubmit, errors, displayInfoSide, handleMobileDisplay, handleMovingToInputSide}) => {
+const LoginPageTemplate = ({ users, handleFormSubmit, stateErrors, displayInfoSide, handleMobileDisplay, handleMovingToInputSide}) => {
   return (
-    <Form
+    <InitialPageTemplate
       settings={formSettings}
       users={users}
       handleFormSubmit={handleFormSubmit}
-      errors={errors}
+      stateErrors={stateErrors}
       displayInfoSide={displayInfoSide}
       handleMovingToInputSide={handleMovingToInputSide}
       handleMobileDisplay={handleMobileDisplay}
