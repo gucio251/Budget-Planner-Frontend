@@ -7,12 +7,10 @@ import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
-import ModifyTransactionContent from 'components/ModifyTransactionContent/ModifyTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
 import {useDispatch, useSelector} from 'react-redux';
-import validate from 'components/validate-yup/validate-yup';
-import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
+import TransactionHandlingForm from 'containers/TransactionHandlingForm';
 
 
 const useStyles = makeStyles({
@@ -94,14 +92,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
             />
           </Modal>
           <Modal open={openModifyModal} handleClose={handleCloseModifyModal}>
-            <ModifyTransactionContent
-              categories={clickedElementData.type === 'income' ? incomeTypesState.incomeTypes : expenseTypesState.expenseTypes}
-              initialValues={clickedElementData}
-              validate={validate}
-              validationSchema={validations.getTransactionAdditionValidationSchema}
-              type={clickedElementData.type}
-              handleSubmit={updateTransacton}
-            />
+            <TransactionHandlingForm initialValues={clickedElementData} />
           </Modal>
           <TableContainer>
             <Table className={classes.table} aria-label="simple table">

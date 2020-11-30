@@ -26,7 +26,7 @@ const load = (token) => (dispatch) => {
   );
 };
 
-const add = (token, income) => (dispatch) => {
+const add = (income) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.ADDINCOME_REQUEST };
   };
@@ -39,6 +39,8 @@ const add = (token, income) => (dispatch) => {
 
   dispatch(request());
 
+  const token = localStorage.getItem('token');
+
   incomesApi.save(token, income).then(
     ({id}) => {
       dispatch(success({ ...income, id: id }));
@@ -49,7 +51,7 @@ const add = (token, income) => (dispatch) => {
   );
 };
 
-const update = (token, income) => (dispatch) => {
+const update = (income) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.UPDATEINCOME_REQUEST };
   };
@@ -61,6 +63,8 @@ const update = (token, income) => (dispatch) => {
   };
 
   dispatch(request());
+
+  const token = localStorage.getItem('token');
 
   incomesApi.save(token, income).then(
     (result) => {

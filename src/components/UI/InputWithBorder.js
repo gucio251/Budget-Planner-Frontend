@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {Field} from 'formik'
 
-const InputField = styled.input`
+export const StyledField = styled(Field)`
   height: 40px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.lightGray};
@@ -19,29 +19,4 @@ const InputField = styled.input`
 
 `;
 
-const InputWithBorder = ({name, value, handleChange, placeholder, handleBlur, type, step}) => {
-  return (
-    <InputField
-        id={name}
-        name={name}
-        value={value ? value : ''}
-        placeholder={placeholder}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        type={type}
-        step={step}
-    />
-    );
-};
-
-InputWithBorder.propTypes = {
-  id: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  handleChange: PropTypes.func,
-  handleBlur: PropTypes.func,
-  placeholder: PropTypes.string,
-  type: PropTypes.string,
-  step: PropTypes.string,
-};
-
-export default InputWithBorder;
+export default StyledField;

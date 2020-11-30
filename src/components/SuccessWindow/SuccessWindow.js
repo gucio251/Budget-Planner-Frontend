@@ -1,7 +1,7 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { gsap } from "gsap";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { navigate } from "@reach/router"
 import {
   StyledSuccessWindow,
   StyledSuccessWindowWrapper,
@@ -12,12 +12,11 @@ import Button from "components/UI/Button";
 
 
 const SuccessWindow = ({ successMessage, href }) => {
-  const history = useHistory();
   const wrapper = useRef();
   const [animationFinished, setAnimationFinished] = useState(false)
 
-  const onClick = () => {
-    history.push(href);
+  const handleMovingToOtherPage = () => {
+    navigate(href);
   }
 
   useLayoutEffect(() => {
@@ -46,16 +45,11 @@ const SuccessWindow = ({ successMessage, href }) => {
   return (
     <StyledSuccessWindow>
       <StyledSuccessWindowWrapper>
-          <StyledTitle>
-            {successMessage}
-          </StyledTitle>
+        <StyledTitle>{successMessage}</StyledTitle>
         <div ref={wrapper}>
           <StyledIcon />
         </div>
-          <Button
-            title="Log in"
-            onClick={onClick}
-          />
+        <Button onClick={handleMovingToOtherPage}>Log in</Button>
       </StyledSuccessWindowWrapper>
     </StyledSuccessWindow>
   );

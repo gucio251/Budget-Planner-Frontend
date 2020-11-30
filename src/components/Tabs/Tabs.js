@@ -38,11 +38,7 @@ const StyledList = styled.ul`
   }
 `;
 
-const NavWrapper = styled.div`
-  width: 60%;
-`;
-
-const Tabs = ({children}) => {
+const Tabs = ({children, handleSourceChange}) => {
     const [activeTabIndex, setActiveTabIndex] = useState(1);
     return (
       <>
@@ -52,14 +48,16 @@ const Tabs = ({children}) => {
               <LinkElement
                 key={i}
                 active={parseInt(el.props.tab) === activeTabIndex}
-                onClick={() => setActiveTabIndex(parseInt(el.props.tab))}
+                onClick={({target}) => {
+                  handleSourceChange(target.textContent);
+                  setActiveTabIndex(parseInt(el.props.tab))
+                }}
               >
                 {el.props.title}
               </LinkElement>
             ))}
           </StyledList>
         </StyledNavigation>
-        <NavWrapper>{children[activeTabIndex-1]}</NavWrapper>
       </>
     );
 };

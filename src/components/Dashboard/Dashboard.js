@@ -10,16 +10,17 @@ import { incomesActions } from 'redux/actions/incomesActions';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {Sidebar} from './../Sidebar/Sidebar';
 import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType'
-import AddTransactionContent from 'components/AddTransactionContent/AddTransactionContent';
 import Modal  from 'components/Modal/Modal';
 
 import Button from 'components/UI/Button';
 import {ModalContext} from 'components/Modal/Modal'
 import DashboardDateMenu from 'components/DashboardDateMenu/DashboardDateMenu';
 import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
-import BudgetSummary from 'components/BudgetSummary/BudgetSummary';
+import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
 import DashboardMenu from 'components/DashboardMenu/DashboardMenu';
 
+import {getTodaysDate} from 'Utils/functions'
+import TransactionHandlingForm from 'containers/TransactionHandlingForm'
 const StyledDashboard = styled.div`
   width: 100%;
   height: 100%;
@@ -67,6 +68,17 @@ const RowWithoutMargins = styled.div`
 const StyledDisplay = styled.div`
   height: 300px;
 `
+
+const initialValues = {
+  amount: 0,
+  currency: '',
+  currency_id: '',
+  category: '',
+  subcategory: '',
+  category_id: '',
+  transaction_date: getTodaysDate(),
+  comments: '',
+};
 
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
@@ -122,17 +134,15 @@ const Dashboard = () => {
         </StyledSideBar>
         <StyledReportsSide>
           <RowWithoutMargins>
-            <DashboardMenu handleButtonClick={handleOpen}/>
+            <DashboardMenu handleButtonClick={handleOpen} />
           </RowWithoutMargins>
           <Row>
             <Modal open={open} handleClose={handleClose}>
-              <AddTransactionContent />
+              <TransactionHandlingForm initialValues={initialValues}/>
             </Modal>
           </Row>
-            <WelcomeText>
-              Hi Caroline, welcome back!
-            </WelcomeText>
-            <DashboardDateMenu />
+          <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
+          <DashboardDateMenu />
           <Row>
             <BudgetSummary />
             <DashboardDisplayWindow title="Expenses and incomes">
@@ -153,4 +163,4 @@ const Dashboard = () => {
     );
 };
 
-export {Dashboard};
+export default Dashboard;

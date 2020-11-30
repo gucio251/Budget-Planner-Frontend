@@ -29,7 +29,7 @@ const load = (token) => (dispatch) => {
   );
 };
 
-const add = (token, expense) => (dispatch) => {
+const add = (expense) => (dispatch) => {
     const request = () => {
     return { type: expensesConstants.ADDEXPENSE_REQUEST };
     };
@@ -42,6 +42,8 @@ const add = (token, expense) => (dispatch) => {
 
     dispatch(request());
 
+    const token = localStorage.getItem('token');
+
     expensesApi.save(token, expense).then(
         ({insertId}) => {
             dispatch(success({...expense, id: insertId}))
@@ -53,7 +55,7 @@ const add = (token, expense) => (dispatch) => {
 
 }
 
-const update = (token, expense) => (dispatch) => {
+const update = (expense) => (dispatch) => {
   const request = () => {
     return { type: expensesConstants.UPDATEEXPENSE_REQUEST };
   };
@@ -65,6 +67,8 @@ const update = (token, expense) => (dispatch) => {
   };
 
   dispatch(request());
+
+  const token = localStorage.getItem('token');
 
   expensesApi.save(token, expense).then(
     (result) => {

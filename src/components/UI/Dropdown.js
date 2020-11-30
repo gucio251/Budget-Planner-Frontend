@@ -23,7 +23,7 @@ const SingleValueContainer = styled.div`
 
 const TextContainer = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.errorText};
+  color: ${({ theme }) => theme.errorText};
 `;
 
 const IconWrapper = styled.div`
@@ -32,14 +32,13 @@ const IconWrapper = styled.div`
 
 const { Option, SingleValue } = components;
 
-const renderScrollbar = props => {
+const renderScrollbar = (props) => {
   return (
     <div style={{ height: 150 }}>
       <Scrollbars>{props.children}</Scrollbars>
     </div>
   );
-
-}
+};
 
 const CustomValueContainer = (props) => {
   const { options, data } = props;
@@ -49,10 +48,14 @@ const CustomValueContainer = (props) => {
     return <SingleValue {...props} />;
   }
 
-  const [currentlyDisplayedOption] = options.filter(option=> option.value === label);
+  const [currentlyDisplayedOption] = options.filter(
+    (option) => option.value === label
+  );
 
-  const Icon = typeof currentlyDisplayedOption !== 'undefined' ? currentlyDisplayedOption.Icon : "";
-
+  const Icon =
+    typeof currentlyDisplayedOption !== 'undefined'
+      ? currentlyDisplayedOption.Icon
+      : '';
 
   return (
     <SingleValue {...props}>
@@ -62,16 +65,14 @@ const CustomValueContainer = (props) => {
             <Icon />
           </IconWrapper>
         )}
-        <TextContainer>
-          {label}
-        </TextContainer>
+        <TextContainer>{label}</TextContainer>
       </SingleValueContainer>
     </SingleValue>
   );
 };
 
 const IconOption = (props) => {
-  const {data} = props;
+  const { data } = props;
   return (
     <Option {...props}>
       <StyledSingleOption id={data.id}>
@@ -107,8 +108,14 @@ const Dropdown = ({
       styles={{
         dropdownIndicator: (provided, state) => ({
           ...provided,
-          transform: !state.selectProps.menuIsOpen || state.selectProps.disabledWithoutOption ? 'rotate(0deg)' : 'rotate(180deg)' ,
-          color: state.selectProps.disabledWithoutOption ? '#75777F' : '#02AE9D',
+          transform:
+            !state.selectProps.menuIsOpen ||
+            state.selectProps.disabledWithoutOption
+              ? 'rotate(0deg)'
+              : 'rotate(180deg)',
+          color: state.selectProps.disabledWithoutOption
+            ? '#75777F'
+            : '#02AE9D',
 
           '&:active': {
             color: '#02AE9D',
@@ -130,7 +137,9 @@ const Dropdown = ({
             : '1px solid #D3D7DB',
           boxShadow: 'none',
           overflow: 'auto',
-          backgroundColor: state.selectProps.disabledWithoutOption ? '#EFEFF3' : 'white',
+          backgroundColor: state.selectProps.disabledWithoutOption
+            ? '#EFEFF3'
+            : 'white',
           cursor: state.selectProps.disabledWithoutOption && 'not-allowed',
 
           '&:hover': {
