@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import DashboardDisplayWindow from 'components/DashboardDisplayWindow/DashboardDisplayWindow';
 import {ReactComponent as AddIcon} from 'assets/icons/addIcon.svg';
@@ -21,6 +21,8 @@ import DashboardMenu from 'components/DashboardMenu/DashboardMenu';
 
 import {getTodaysDate} from 'Utils/functions'
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm'
+
+import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
 const StyledDashboard = styled.div`
   width: 100%;
   height: 100%;
@@ -83,11 +85,6 @@ const initialValues = {
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const expenseTypes = useSelector(state => state.expenseTypes);
-    const incomeTypes = useSelector((state) => state.incomeTypes);
-    const currencies = useSelector(state => state.currencies);
-    const expenses = useSelector (state => state.expenses);
-    const incomes = useSelector (state => state.incomes);
 
     const handleOpen = () => {
       setOpen(true);
@@ -98,37 +95,16 @@ const Dashboard = () => {
     };
 
     useEffect(()=> {
-        if(!expenseTypes.hasOwnProperty('expenseTypes')){
-            dispatch(expenseTypesActions.load(localStorage.getItem('token')));
-        }
-    }, [expenseTypes.expenseTypes])
-
-    useEffect(() => {
-      if (!incomeTypes.hasOwnProperty('incomeTypes')) {
-        dispatch(incomeTypesActions.load(localStorage.getItem('token')));
-      }
-    }, [incomeTypes.incomeTypes]);
-
-    useEffect(()=> {
-      if(!currencies.hasOwnProperty('currencies')){
-          dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
-      }
-    }, [currencies.currencies])
-
-    useEffect(()=> {
-      if(expenses.expenses.length === 0){
-          dispatch(expensesActions.load(localStorage.getItem('token')));
-      }
-    }, [expenses.expenses])
-
-    useEffect(() => {
-      if (incomes.incomes.length === 0) {
-        dispatch(incomesActions.load(localStorage.getItem('token')));
-      }
-    }, [incomes.incomes]);
+      dispatch(expenseTypesActions.load(localStorage.getItem('token')));
+      dispatch(incomeTypesActions.load(localStorage.getItem('token')));
+      dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
+      dispatch(expensesActions.load(localStorage.getItem('token')));
+      dispatch(incomesActions.load(localStorage.getItem('token')));
+    }, [])
 
     return (
       <StyledDashboard>
+        <DashboardOverviewHandling/>
         <StyledSideBar>
           <Sidebar />
         </StyledSideBar>

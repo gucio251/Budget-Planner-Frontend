@@ -2,28 +2,32 @@ import { incomeTypesConstants } from './../actions/actionTypes';
 import { addSvg } from 'Utils/functions';
 import { incomeTypeSvgCorrelation } from 'Utils/svgCorrelation';
 
-const incomeTypes = (state = {}, action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  incomeTypes: [],
+  error: false,
+}
+
+const incomeTypes = (state = initialState, action) => {
+  const {type, payload} = action;
+  switch (type) {
     case incomeTypesConstants.GETINCOMETYPES_REQUEST:
       return {
         ...state,
-        loading: true,
+        status: 'loading',
       };
     case incomeTypesConstants.GETINCOMETYPES_SUCCESS:
-      const incomesWithSVG = addSvg(
-        action.incomes,
-        incomeTypeSvgCorrelation
-      );
+      const payloadWithSvg = addSvg(payload, incomeTypeSvgCorrelation);
       return {
         ...state,
-        loading: false,
-        incomeTypes: incomesWithSVG,
+        status: 'succedded',
+        incomeTypes: payloadWithSvg,
       };
     case incomeTypesConstants.GETINCOMETYPES_FAILURE:
       return {
         ...state,
-        loading: false,
-        errorMsg: action.error,
+        status: 'failed',
+        errorMsg: payload,
       };
     default:
       return state;

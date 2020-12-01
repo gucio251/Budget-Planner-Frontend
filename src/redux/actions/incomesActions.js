@@ -6,21 +6,19 @@ const load = (token) => (dispatch) => {
     return { type: incomesConstants.GETINCOMES_REQUEST };
   };
   const success = (incomes) => {
-    return { type: incomesConstants.GETINCOMES_SUCCESS, incomes };
+    return { type: incomesConstants.GETINCOMES_SUCCESS, payload: incomes };
   };
   const failure = (error) => {
-    return { type: incomesConstants.GETINCOMES_FAILURE, error };
+    return { type: incomesConstants.GETINCOMES_FAILURE, payload: error };
   };
 
   dispatch(request());
 
   incomesApi.load(token).then(
     ({results}) => {
-      console.log(results);
       dispatch(success(results));
     },
     (error) => {
-      console.log(error)
       dispatch(failure(error));
     }
   );

@@ -3,7 +3,7 @@ import {userConstants} from "../actions/actionTypes";
 const initialState = {
   status: 'idle',
   emails: [],
-  error: false,
+  errorMsg: false,
 }
 
 const users = (state = initialState, action) => {

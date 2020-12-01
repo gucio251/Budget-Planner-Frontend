@@ -5,10 +5,10 @@ const setDateRange = (datesRange) => (dispatch) => {
     return { type: datesRangeConstants.SETDATESRANGE_REQUEST };
   };
   const success = (datesRange) => {
-    return { type: datesRangeConstants.SETDATESRANGE_SUCCESS, datesRange };
+    return { type: datesRangeConstants.SETDATESRANGE_SUCCESS, payload: datesRange };
   };
   const failure = (error) => {
-    return { type: datesRangeConstants.SETDATESRANGE_FAILURE, error };
+    return { type: datesRangeConstants.SETDATESRANGE_FAILURE, payload: error };
   };
 
   dispatch(request());

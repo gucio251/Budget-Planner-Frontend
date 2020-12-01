@@ -5,16 +5,23 @@ import {
   addPropertyLoListOfObjects
 } from 'Utils/functions';
 
-const incomes = (state = { incomes: [] }, action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  incomes: [],
+  error: false
+}
+
+const incomes = (state = initialState, action) => {
+  const {type, payload} = action;
+  switch (type) {
     case incomesConstants.GETINCOMES_REQUEST:
       return {
         ...state,
-        loading: true,
+        status: 'loading',
       };
     case incomesConstants.GETINCOMES_SUCCESS:
       const incomesWithSvg = handleSvgAddition(
-        action.incomes,
+        payload,
         'category',
         incomeTypeSvgCorrelation
       );
@@ -25,46 +32,48 @@ const incomes = (state = { incomes: [] }, action) => {
       );
       return {
         ...state,
-        loading: false,
+        status: 'succedded',
         incomes: [...finalIncomes],
       };
     case incomesConstants.GETINCOMES_FAILURE:
       return {
         ...state,
-        loading: false,
-        errorMsg: action.error,
+        status: 'failed',
+        error: payload,
       };
     case incomesConstants.ADDINCOME_REQUEST:
       return {
         ...state,
-        adding: true,
+        status: 'adding',
       };
     case incomesConstants.ADDINCOME_SUCCESS:
       const incomeWithSvg = handleSvgAddition(
-        action.income,
+        payload,
         'category',
         incomeTypeSvgCorrelation
       );
       return {
         ...state,
         incomes: [].concat(state.incomes, incomeWithSvg),
-        adding: false,
+        status: 'succedded',
       };
     case incomesConstants.DELETEINCOME_SUCCESS:
       return {
         ...state,
+        status: 'succedded',
         incomes: state.incomes.filter((income) => {
-          return parseInt(income.id) !== parseInt(action.incomeId);
+          return parseInt(income.id) !== parseInt(payload.incomeId);
         }),
       };
     case incomesConstants.UPDATEINCOME_SUCCESS:
       const updatedIncomeWithSvg = handleSvgAddition(
-        action.income,
+        payload,
         'category',
         incomeTypeSvgCorrelation
       );
       return {
         ...state,
+        status: 'succedded',
         incomes: state.incomes.map((income) => {
           if ((income.id === updatedIncomeWithSvg.id)) {
             return Object.assign(income, updatedIncomeWithSvg);

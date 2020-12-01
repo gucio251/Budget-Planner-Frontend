@@ -1,23 +1,30 @@
 import { datesRangeConstants } from './../actions/actionTypes';
 
-const datesRange = (state = {}, action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  datesRange: {},
+  error: false,
+}
+
+const datesRange = (state = initialState, action) => {
+  const {type, payload} = action;
+  switch (type) {
     case datesRangeConstants.SETDATESRANGE_REQUEST:
       return {
         ...state,
-        loading: true,
+        status: 'loading',
       };
     case datesRangeConstants.SETDATESRANGE_SUCCESS:
       return {
         ...state,
-        loading: false,
-        datesRange: action.datesRange,
+        status: 'succedded',
+        datesRange: payload,
       };
     case datesRangeConstants.SETDATESRANGE_FAILURE:
       return {
         ...state,
-        loading: false,
-        errorMsg: action.error,
+        status: 'failed',
+        error: payload,
       };
     default:
       return state;

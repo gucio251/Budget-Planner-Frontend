@@ -3,8 +3,8 @@ import * as incomeTypesApi from 'api/incomeTypesApi';
 
 const load = (token) => dispatch => {
     const request = () => {return {type: incomeTypesConstants.GETINCOMETYPES_REQUEST}};
-    const success = incomes => {return {type: incomeTypesConstants.GETINCOMETYPES_SUCCESS, incomes}};
-    const failure = error => {return {type: incomeTypesConstants.GETINCOMETYPES_ERROR, error}};
+    const success = incomes => {return {type: incomeTypesConstants.GETINCOMETYPES_SUCCESS, payload: incomes}};
+    const failure = error => {return {type: incomeTypesConstants.GETINCOMETYPES_ERROR, payload: error}};
 
     dispatch(request());
 
