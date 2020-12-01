@@ -1,32 +1,42 @@
 import React, {useState} from 'react';
+import { connect } from 'react-redux';
+import { Formik, Form } from 'formik';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { incomesActions } from 'redux/actions/incomesActions';
+import { expensesActions } from 'redux/actions/expensesActions';
+import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
+
+import { makeStyles } from '@material-ui/core/styles';
+import { Container, Grid, Card } from '@material-ui/core';
+
 import Button from 'components/UI/Button';
 import DatePicker from 'components/UI/DatePicker';
 import Dropdown from 'components/UI/Dropdown';
 import InputWithBorder from 'components/UI/InputWithBorder';
 import LabelWrapper from 'components/UI/LabelWrapper';
+import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import TextArea from 'components/UI/TextArea';
-import { connect } from 'react-redux';
-import {
-    Container,
-    Grid,
-    Card
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import TabPane from 'components/UI/TabPane';
 import Tabs from 'components/Tabs/Tabs';
-import { Formik, Form } from 'formik';
-import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
-import { incomesActions } from 'redux/actions/incomesActions';
-import { expensesActions } from 'redux/actions/expensesActions';
-import { useDispatch } from 'react-redux';
 
+const StyledCloseFormSign = styled(CloseFormSign)`
+  &:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+`;
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: '50%',
+    position: 'absolute',
+    left: '30%',
+    top: '5%',
+    width: '30%',
     backgroundColor: '#f8f9fb',
-    padding: '5%'
+    padding: '2%'
   }
 }));
 
@@ -55,20 +65,25 @@ const TransactionHandlingForm = props => {
       <Container>
         <Card className={classes.root}>
           <Grid container spacing={3}>
-            <Grid item xs={12} align="right"></Grid>
+            <Grid item xs={12} align="right">
+              <StyledCloseFormSign  onClick={props.handleClose}/>
+            </Grid>
             <Grid item xs={12} align="left">
               {`${
-                props.initialValues.hasOwnProperty('id') ? 'MODIFY' : 'NEW'
+                checkIfTransactionIsModified(props) ? 'MODIFY' : 'NEW'
               } TRANSACTION`}
             </Grid>
-            {!props.initialValues.hasOwnProperty('id') &&
+            {!checkIfTransactionIsModified(props) &&
               renderNavigation(handleSourceChange)}
           </Grid>
           {renderForm({
             initialValues: initialValues,
             categories: props[categoriesToBeDisplayed],
             currencies: props.currencies,
-            handleSubmit: returnSubmitHandler({initialValues:props.initialValues, categoriesToBeDisplayed}),
+            handleSubmit: returnSubmitHandler({
+              initialValues: props.initialValues,
+              categoriesToBeDisplayed,
+            }),
             dispatch: dispatch,
           })}
         </Card>
@@ -87,11 +102,14 @@ const renderNavigation = (props) => {
   );
 };
 
+const checkIfTransactionIsModified = (initialValues) => {
+  return initialValues.hasOwnProperty('id');
+}
+
 const renderForm = ({
   initialValues,
   categories,
   currencies,
-  handleChange,
   handleSubmit,
   dispatch,
 }) => {
@@ -246,7 +264,15 @@ const calculateIfFormCanBeSubmitted = (errors, formInitialized) => {
 }
 
 TransactionHandlingForm.propTypes = {
-    
+    initialValues: PropTypes.shape({
+      amount: PropTypes.number.isRequired,
+      currency: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
+      subcategory: PropTypes.string.isRequired,
+      transaction_date: PropTypes.string.isRequired,
+      comments: PropTypes.string
+    }).isRequired,
+    handleClose: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {

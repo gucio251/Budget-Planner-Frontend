@@ -10,7 +10,7 @@ import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
 import {useDispatch, useSelector} from 'react-redux';
-import TransactionHandlingForm from 'containers/TransactionHandlingForm';
+import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
 
 
 const useStyles = makeStyles({
@@ -24,8 +24,6 @@ const useStyles = makeStyles({
 const TransactionsDisplayer = ({transactionList = []}) => {
       const dispatch = useDispatch();
       const classes = useStyles();
-      const expenseTypesState = useSelector((state) => state.expenseTypes);
-      const incomeTypesState = useSelector((state) => state.incomeTypes);
       const [openDeleteModal, setOpenDeleteModal] = useState(false);
       const [openModifyModal, setOpenModifyModal] = useState(false)
       const [clickedElementData, setClickedElementData] = useState({})
@@ -71,17 +69,6 @@ const TransactionsDisplayer = ({transactionList = []}) => {
         handleCloseDeleteModal();
       }
 
-      const updateTransacton = (values) => {
-        const { type } = clickedElementData;
-        const token = localStorage.getItem('token');
-        if(type === "income"){
-          dispatch(incomesActions.update(token, values));
-        }else if (type === "expense"){
-          dispatch(expensesActions.update(token, values));
-        }
-        handleCloseModifyModal();
-      }
-
       return (
         <>
           <Modal open={openDeleteModal} handleClose={handleCloseDeleteModal}>
@@ -92,7 +79,10 @@ const TransactionsDisplayer = ({transactionList = []}) => {
             />
           </Modal>
           <Modal open={openModifyModal} handleClose={handleCloseModifyModal}>
-            <TransactionHandlingForm initialValues={clickedElementData} />
+            <TransactionHandlingForm
+              initialValues={clickedElementData}
+              handleClose={handleCloseModifyModal}
+            />
           </Modal>
           <TableContainer>
             <Table className={classes.table} aria-label="simple table">

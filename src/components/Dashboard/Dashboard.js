@@ -20,7 +20,7 @@ import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
 import DashboardMenu from 'components/DashboardMenu/DashboardMenu';
 
 import {getTodaysDate} from 'Utils/functions'
-import TransactionHandlingForm from 'containers/TransactionHandlingForm'
+import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm'
 const StyledDashboard = styled.div`
   width: 100%;
   height: 100%;
