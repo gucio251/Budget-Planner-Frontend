@@ -6,10 +6,10 @@ const load = (token) => (dispatch) => {
     return { type: expensesConstants.GETEXPENSES_REQUEST};
   };
   const success = (expenses) => {
-    return { type: expensesConstants.GETEXPENSES_SUCCESS, expenses };
+    return { type: expensesConstants.GETEXPENSES_SUCCESS, payload: expenses };
   };
   const failure = (error) => {
-    return { type: expensesConstants.GETEXPENSES_FAILURE, error };
+    return { type: expensesConstants.GETEXPENSES_FAILURE, payload: error };
   };
 
   const groupedExpensesAdd = (expenses) => {

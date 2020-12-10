@@ -10,7 +10,7 @@ import { ReactComponent as UsersIcon } from './../../assets/icons/usersDashboard
 import TabPane from 'components/UI/TabPane'
 
 const StyledSideBar = styled.nav`
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-color: #2548e6;
 `

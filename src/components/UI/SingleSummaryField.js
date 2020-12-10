@@ -10,10 +10,12 @@ import CountUp from 'react-countup';
 
 const useStyles = makeStyles({
   root: {
-    height: 186,
+    borderRadius: 0,
+    height: '100%'
   },
-  media:{
+  media: {
     height: 40,
+    borderRadius: 0,
   },
   amount: {
     fontSize: 32,
@@ -27,11 +29,9 @@ const useStyles = makeStyles({
 const SingleSummaryField = ({children, amount, name}) => {
     const classes = useStyles();
     return (
-      <Card>
-        <CardContent className={classes.root}>
-          <CardMedia className={classes.media}>
-            {children}
-          </CardMedia>
+      <Card className={classes.root}>
+        <CardContent>
+          <CardMedia className={classes.media}>{children}</CardMedia>
           <Typography className={classes.amount}>
             <CountUp
               className="account-balance"
@@ -45,9 +45,7 @@ const SingleSummaryField = ({children, amount, name}) => {
               decimals={0}
             />
           </Typography>
-          <Typography className={classes.nameHolder}>
-            {name}
-          </Typography>
+          <Typography className={classes.nameHolder}>{name}</Typography>
         </CardContent>
       </Card>
     );

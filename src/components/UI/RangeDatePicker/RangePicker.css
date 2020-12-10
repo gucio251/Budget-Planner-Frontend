@@ -1,0 +1,24 @@
+.DateRangePicker_picker{
+    z-index: 10000;
+    left: 0
+}
+
+.CalendarDay__selected{
+    background: #1665D8;
+    border: 1px double #1665D8;
+}
+
+.CalendarDay__selected_span,
+.CalendarDay__selected_span:active,
+.CalendarDay__selected_span:hover,
+.CalendarDay__selected:hover,
+.CalendarDay_hovered_span,
+.CalendarDay_hovered_span:hover {
+    background: #B9D0F3;
+    border: 1px double #B9D0F3;
+    color: black;
+}
+
+.CalendarDay__default{
+    border: none;
+}

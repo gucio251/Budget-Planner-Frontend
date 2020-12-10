@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import withExpensesAndIncomes from 'hocs/withExpensesAndIncomes';
 import { MemoizedSingleTransaction } from 'components/UI/SingleTransaction';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
@@ -9,8 +8,9 @@ import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
+import {convertDate} from 'Utils/functions'
 
 
 const useStyles = makeStyles({
@@ -87,7 +87,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
           <TableContainer>
             <Table className={classes.table} aria-label="simple table">
               <TableBody>
-                {transactionList.map(
+                {transactionList.slice(0,4).map(
                   (
                     {
                       id,
@@ -96,7 +96,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                       subcategory,
                       amount,
                       comments,
-                      transaction_date_converted,
+                      transaction_date,
                       type,
                     },
                     index
@@ -109,7 +109,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
                         Svg={Icon}
                         subcategory={subcategory}
                         amount={amount}
-                        transaction_date={transaction_date_converted}
+                        transaction_date={convertDate(transaction_date)}
                         comments={comments}
                         index={index}
                         type={type}
@@ -126,4 +126,9 @@ const TransactionsDisplayer = ({transactionList = []}) => {
       );
 };
 
-export default withExpensesAndIncomes(TransactionsDisplayer);
+const mapStateToProps = (state) => {
+  return {
+    transactionList: state.filteredTransactions.transactions
+  }
+}
+export default connect(mapStateToProps)(TransactionsDisplayer);

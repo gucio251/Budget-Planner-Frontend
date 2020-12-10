@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { ThemeProvider } from "styled-components";
+//import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { theme } from "localData/theme";
 import configureStore from './redux/configureStore';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -13,6 +15,16 @@ const AppStyle = styled.div`
   display: flex;
 `;
 
+/* const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Rubik'
+    ].join(','),
+  },
+  palette: {
+    
+  }
+}); */
 
 const store = configureStore();
 

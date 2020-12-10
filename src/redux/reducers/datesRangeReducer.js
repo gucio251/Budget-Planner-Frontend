@@ -2,9 +2,16 @@ import { datesRangeConstants } from './../actions/actionTypes';
 
 const initialState = {
   status: 'idle',
-  datesRange: {},
+  datesRange: {
+    start: '',
+    end: '',
+  },
+  prevRange: {
+    start: '',
+    end: '',
+  },
   error: false,
-}
+};
 
 const datesRange = (state = initialState, action) => {
   const {type, payload} = action;
@@ -19,6 +26,7 @@ const datesRange = (state = initialState, action) => {
         ...state,
         status: 'succedded',
         datesRange: payload,
+        prevRange: state.datesRange,
       };
     case datesRangeConstants.SETDATESRANGE_FAILURE:
       return {

@@ -27,30 +27,50 @@ export const filterTransactionsByDates = (transactions, datesRange) => {
 }
 
 export const groupTransactionsByCategory = (transactions) => {
-  return transactions.reduce((groupedData, currentTransaction) => {
-    const { amount, category, Icon } = currentTransaction;
+  return transactions.reduce((groupedData, transaction) => {
 
-    if (groupedData.hasOwnProperty(category)) {
-      return {
-        ...groupedData,
-        [category]: {
-          ...groupedData[category],
-          amount: groupedData[category].amount + currentTransaction.amount,
-          howManyOccurences: groupedData[category].howManyOccurences + 1,
-        },
-      };
-    } else {
-      return {
-        ...groupedData,
-        [category]: {
-          amount: amount,
-          howManyOccurences: 1,
-          Icon: Icon,
-        },
-      };
+    switch(transaction.type){
+      case 'expense':
+        return {
+            ...groupedData,
+            ['expenses']: addItemToGroupedTransactions(transaction, groupedData.expenses)
+        };
+      case 'income':
+        console.log(addItemToGroupedTransactions(transaction, groupedData));
+        return {
+            ...groupedData,
+            ['incomes']: addItemToGroupedTransactions(transaction, groupedData.incomes)
+        };
+      default:
+        break;
     }
-  }, {});
+  }, {incomes: {}, expenses: {}});
 };
+
+const addItemToGroupedTransactions = (transaction, groupedTransactions) => {
+  const { amount, category, Icon, type } = transaction;
+
+  if (groupedTransactions.hasOwnProperty(category)) {
+    return {
+      ...groupedTransactions,
+      [category]: {
+        ...groupedTransactions[category],
+        amount: groupedTransactions[category].amount + amount,
+        howManyOccurences: groupedTransactions[category].howManyOccurences + 1,
+      },
+    };
+  } else {
+    return {
+      ...groupedTransactions,
+      [category]: {
+        amount,
+        howManyOccurences: 1,
+        Icon,
+        type,
+      },
+    };
+  }
+}
 
 export const prepareDataForGraph = (transactionGroupedBy, graphColors, valueToBeShownName) => {
   const result = transactionGroupedBy.reduce((prevValue, currentTransaction) => {
@@ -104,27 +124,16 @@ export const sortTransactionsByChosenProperty = (object, propertyName) => {
     return arr;
 }
 
-export const convertDate = (transactions) => {
-   return transactions.map(transaction => {
-     switch (howManyDaysBeforeToday(transaction.transaction_date)) {
+export const convertDate = (transactionDate) => {
+     switch (howManyDaysBeforeToday(transactionDate)) {
        case 0:
-         return {
-           ...transaction,
-           transaction_date_converted: 'Today'
-         };
+         return 'Today'
         case 1:
-          return {
-            ...transaction,
-            transaction_date_converted: 'Yestarday',
-          };
+          return 'Yesterday'
         default:
-          const dateToConversion =  new Date(transaction.transaction_date);
-          return{
-            ...transaction,
-            transaction_date_converted: `${dateToConversion.getDate()}.${dateToConversion.getMonth()+1}`
-          }
+          const dateToConversion = new Date(transactionDate);
+          return `${dateToConversion.getDate()}.${dateToConversion.getMonth()+1}`
      }
-   })
 }
 
 const howManyDaysBeforeToday = (someDate) => {

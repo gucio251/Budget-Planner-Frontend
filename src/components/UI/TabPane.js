@@ -1,8 +1,9 @@
 import React from 'react';
 
-const TabPane = ({children}) => {
+const TabPane = ({children, handleClick}) => {
+    debugger;
     return (
-        <div>
+        <div onClick={handleClick}>
             {children}
         </div>
     );

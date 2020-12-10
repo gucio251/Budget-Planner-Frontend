@@ -1,40 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from '@material-ui/core';
 
-const TransactionsList = styled.ul`
-  list-style: none;
+const useStyles = makeStyles({
+  primary: {
+    fontSize: '16px'
+  },
+});
 
-  & > li:not(:last-child) {
-    margin-bottom: 16px;
-  }
-`;
-
-const TransactionsListItem = styled.li`
-  font-size: 16;
-  font-weight: normal;
-  display: flex;
-  align-items: center;
-`
-
-const TransactionCategoryName = styled.span`
-  margin-left: 10px;
-`
-const GroupedTransactionsDisplayer = ({expensesGroupedByType}) => {
+const GroupedTransactionsDisplayer = ({transactions}) => {
+  const classes = useStyles();
   return (
-      <TransactionsList>
-        {expensesGroupedByType.map(({Icon, name}, index)=> (
-          <TransactionsListItem
-            key={index}
-          >
+    <List>
+      {transactions.map(({ Icon, name }, index) => (
+        <ListItem>
+          <ListItemIcon>
             <Icon />
-            <TransactionCategoryName>
-              {name}
-            </TransactionCategoryName>
-          </TransactionsListItem>
-        ))}
-      </TransactionsList>
-    );
+          </ListItemIcon>
+          <ListItemText
+            primary={name}
+            classes={{primary: classes.primary}}/>
+        </ListItem>
+      ))}
+    </List>
+  );
 };
 
 GroupedTransactionsDisplayer.propTypes = {

@@ -12,7 +12,6 @@ const setDateRange = (datesRange) => (dispatch) => {
   };
 
   dispatch(request());
-
   const {start, end} = datesRange;
 
   if((start instanceof Date) === false || (end instanceof Date)  === false){

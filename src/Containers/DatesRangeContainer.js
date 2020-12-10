@@ -1,17 +1,11 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux'
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
-import {datesRangeActions} from 'redux/actions/dateRangeActions'
+import {datesRangeActions} from 'redux/actions/dateRangeActions';
 
 const getLstDayOfMonFnc = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
 };
-
-const possibleOptionNames = {
-    lastMonth: "Last Month",
-    thisMonth: "This Month",
-    custom: "Custom"
-}
 
 const returnDatesRangeForGivenMonth = (month) => {
     const currentDate = new Date();
@@ -26,38 +20,37 @@ const returnDatesRangeForGivenMonth = (month) => {
 const getDateRangeBasedOnOptionChosen = (optionChosen) => {
     const todaysDate = new Date();
     switch(optionChosen){
-        case possibleOptionNames.thisMonth:
+        case "This Month":
             return returnDatesRangeForGivenMonth(todaysDate.getMonth());
-        case possibleOptionNames.lastMonth:
+        case "Last Month":
             return returnDatesRangeForGivenMonth(todaysDate.getMonth() - 1);
         default:
             break;
     }
 }
 
-const DatesRangeContainer = ({children}) => {
-    const dispatch = useDispatch();
-    const [activeSettingName, setActiveSettingName] = useState(possibleOptionNames.thisMonth)
-    const [datesRange, setDatesRange] = useState(possibleOptionNames.thisMonth);
+const DatesRangeContainer = ({ children }) => {
+  const dispatch = useDispatch();
+  const [activeRangeName, setActiveRangeName] = useState();
 
-    const handleUpdateDatesRange = (startingDate, finishingDate) => {
-        setDatesRange({start: startingDate, end: finishingDate});
+  const setActiveSettingName = (name) => {
+    setActiveRangeName(name);
+    if(name !== "Custom"){
+      const [startDay, finishDay] = getDateRangeBasedOnOptionChosen(name);
+      dispatch(
+        datesRangeActions.setDateRange({ start: startDay, end: finishDay })
+      );
     }
+  };
 
-    useEffect(()=> {
-        const [startDay, finishDay] = getDateRangeBasedOnOptionChosen(activeSettingName);
-        handleUpdateDatesRange(startDay, finishDay);
-    },[activeSettingName])
+  useEffect(() => {
+    setActiveSettingName('This Month');
+  }, []);
 
-    useEffect(() => {
-        dispatch(datesRangeActions.setDateRange(datesRange));
-    }, [datesRange]);
-
-    return children({
-        setActiveSettingName,
-        activeSettingName
-    })
-
+  return children({
+    setActiveSettingName,
+    activeRangeName,
+  });
 };
 
 DatesRangeContainer.propTypes = {
@@ -66,5 +59,6 @@ DatesRangeContainer.propTypes = {
     PropTypes.node,
   ]).isRequired,
 };
+
 
 export default DatesRangeContainer;

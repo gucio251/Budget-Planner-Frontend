@@ -75,6 +75,10 @@ export const datesRangeConstants = {
   SETDATESRANGE_FAILURE: 'DATERANGE_SET_FAILURE',
 }
 
+export const filteredTransactionsConstants = {
+  FILTEREDTRANSACTIONS_LOAD: 'FILTEREDTRANSACTIONS_LOAD'
+}
+
 export const groupedExpensesConstants = {
   GROUPEDEXPENSES_REQUEST: 'GROUPED_EXPENSES_REQUEST',
   GROUPEDEXPENSES_LOAD: 'GROUPED_EXPENSES_LOAD',

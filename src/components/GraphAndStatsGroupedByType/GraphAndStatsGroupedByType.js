@@ -5,67 +5,72 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import {
   groupTransactionsByCategory,
-  filterTransactionsByDates,
   sortTransactionsByChosenProperty,
   prepareDataForGraph,
 } from 'Utils/functions';
-import { Pie, Doughnut } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
 import GroupedTransactionsDisplayer from 'components/GroupedTransactionsDisplayer/GroupedTransactionsDisplayer'
 import { graphColors } from 'Utils/svgCorrelation';
-import Select, { components } from 'react-select';
+import CustomDropdownDashboard from 'components/UI/CustomDropdownDashboard'
 
-const GraphArea = styled.div`
-  width: 100%;
+const StyledGraphArea = styled.section`
+  display: grid;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  grid-template-columns: 7fr 5fr;
+  grid-template-rows: 1fr 6fr;
+  grid-template-areas:
+  'dropdowns .'
+  'graph list';
 `
+const StyledDropdowns = styled.div`
+  grid-area: dropdowns;
+`;
 
-const DropdownsWrapper = styled.div`
-  width: 100%;
-  display: flex;
-`
+const StyledGraph = styled.div`
+  grid-area: graph;
+`;
 
-const SingleDDWrapper = styled.div`
-  width: 50%;
-`
+const StyledList = styled.div`
+  grid-area: list;
+`;
 
-const DisplayArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-`
+const GraphAndStatsGroupedByType = (props) => {
+  const [dataToBeDisplayed, setDataToBeDisplayed] = useState({
+    category: 'expenses',
+    type: 'popular',
+  });
 
-const GraphWrapper = styled.div`
-  height: 100%;
-  width: 60%;
-  display: flex;
-  align-items: center;
-`
+  const handleDataChange = ({ target }) => {
+    setDataToBeDisplayed({
+      ...dataToBeDisplayed,
+      [target.name]: target.value,
+    });
+  };
 
-const DisplayWrapper = styled.div`
-  width: 50%;
-`
+  return (
+    <StyledGraphArea>
+      {props.status === 'loading'
+        ? renderLoader()
+        : renderGraphArea({ ...props, handleDataChange, dataToBeDisplayed })}
+    </StyledGraphArea>
+  );
+};
 
-const optionsx = [
-  {value: "expenses", label: "expenses"},
-  {value: "incomes", label: "incomes"}
-]
+const renderLoader = () => {
+  return (
+    <div>
+      Loading xd
+    </div>
+  )
+}
 
-const optionsy = [
-  {value: "popular", label: "popular"},
-  {value: "expensive", label: "expensive"}
-]
-const GraphAndStatsGroupedByType = ({Transactions}) => {
-  const [selectedVariant, setSelectedVariant] = useState({category: "expenses", type: "popular"})
+const renderGraphArea = props => {
+  const {dataToBeDisplayed, handleDataChange, Transactions} = props;
+
   const options = {
     legend: {
-      display: false
+      display: false,
     },
     tooltips: {
       enabled: false,
@@ -83,108 +88,88 @@ const GraphAndStatsGroupedByType = ({Transactions}) => {
   };
   return (
     <>
-      <GraphArea>
-        <DropdownsWrapper>
-          <SingleDDWrapper>
-            <Select
-              options={optionsx}
-              value={selectedVariant.category}
-              name="category"
-              onChange={(option) =>
-                setSelectedVariant((prevState) => {
-                  return {
-                    ...prevState,
-                    category: option.label,
-                  };
-                })
-              }
-            />
-          </SingleDDWrapper>
-          <SingleDDWrapper>
-            <Select
-              options={optionsy}
-              value={selectedVariant.type}
-              name="type"
-              onChange={(option) =>
-                setSelectedVariant((prevState) => {
-                  return {
-                    ...prevState,
-                    type: option.label,
-                  };
-                })
-              }
-            />
-          </SingleDDWrapper>
-        </DropdownsWrapper>
-        <DisplayArea>
-          <GraphWrapper>
-            <Doughnut
-              data={
-                Transactions[selectedVariant.category][selectedVariant.type]
-                  .graph
-              }
-              options={options}
-            />
-          </GraphWrapper>
-          <DisplayWrapper>
-            <GroupedTransactionsDisplayer
-              expensesGroupedByType={
-                Transactions[selectedVariant.category][selectedVariant.type]
-                  .data
-              }
-            />
-          </DisplayWrapper>
-        </DisplayArea>
-      </GraphArea>
+        <StyledDropdowns>
+          <CustomDropdownDashboard
+            name="category"
+            list={['incomes', 'expenses']}
+            handleChange={handleDataChange}
+            value={dataToBeDisplayed.category}
+          />
+          <CustomDropdownDashboard
+            name="type"
+            list={['popular', 'expensive']}
+            handleChange={handleDataChange}
+            value={dataToBeDisplayed.type}
+          />
+        </StyledDropdowns>
+        {Transactions.status !== 'loading' && (
+          <>
+            <StyledGraph>
+              <Doughnut
+                data={
+                  Transactions[dataToBeDisplayed.category][
+                    dataToBeDisplayed.type
+                  ].graph
+                }
+                options={options}
+              />
+            </StyledGraph>
+            <StyledList>
+              <GroupedTransactionsDisplayer
+                transactions={
+                  Transactions[dataToBeDisplayed.category][
+                    dataToBeDisplayed.type
+                  ].data
+                }
+              />
+            </StyledList>
+          </>
+        )}
     </>
   );
-};
+}
+
 
 GraphAndStatsGroupedByType.propTypes = {
     
 };
 
 const getTransactions = createSelector(
-  (state) => state.expenses.expenses,
-  (state) => state.incomes.incomes,
-  (state) => state.datesRange.datesRange,
-  (expenses, incomes, datesRange) => {
-    const filteredExpenses = filterTransactionsByDates(expenses, datesRange);
-    const filteredIncomes = filterTransactionsByDates(incomes, datesRange);
+  (state) => state.filteredTransactions,
+  (transactionsState) => {
+    const { status, transactions } = transactionsState;
+    if(status === 'idle'){
+      return {
+        status: "loading"
+      }
+    }
 
-    const groupedExpenses = groupTransactionsByCategory(filteredExpenses);
-    const groupedIncomes = groupTransactionsByCategory(filteredIncomes);
+    const groupedTransactions = groupTransactionsByCategory(transactions);
 
-    const sortedExpensesByPopularity = sortTransactionsByChosenProperty(groupedExpenses, 'howManyTimes');
-    const sortedIncomesByPopularity = sortTransactionsByChosenProperty(groupedIncomes, 'howManyTimes');
+    const sortedExpensesByPopularity = sortTransactionsByChosenProperty(groupedTransactions.expenses, 'howManyTimes');
+    const sortedIncomesByPopularity = sortTransactionsByChosenProperty(groupedTransactions.incomes, 'howManyTimes');
 
-    const sortedExpensesByHighestAmount = sortTransactionsByChosenProperty(groupedExpenses, 'amount');
-    const sortedIncomesByHighestAmount = sortTransactionsByChosenProperty(groupedIncomes, 'amount');
-
-    const graphDataExpensesByPopularity = prepareDataForGraph(sortedExpensesByPopularity, graphColors, 'howManyOccurences');
-    const graphDataIncomesByPopularity = prepareDataForGraph(sortedIncomesByPopularity, graphColors, 'howManyOccurences');
-
-    const graphDataExpensesByAmount= prepareDataForGraph(sortedExpensesByHighestAmount, graphColors, 'amount');
-    const graphDataIncomesByAmount = prepareDataForGraph(sortedIncomesByHighestAmount, graphColors, 'amount');
+    const sortedExpensesByHighestAmount = sortTransactionsByChosenProperty(groupedTransactions.expenses, 'amount');
+    const sortedIncomesByHighestAmount = sortTransactionsByChosenProperty(groupedTransactions.incomes, 'amount');
 
     return {
       expenses: {
         popular: {
-          graph: graphDataExpensesByPopularity,
+          graph: prepareDataForGraph(sortedExpensesByPopularity, graphColors, 'howManyOccurences'),
           data: sortedExpensesByPopularity,
         },
         expensive: {
-          graph: graphDataExpensesByAmount,
+          graph: prepareDataForGraph(sortedExpensesByHighestAmount, graphColors, 'howManyOccurences'),
           data: sortedExpensesByHighestAmount,
         },
       },
       incomes: {
         popular: {
-          graph: graphDataIncomesByPopularity,
+          graph: prepareDataForGraph(sortedIncomesByPopularity, graphColors, 'howManyOccurences'),
           data: sortedIncomesByPopularity,
         },
         expensive: {
-          graph: graphDataIncomesByAmount,
+          graph: prepareDataForGraph(sortedIncomesByHighestAmount, graphColors, 'howManyOccurences'),
           data: sortedIncomesByHighestAmount,
         },
       },
