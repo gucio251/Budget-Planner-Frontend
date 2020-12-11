@@ -33,13 +33,12 @@ export const groupTransactionsByCategory = (transactions) => {
       case 'expense':
         return {
             ...groupedData,
-            ['expenses']: addItemToGroupedTransactions(transaction, groupedData.expenses)
+            expenses: addItemToGroupedTransactions(transaction, groupedData.expenses)
         };
       case 'income':
-        console.log(addItemToGroupedTransactions(transaction, groupedData));
         return {
             ...groupedData,
-            ['incomes']: addItemToGroupedTransactions(transaction, groupedData.incomes)
+            incomes: addItemToGroupedTransactions(transaction, groupedData.incomes)
         };
       default:
         break;

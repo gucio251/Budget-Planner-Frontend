@@ -19,7 +19,7 @@ const GroupedTransactionsDisplayer = ({transactions}) => {
   return (
     <List>
       {transactions.map(({ Icon, name }, index) => (
-        <ListItem>
+        <ListItem key={index}>
           <ListItemIcon>
             <Icon />
           </ListItemIcon>

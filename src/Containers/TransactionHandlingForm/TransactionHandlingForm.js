@@ -130,7 +130,6 @@ const renderForm = ({
                     <InputWithBorder
                       id="amount"
                       name="amount"
-                      type="text"
                       autoComplete="off"
                       placeholder="amount"
                       type="number"

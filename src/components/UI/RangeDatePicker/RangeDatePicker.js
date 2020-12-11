@@ -14,7 +14,6 @@ class RangeDatePicker extends Component {
   };
 
   render() {
-    console.log(this.props)
     return (
       <>
         <Mobile>

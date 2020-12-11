@@ -1,15 +1,13 @@
-import React, {useEffect, useContext} from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {expenseTypesActions} from 'redux/actions/expenseTypesActions';
+import { expenseTypesActions } from 'redux/actions/expenseTypesActions';
 import { currencyActions } from 'redux/actions/currencyActions';
-import {incomeTypesActions} from 'redux/actions/incomeTypesActions';
+import { incomeTypesActions } from 'redux/actions/incomeTypesActions';
 import { incomesActions } from 'redux/actions/incomesActions';
-import {expensesActions} from 'redux/actions/expensesActions';
-import {Sidebar} from './../Sidebar/Sidebar';
-import {getTodaysDate} from 'Utils/functions'
+import { expensesActions } from 'redux/actions/expensesActions';
+import { Sidebar } from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
-import {Grid} from '@material-ui/core'
 
 import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
 const StyledDashboard = styled.div`
@@ -40,17 +38,6 @@ const StyledDashboardOverview = styled.div`
   grid-area: dashboardMain;
   margin: 10px 40px 30px 30px ;
 `
-
-const initialValues = {
-  amount: 0,
-  currency: '',
-  currency_id: '',
-  category: '',
-  subcategory: '',
-  category_id: '',
-  transaction_date: getTodaysDate(),
-  comments: '',
-};
 
 const Dashboard = () => {
     const dispatch = useDispatch();

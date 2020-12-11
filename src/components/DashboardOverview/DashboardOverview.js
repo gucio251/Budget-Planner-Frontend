@@ -1,37 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import {PropTypes} from 'prop-types'
 import styled from 'styled-components';
+
+import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
+import DashboardDateMenu from 'components/DashboardDateMenu/DashboardDateMenu';
 import DashboardDisplayWindow from 'components/DashboardDisplayWindow/DashboardDisplayWindow';
 import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType';
-import Modal from 'components/Modal/Modal';
-
-import Button from 'components/UI/Button';
-import { ModalContext } from 'components/Modal/Modal';
-import DashboardDateMenu from 'components/DashboardDateMenu/DashboardDateMenu';
 import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
-import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
-import DashboardMenu from 'components/Toolbar/Toolbar';
-
-import { getTodaysDate } from 'Utils/functions';
-import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-
-import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
-import { Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
-
-
-const useStyles = makeStyles({
-  root: {
-    backgroundColor: '#F6F6F8',
-    paddingRight: '3%',
-  },
-  firstRow: {
-    maxHeight: 500
-  },
-  firstRowChild: {
-    height: '100%'
-  }
-});
 
 const EmptyDiv = styled.div`
   grid-area: 'emptySpace';
@@ -72,58 +47,36 @@ const StyledAllTransactions = styled.div`
   grid-area: aa;
 `;
 
-const initialValues = {
-  amount: 0,
-  currency: '',
-  currency_id: '',
-  category: '',
-  subcategory: '',
-  category_id: '',
-  transaction_date: getTodaysDate(),
-  comments: '',
-}
-
-const DashboardOverview = props => {
-    const classes=useStyles()
-    const [open, setOpen] = useState(false);
-    const dispatch = useDispatch();
-
-    const handleOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-    return (
-      <StyledOverview>
-        <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
-        <EmptyDiv />
-        <EmptyDiv />
-        <StyledDateMenu>
-          <DashboardDateMenu
-            handleDatePeriodChange={props.handleDatePeriodChange}
-          />
-        </StyledDateMenu>
-        <StyledBudgetSummary>
-          <BudgetSummary />
-        </StyledBudgetSummary>
-        <StyledGraphArea>
-          <DashboardDisplayWindow title="Expenses/incomes">
-            <GraphAndStatsGroupedByType />
-          </DashboardDisplayWindow>
-        </StyledGraphArea>
-        <StyledAllTransactions>
-          <DashboardDisplayWindow title="Recent transactions">
-            <TransactionsDisplayer />
-          </DashboardDisplayWindow>
-        </StyledAllTransactions>
-      </StyledOverview>
-    );
+const DashboardOverview = ({ handleDatePeriodChange }) => {
+  return (
+    <StyledOverview>
+      <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
+      <EmptyDiv />
+      <EmptyDiv />
+      <StyledDateMenu>
+        <DashboardDateMenu
+          handleDatePeriodChange
+        />
+      </StyledDateMenu>
+      <StyledBudgetSummary>
+        <BudgetSummary />
+      </StyledBudgetSummary>
+      <StyledGraphArea>
+        <DashboardDisplayWindow title="Expenses/incomes">
+          <GraphAndStatsGroupedByType />
+        </DashboardDisplayWindow>
+      </StyledGraphArea>
+      <StyledAllTransactions>
+        <DashboardDisplayWindow title="Recent transactions">
+          <TransactionsDisplayer />
+        </DashboardDisplayWindow>
+      </StyledAllTransactions>
+    </StyledOverview>
+  );
 };
 
 DashboardOverview.propTypes = {
-    
+  handleDatePeriodChange: PropTypes.func.isRequired
 };
 
 export default DashboardOverview;

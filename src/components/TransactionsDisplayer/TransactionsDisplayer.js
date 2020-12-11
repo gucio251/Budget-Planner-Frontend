@@ -8,7 +8,7 @@ import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
-import {useDispatch, useSelector, connect} from 'react-redux';
+import {useDispatch, connect} from 'react-redux';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
 import {convertDate} from 'Utils/functions'
 

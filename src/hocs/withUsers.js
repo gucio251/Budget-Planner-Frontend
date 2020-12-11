@@ -14,7 +14,8 @@ const withUsers = Component => props => {
                 dispatch(userActions.load());
                 break;
             case 'failed':
-                setErrorMsg({ msg: registeredUsers.errorMsg, link: routes.loginPage, disabled: true })
+                setErrorMsg({ msg: registeredUsers.errorMsg, link: routes.loginPage, disabled: true });
+                break;
             default:
                 break;
         }

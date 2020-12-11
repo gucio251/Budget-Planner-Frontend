@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux'
 import PropTypes from 'prop-types';
 import {datesRangeActions} from 'redux/actions/dateRangeActions';
@@ -55,6 +55,7 @@ const DatesRangeContainer = ({ children }) => {
 
 DatesRangeContainer.propTypes = {
   children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
     PropTypes.element,
     PropTypes.node,
   ]).isRequired,

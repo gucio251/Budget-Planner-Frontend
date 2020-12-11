@@ -45,8 +45,11 @@ const CustomDropdownDashboard = props => {
           input={<BootstrapInput />}
           IconComponent={DropdownArrow}
         >
-          {list.map((listItem) => (
-            <MenuItem value={listItem}>
+          {list.map((listItem, i) => (
+            <MenuItem
+              value={listItem}
+              key={i}
+            >
                 {listItem}
             </MenuItem>
           ))}
