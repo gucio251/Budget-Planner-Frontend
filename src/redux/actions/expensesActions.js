@@ -1,4 +1,4 @@
-import { expensesConstants, groupedExpensesConstants } from 'redux/actions/actionTypes';
+import { expensesConstants, filteredTransactionsConstants } from 'redux/actions/actionTypes';
 import * as expensesApi from 'api/expensesApi';
 
 const load = (token) => (dispatch) => {
@@ -12,16 +12,12 @@ const load = (token) => (dispatch) => {
     return { type: expensesConstants.GETEXPENSES_FAILURE, payload: error };
   };
 
-  const groupedExpensesAdd = (expenses) => {
-    return { type: groupedExpensesConstants.GROUPEDEXPENSES_LOAD, expenses };
-  }
 
   dispatch(request());
 
   expensesApi.load(token).then(
     ({ result }) => {
       dispatch(success(result));
-      dispatch(groupedExpensesAdd(result));
     },
     (error) => {
       dispatch(failure(error));
@@ -33,11 +29,11 @@ const add = (expense) => (dispatch) => {
     const request = () => {
     return { type: expensesConstants.ADDEXPENSE_REQUEST };
     };
-    const success = (expense) => {
-    return { type: expensesConstants.ADDEXPENSE_SUCCESS, expense };
+    const success = (payload) => {
+    return { type: expensesConstants.ADDEXPENSE_SUCCESS, payload };
     };
-    const failure = (error) => {
-    return { type: expensesConstants.ADDEXPENSE_FAILURE, error };
+    const failure = (payload) => {
+      return { type: expensesConstants.ADDEXPENSE_FAILURE, payload };
     };
 
     dispatch(request());
@@ -46,7 +42,8 @@ const add = (expense) => (dispatch) => {
 
     expensesApi.save(token, expense).then(
         ({insertId}) => {
-            dispatch(success({...expense, id: insertId}))
+            const payload = { ...expense, id: insertId };
+            dispatch(success(payload))
         },
         (error)=> {
             dispatch(failure(error))
@@ -56,14 +53,15 @@ const add = (expense) => (dispatch) => {
 }
 
 const update = (expense) => (dispatch) => {
+  debugger;
   const request = () => {
     return { type: expensesConstants.UPDATEEXPENSE_REQUEST };
   };
-  const success = (expense) => {
-    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, expense };
+  const success = (payload) => {
+    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, payload };
   };
-  const failure = (error) => {
-    return { type: expensesConstants.UPDATEEXPENSE_FAILURE, error };
+  const failure = (payload) => {
+    return { type: expensesConstants.UPDATEEXPENSE_FAILURE, payload };
   };
 
   dispatch(request());
@@ -84,11 +82,11 @@ const deleteSingle = (token, expenseId) => (dispatch) => {
       const request = () => {
         return { type: expensesConstants.DELETEEXPENSE_REQUEST };
       };
-      const success = (expenseId) => {
-        return { type: expensesConstants.DELETEEXPENSE_SUCCESS, expenseId };
+      const success = (payload) => {
+        return { type: expensesConstants.DELETEEXPENSE_SUCCESS, payload };
       };
-      const failure = (error) => {
-        return { type: expensesConstants.DELETEEXPENSE_FAILURE, error };
+      const failure = (payload) => {
+        return { type: expensesConstants.DELETEEXPENSE_FAILURE, payload };
       };
 
       dispatch(request());

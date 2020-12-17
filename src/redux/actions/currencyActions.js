@@ -5,11 +5,11 @@ const loadCurrencies = (token) => (dispatch) => {
   const request = () => {
     return { type: currenciesConstants.GETCURRENCIES_REQUEST };
   };
-  const success = (currencies) => {
-    return { type: currenciesConstants.GETCURRENCIES_SUCCESS, currencies };
+  const success = (payload) => {
+    return { type: currenciesConstants.GETCURRENCIES_SUCCESS, payload };
   };
-  const failure = (error) => {
-    return { type: currenciesConstants.GETCURRENCIES_FAILURE, error };
+  const failure = (payload) => {
+    return { type: currenciesConstants.GETCURRENCIES_FAILURE, payload };
   };
 
   dispatch(request());
@@ -31,6 +31,26 @@ const loadCurrencies = (token) => (dispatch) => {
   );
 };
 
+const loadRatesFromApi = () => (dispatch) => {
+    const request = () => {
+      return { type: currenciesConstants.GETRATES_FAILURE };
+    };
+    const success = (payload) => {
+      return { type: currenciesConstants.GETRATES_SUCCESS, payload };
+    };
+    const failure = (payload) => {
+      return { type: currenciesConstants.GETRATES_FAILURE, payload };
+    };
+
+    dispatch(request());
+
+    currenciesApi.loadRates().then(
+      ({ rates }) => dispatch(success(rates)),
+      (error) => dispatch(failure(error))
+    );
+}
+
 export const currencyActions = {
   loadCurrencies,
+  loadRatesFromApi,
 };

@@ -8,7 +8,6 @@ import currencies from './currencyReducer'
 import incomes from './incomesReducer'
 import expenses from './expensesReducer'
 import datesRange from './datesRangeReducer'
-import filteredTransactions from './filteredTransactionsReducer';
 
 const rootReducer = combineReducers({
   users,
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
   currencies,
   expenses,
   datesRange,
-  filteredTransactions,
 });
 
 export default rootReducer;

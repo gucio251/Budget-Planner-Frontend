@@ -3,16 +3,13 @@ import * as expenseTypesApi from 'api/expenseTypesApi';
 
 const load = (token) => dispatch => {
     const request = () => { return { type: expenseTypesConstants.GETEXPENSETYPES_REQUEST } }
-    const success = expenseTypes => { return { type: expenseTypesConstants.GETEXPENSETYPES_SUCCESS, expenseTypes } }
-    const failure = error => { return { type: expenseTypesConstants.GETEXPENSETYPES_FAILURE, error } }
+    const success = payload => { return { type: expenseTypesConstants.GETEXPENSETYPES_SUCCESS, payload } }
+    const failure = payload => { return { type: expenseTypesConstants.GETEXPENSETYPES_FAILURE, payload } }
 
     dispatch(request());
     expenseTypesApi.loadExpenseTypes(token)
         .then(
-            allExpenseTypes => {
-                const { result } = allExpenseTypes;
-                dispatch(success(result))
-            },
+            ({result}) => {dispatch(success(result))},
             error => { dispatch(failure(error)) }
         );
 }

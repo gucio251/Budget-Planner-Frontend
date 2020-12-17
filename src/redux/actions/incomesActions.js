@@ -28,11 +28,11 @@ const add = (income) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.ADDINCOME_REQUEST };
   };
-  const success = (income) => {
-    return { type: incomesConstants.ADDINCOME_SUCCESS, income };
+  const success = (payload) => {
+    return { type: incomesConstants.ADDINCOME_SUCCESS, payload };
   };
-  const failure = (error) => {
-    return { type: incomesConstants.ADDINCOME_FAILURE, error };
+  const failure = (payload) => {
+    return { type: incomesConstants.ADDINCOME_FAILURE, payload };
   };
 
   dispatch(request());
@@ -78,8 +78,8 @@ const deleteSingle = (token, incomeId) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.DELETEINCOME_REQUEST };
   };
-  const success = (incomeId) => {
-    return { type: incomesConstants.DELETEINCOME_SUCCESS, incomeId };
+  const success = (payload) => {
+    return { type: incomesConstants.DELETEINCOME_SUCCESS, payload };
   };
   const failure = (error) => {
     return { type: incomesConstants.DELETEINCOME_FAILURE, error };
