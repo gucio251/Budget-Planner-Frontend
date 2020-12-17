@@ -8,10 +8,12 @@ import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
 import {incomesActions} from 'redux/actions/incomesActions'
-import {useDispatch, connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-import {convertDate} from 'Utils/functions'
-
+import {
+  convertDate,
+  sortTransactionsByChosenProperty,
+} from 'Utils/functions';
 
 const useStyles = makeStyles({
   table: {
@@ -20,8 +22,12 @@ const useStyles = makeStyles({
   },
 });
 
+const TransactionsDisplayer = ({ expenses, incomes }) => {
+  return <Displayer transactionList={getSortedTransactions([].concat(expenses, incomes))} />;
+}
 
-const TransactionsDisplayer = ({transactionList = []}) => {
+
+const Displayer = ({transactionList = []}) => {
       const dispatch = useDispatch();
       const classes = useStyles();
       const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -87,7 +93,7 @@ const TransactionsDisplayer = ({transactionList = []}) => {
           <TableContainer>
             <Table className={classes.table} aria-label="simple table">
               <TableBody>
-                {transactionList.slice(0,4).map(
+                {transactionList.map(
                   (
                     {
                       id,
@@ -126,9 +132,8 @@ const TransactionsDisplayer = ({transactionList = []}) => {
       );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    transactionList: state.filteredTransactions.transactions
-  }
+const getSortedTransactions = props => {
+  return sortTransactionsByChosenProperty(props, 'transaction_date').slice(0,4);
 }
-export default connect(mapStateToProps)(TransactionsDisplayer);
+
+export default TransactionsDisplayer;

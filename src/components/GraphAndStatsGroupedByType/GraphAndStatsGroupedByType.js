@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import {
   groupTransactionsByCategory,
   sortTransactionsByChosenProperty,
@@ -50,24 +48,13 @@ const GraphAndStatsGroupedByType = (props) => {
 
   return (
     <StyledGraphArea>
-      {props.status === 'loading'
-        ? renderLoader()
-        : renderGraphArea({ ...props, handleDataChange, dataToBeDisplayed })}
+      {renderGraphArea({ handleDataChange, dataToBeDisplayed, Transactions: prepareTransactions(props)})}
     </StyledGraphArea>
   );
 };
 
-const renderLoader = () => {
-  return (
-    <div>
-      Loading xd
-    </div>
-  )
-}
-
 const renderGraphArea = props => {
   const {dataToBeDisplayed, handleDataChange, Transactions} = props;
-
   const options = {
     legend: {
       display: false,
@@ -78,72 +65,58 @@ const renderGraphArea = props => {
     plugins: {
       datalabels: {
         formatter: (value, ctx) => {
-          const sum = ctx.dataset._meta[0].total;
-          const percentage = ((value * 100) / sum).toFixed(0) + '%';
-          return percentage;
+            Object.keys(ctx.dataset._meta).map(key => {
+              const sum = ctx.dataset._meta[key].total;
+              const percentage =((value * 100) / sum).toFixed(0) + '%';
+              return percentage;
+            })
+          }
         },
         color: '#fff',
       },
-    },
   };
   return (
     <>
-        <StyledDropdowns>
-          <CustomDropdownDashboard
-            name="category"
-            list={['incomes', 'expenses']}
-            handleChange={handleDataChange}
-            value={dataToBeDisplayed.category}
-          />
-          <CustomDropdownDashboard
-            name="type"
-            list={['popular', 'expensive']}
-            handleChange={handleDataChange}
-            value={dataToBeDisplayed.type}
-          />
-        </StyledDropdowns>
-        {Transactions.status !== 'loading' && (
-          <>
-            <StyledGraph>
-              <Doughnut
-                data={
-                  Transactions[dataToBeDisplayed.category][
-                    dataToBeDisplayed.type
-                  ].graph
-                }
-                options={options}
-              />
-            </StyledGraph>
-            <StyledList>
-              <GroupedTransactionsDisplayer
-                transactions={
-                  Transactions[dataToBeDisplayed.category][
-                    dataToBeDisplayed.type
-                  ].data
-                }
-              />
-            </StyledList>
-          </>
-        )}
+      <StyledDropdowns>
+        <CustomDropdownDashboard
+          name="category"
+          list={['incomes', 'expenses']}
+          handleChange={handleDataChange}
+          value={dataToBeDisplayed.category}
+        />
+        <CustomDropdownDashboard
+          name="type"
+          list={['popular', 'expensive']}
+          handleChange={handleDataChange}
+          value={dataToBeDisplayed.type}
+        />
+      </StyledDropdowns>
+      <StyledGraph>
+        <Doughnut
+          data={
+            Transactions[dataToBeDisplayed.category][
+              dataToBeDisplayed.type
+            ].graph
+          }
+          options={options}
+        />
+      </StyledGraph>
+      <StyledList>
+        <GroupedTransactionsDisplayer
+          transactions={
+            Transactions[dataToBeDisplayed.category][
+              dataToBeDisplayed.type
+            ].data
+          }
+        />
+      </StyledList>
     </>
+
   );
 }
 
-
-GraphAndStatsGroupedByType.propTypes = {
-    
-};
-
-const getTransactions = createSelector(
-  (state) => state.filteredTransactions,
-  (transactionsState) => {
-    const { status, transactions } = transactionsState;
-    if(status === 'idle'){
-      return {
-        status: "loading"
-      }
-    }
-
+const prepareTransactions = props => {
+    const transactions = [].concat(props.incomes, props.expenses);
     const groupedTransactions = groupTransactionsByCategory(transactions);
 
     const sortedExpensesByPopularity = sortTransactionsByChosenProperty(groupedTransactions.expenses, 'howManyTimes');
@@ -174,13 +147,11 @@ const getTransactions = createSelector(
         },
       },
     };
-  }
-);
+}
 
-const mapState = (state) => {
-  return {
-    Transactions: getTransactions(state),
-  };
+GraphAndStatsGroupedByType.propTypes = {
+    
 };
 
-export default connect(mapState)(GraphAndStatsGroupedByType);
+
+export default GraphAndStatsGroupedByType;

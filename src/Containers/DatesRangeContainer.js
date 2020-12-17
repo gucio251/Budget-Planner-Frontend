@@ -7,7 +7,7 @@ const getLstDayOfMonFnc = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
 };
 
-const returnDatesRangeForGivenMonth = (month) => {
+export const returnDatesRangeForGivenMonth = (month) => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const monthAsString = month + 1;
@@ -31,7 +31,7 @@ const getDateRangeBasedOnOptionChosen = (optionChosen) => {
 
 const DatesRangeContainer = ({ children }) => {
   const dispatch = useDispatch();
-  const [activeRangeName, setActiveRangeName] = useState();
+  const [activeRangeName, setActiveRangeName] = useState('This month');
 
   const setActiveSettingName = (name) => {
     setActiveRangeName(name);
@@ -42,10 +42,6 @@ const DatesRangeContainer = ({ children }) => {
       );
     }
   };
-
-  useEffect(() => {
-    setActiveSettingName('This Month');
-  }, []);
 
   return children({
     setActiveSettingName,

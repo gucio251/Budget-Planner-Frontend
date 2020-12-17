@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
 import { useDispatch } from 'react-redux';
@@ -17,6 +17,7 @@ import DatePicker from 'components/UI/DatePicker';
 import Dropdown from 'components/UI/Dropdown';
 import InputWithBorder from 'components/UI/InputWithBorder';
 import LabelWrapper from 'components/UI/LabelWrapper';
+import {ModalContext} from 'components/Modal/Modal'
 import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import TextArea from 'components/UI/TextArea';
 import TabPane from 'components/UI/TabPane';
@@ -66,7 +67,7 @@ const TransactionHandlingForm = props => {
         <Card className={classes.root}>
           <Grid container spacing={3}>
             <Grid item xs={12} align="right">
-              <StyledCloseFormSign  onClick={props.handleClose}/>
+              <StyledCloseFormSign onClick={props.handleClose} />
             </Grid>
             <Grid item xs={12} align="left">
               {`${
@@ -82,9 +83,11 @@ const TransactionHandlingForm = props => {
             currencies: props.currencies,
             handleSubmit: returnSubmitHandler({
               initialValues: props.initialValues,
-              categoriesToBeDisplayed,
+              category: categoriesToBeDisplayed,
             }),
             dispatch: dispatch,
+            handleClose: props.handleClose,
+            ...props,
           })}
         </Card>
       </Container>
@@ -102,8 +105,8 @@ const renderNavigation = (props) => {
   );
 };
 
-const checkIfTransactionIsModified = (initialValues) => {
-  return initialValues.hasOwnProperty('id');
+const checkIfTransactionIsModified = (props) => {
+  return props.initialValues.hasOwnProperty('id');
 }
 
 const renderForm = ({
@@ -112,13 +115,18 @@ const renderForm = ({
   currencies,
   handleSubmit,
   dispatch,
+  handleClose,
+  ...props
 }) => {
   return (
     <Formik
       enableReinitialize
       initialValues={initialValues}
       validationSchema={validations.getTransactionAdditionValidationSchema}
-      onSubmit={(values) => dispatch(handleSubmit(values))}
+      onSubmit={(values) => {
+        dispatch(handleSubmit(values))
+        handleClose();
+      }}
     >
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
         return (
@@ -160,12 +168,16 @@ const renderForm = ({
                   <LabelWrapper label="Select category">
                     <Dropdown
                       name="category"
-                      list={categories}
+                      list={getCategories(categories.categories)}
                       isSearchable={true}
                       isLoading={false}
                       value={values.category ? { label: values.category } : ''}
                       onChange={(selectedOption) => {
                         setFieldValue('category', selectedOption.value);
+                        setFieldValue(
+                          'Icon',
+                          categories.categories[selectedOption.value].Icon
+                        );
                         setFieldValue('subcategory', null);
                       }}
                     />
@@ -213,7 +225,7 @@ const renderForm = ({
                     type="submit"
                     disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
                   >
-                    Add
+                    {checkIfTransactionIsModified(props) ? 'MODIFY' : 'ADD'}
                   </Button>
                 </Grid>
               </Grid>
@@ -225,17 +237,16 @@ const renderForm = ({
   );
 };
 
+const getCategories = props => {
+  return Object.values(props).map(value => value);
+}
+
+
 const getSubcategories = ({category, dependencies}) => {
-  if(category.length===0){
-    return [];
-  }
-  const [result] = dependencies.filter((dependency) => {
-    return dependency.value === category
-  });
-
-  if(result === undefined) return [];
-
-  return result.subcategories;
+  if (dependencies.categories.hasOwnProperty(category) === false) return [];
+  if(category === '') return [];
+  const subcategoriesIds = dependencies.categories[category].subcategories;
+  return subcategoriesIds.map(subcategoryId => dependencies.subcategories[subcategoryId]);
 }
 
 const returnSubmitHandler = ({initialValues, category}) => {

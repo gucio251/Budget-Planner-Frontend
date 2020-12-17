@@ -1,28 +1,37 @@
-import React from 'react';
+import React, {useeffect} from 'react';
 import {connect, } from 'react-redux';
-import {filteredTransactions} from 'redux/actions/filteredTransactionsActions'
-import {filterTransactionsByDates} from 'Utils/functions';
+import {
+  filterTransactionsByDates,
+  sortTransactionsByChosenProperty,
+} from 'Utils/functions';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import DashboardOverview from 'components/DashboardOverview/DashboardOverview'
+
+
 
 const DashboardOverviewHandling = props => {
     return (
       <>
         {checkIfSingleStatesAreInitialized(props)
-          ? renderDashboard(props)
+          ? renderDashboard()
           : renderDashboardLoading(props)}
       </>
     );
 };
 
-const checkIfStateisInitialized = props => {
+const checkIfStateIsInitialized = props => {
   return props.status === 'succedded' ? true : false;
 }
 
 const checkIfSingleStatesAreInitialized = props => {
-  if(checkIfStateisInitialized(props.incomes) && checkIfStateisInitialized(props.expenses)){
+  if (
+    checkIfStateIsInitialized(props.incomes) &&
+    checkIfStateIsInitialized(props.expenses) &&
+    checkIfStateIsInitialized(props.currencies)
+  ) {
     return true;
-  }else{
+  } else {
     return false;
   }
 }
@@ -38,18 +47,53 @@ const checkIfChosenTimePeriodsAreEqual = props => {
 const recalculateTransactionsInGivenTimeFrame =  props => {
   const filteredIncomes = filterTransactionsByDates(props.incomes.incomes, props.datesRange.datesRange);
   const filteredExpenses = filterTransactionsByDates(props.expenses.expenses, props.datesRange.datesRange);
-  props.loadFilteredTransactions({transactions: [].concat(filteredExpenses, filteredIncomes), datesRange: props.datesRange.datesRange});
+  const sortedTransactions = sortTransactionsByChosenProperty([].concat(filteredExpenses, filteredIncomes), 'transaction_date');
+  return recalculateTransactionsForActiveCurrency({transactions: sortedTransactions, currencies: props.currencies});
 }
-const renderDashboard = props => {
-  if (!checkIfChosenTimePeriodsAreEqual(props)) {
-    recalculateTransactionsInGivenTimeFrame(props);
+
+const recalculateTransactionsForActiveCurrency = ({transactions, currencies}) => {
+  return transactions.map(transaction => {
+    if(transaction.currency === currencies.active){
+      return transaction;
+    }else{
+      return {
+        ...transaction,
+        currency: currencies.active,
+        amount: transaction.amount / currencies.rates[transaction.currency],
+      };
+    }
+  })
+}
+
+const getSumsOfTransactions = transactions => {
+  const sumsOfTransactions = transactions.reduce((summary, {type, amount}) => {
+    if(type === 'income'){
+      return {
+        ...summary,
+        incomesSum: summary.incomesSum+amount}
+    }else{
+      return {
+        ...summary,
+        expensesSum: summary.expensesSum+amount
+      }
+    }
+  }, {incomesSum:0, expensesSum:0})
+
+  return {
+    ...sumsOfTransactions,
+    balance: sumsOfTransactions.incomesSum - sumsOfTransactions.expensesSum
   }
-
-  return(
-      <DashboardOverview handleDatePeriodChange={recalculateTransactionsInGivenTimeFrame}/>
-    )
 }
 
+const renderDashboard = () => {
+  return <DashboardOverview />
+}
+
+const renderBudgetSummary = props => {
+  return (
+    <>sdsdsa</>
+  )
+}
 
 const renderDashboardLoading = props => {
   return (
@@ -63,19 +107,13 @@ DashboardOverviewHandling.propTypes = {
     
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadFilteredTransactions: (transactions) => dispatch(filteredTransactions.load(transactions))
-  };
-};
 
 const mapStateToProps = (state) => {
   return {
     expenses: state.expenses,
     incomes: state.incomes,
-    datesRange: state.datesRange,
-    filteredTransactions: state.filteredTransactions
+    currencies: state.currencies
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardOverviewHandling);
+export default connect(mapStateToProps)(DashboardOverviewHandling);

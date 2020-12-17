@@ -47,6 +47,7 @@ const Dashboard = () => {
       dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
       dispatch(expensesActions.load(localStorage.getItem('token')));
       dispatch(incomesActions.load(localStorage.getItem('token')));
+      dispatch(currencyActions.loadRatesFromApi());
     }, [])
 
     return (

@@ -12,6 +12,13 @@ export const filterTransactionsByDates = (transactions, datesRange) => {
     return [];
   }
   return transactions.filter(transaction => {
+    if(checkIfTransactionIsInsideGivenRange(transaction, datesRange)){
+      return transaction;
+    }
+  })
+}
+
+export const checkIfTransactionIsInsideGivenRange = (transaction, datesRange) => {
     const convertedTransactionDate = convertToDateFormatFromString(
       transaction.transaction_date
     );
@@ -21,14 +28,25 @@ export const filterTransactionsByDates = (transactions, datesRange) => {
       (convertedTransactionDate > convertedStartDate || areDatesEqual(convertedTransactionDate, convertedStartDate)) &&
       (convertedTransactionDate < convertedFinishDate || areDatesEqual(convertedTransactionDate, convertedFinishDate))
       ){
-      return transaction;
+      return true;
+    }else{
+      return false;
     }
-  })
+}
+
+export const checkIfGivenDateIsHigherOrEqualToReference = (checkingDate, referenceDate) => {
+  const convertedCheckingDate = convertToDateFormatFromString(checkingDate);
+  const convertedReferenceDate = convertToDateFormatFromString(referenceDate);
+
+  if(convertedCheckingDate > convertedReferenceDate || areDatesEqual(convertedCheckingDate, convertedReferenceDate)){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 export const groupTransactionsByCategory = (transactions) => {
   return transactions.reduce((groupedData, transaction) => {
-
     switch(transaction.type){
       case 'expense':
         return {
@@ -108,10 +126,10 @@ const convertObjectOfObjectsToArrayOfObjects = (obj) => {
 }
 
 const compareByProperty = (propertyName) => (a,b) => {
-      if (a[propertyName] < b[propertyName]) {
+      if (a[propertyName] > b[propertyName]) {
         return -1;
       }
-      if (a[propertyName] > b[propertyName]) {
+      if (a[propertyName] < b[propertyName]) {
         return 1;
       }
       return 0;
@@ -122,6 +140,26 @@ export const sortTransactionsByChosenProperty = (object, propertyName) => {
     arr.sort(compareByProperty(propertyName));
     return arr;
 }
+
+export const recalculateTransactionsForActiveCurrency = ({
+  transactions,
+  currencies,
+}) => {
+  if (transactions.length === 0) return [];
+  return transactions.map((transaction) => {
+    if (transaction.currency === currencies.active) {
+      return transaction;
+    } else {
+      const calculatedAmount =
+        transaction.amount / currencies.rates[transaction.currency];
+      return {
+        ...transaction,
+        currency: currencies.active,
+        amount: calculatedAmount,
+      };
+    }
+  });
+};
 
 export const convertDate = (transactionDate) => {
      switch (howManyDaysBeforeToday(transactionDate)) {

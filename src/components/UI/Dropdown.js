@@ -77,7 +77,7 @@ const IconOption = (props) => {
     <Option {...props}>
       <StyledSingleOption id={data.id}>
         {data.Icon && <data.Icon />}
-        <StyledOptionText>{data.label}</StyledOptionText>
+        <StyledOptionText>{data.value}</StyledOptionText>
       </StyledSingleOption>
     </Option>
   );

@@ -12,3 +12,12 @@ export const loadCurrencies = (token) => {
     .then(handleResponse)
     .catch(handleError);
 };
+
+export const loadRates = () => {
+  const apiUrl = 'https://api.exchangeratesapi.io/latest?base=USD';
+  return fetch(apiUrl, {
+    method: 'GET'
+  })
+    .then(handleResponse)
+    .catch(handleError);
+}
