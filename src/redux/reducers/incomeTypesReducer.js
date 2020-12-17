@@ -1,6 +1,8 @@
 import { incomeTypesConstants } from './../actions/actionTypes';
 import { addSvg } from 'Utils/functions';
 import { incomeTypeSvgCorrelation } from 'Utils/svgCorrelation';
+import { normalizePack, addSvgToData } from './expenseTypesReducer';
+import { normalize } from 'normalizr';
 
 const initialState = {
   status: 'idle',
@@ -8,8 +10,7 @@ const initialState = {
   error: false,
 }
 
-const incomeTypes = (state = initialState, action) => {
-  const {type, payload} = action;
+const incomeTypes = (state = initialState, {type, payload}) => {
   switch (type) {
     case incomeTypesConstants.GETINCOMETYPES_REQUEST:
       return {
@@ -17,11 +18,15 @@ const incomeTypes = (state = initialState, action) => {
         status: 'loading',
       };
     case incomeTypesConstants.GETINCOMETYPES_SUCCESS:
-      const payloadWithSvg = addSvg(payload, incomeTypeSvgCorrelation);
+      const normalizedData = normalize({categories: payload}, { categories: [normalizePack.category]});
+      const normalizedCategoriesWithSvg = addSvgToData(normalizedData, incomeTypeSvgCorrelation);
       return {
         ...state,
         status: 'succedded',
-        incomeTypes: payloadWithSvg,
+        incomeTypes: {
+          ...normalizedData.entities,
+          categories: normalizedCategoriesWithSvg,
+        },
       };
     case incomeTypesConstants.GETINCOMETYPES_FAILURE:
       return {

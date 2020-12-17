@@ -1,11 +1,18 @@
 import { datesRangeConstants } from './../actions/actionTypes';
+import { returnDatesRangeForGivenMonth } from 'containers/DatesRangeContainer'
+
+const getDates = () => {
+    const today = new Date();
+    const [start, end] = returnDatesRangeForGivenMonth(today.getMonth());
+    return {
+      start,
+      end
+    }
+}
 
 const initialState = {
   status: 'idle',
-  datesRange: {
-    start: '',
-    end: '',
-  },
+  datesRange: getDates(),
   prevRange: {
     start: '',
     end: '',

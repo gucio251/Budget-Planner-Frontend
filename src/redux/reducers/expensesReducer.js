@@ -61,18 +61,16 @@ const expenses = (state = initialState, {type, payload}) => {
           return parseInt(expense.id) !== parseInt(payload);
         }),
       };
-    case expensesConstants.UPDATEEXPENSE_SUCCESS:
-      const updatedExpenseWithSvg = handleSvgAddition(
-        payload,
-        'category',
-        expenseTypeSvgCorrelation
-      );
+    case expensesConstants.UPDATEEXPENSE_REQUEST:
       return {
         ...state,
-        status: 'succcedded',
+      };
+    case expensesConstants.UPDATEEXPENSE_SUCCESS:
+      return {
+        ...state,
         expenses: state.expenses.map((expense) => {
-          if (expense.id === updatedExpenseWithSvg.id) {
-            return Object.assign(expense, updatedExpenseWithSvg);
+          if (expense.id === payload.id) {
+            return payload;
           } else {
             return expense;
           }

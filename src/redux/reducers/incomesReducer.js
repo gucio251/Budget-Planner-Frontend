@@ -11,8 +11,7 @@ const initialState = {
   error: false
 }
 
-const incomes = (state = initialState, action) => {
-  const {type, payload} = action;
+const incomes = (state = initialState, {type, payload}) => {
   switch (type) {
     case incomesConstants.GETINCOMES_REQUEST:
       return {
@@ -20,6 +19,7 @@ const incomes = (state = initialState, action) => {
         status: 'loading',
       };
     case incomesConstants.GETINCOMES_SUCCESS:
+      debugger;
       const incomesWithSvg = handleSvgAddition(
         payload,
         'category',
@@ -44,25 +44,19 @@ const incomes = (state = initialState, action) => {
     case incomesConstants.ADDINCOME_REQUEST:
       return {
         ...state,
-        status: 'adding',
       };
     case incomesConstants.ADDINCOME_SUCCESS:
-      const incomeWithSvg = handleSvgAddition(
-        payload,
-        'category',
-        incomeTypeSvgCorrelation
-      );
+      debugger;
       return {
         ...state,
-        incomes: [].concat(state.incomes, incomeWithSvg),
-        status: 'succedded',
+        incomes: [].concat(state.incomes, {...payload, type: 'income'}),
       };
     case incomesConstants.DELETEINCOME_SUCCESS:
       return {
         ...state,
         status: 'succedded',
         incomes: state.incomes.filter((income) => {
-          return parseInt(income.id) !== parseInt(payload.incomeId);
+          return parseInt(income.id) !== parseInt(payload);
         }),
       };
     case incomesConstants.UPDATEINCOME_SUCCESS:

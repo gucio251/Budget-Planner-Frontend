@@ -1,24 +1,52 @@
 import { currenciesConstants } from './../actions/actionTypes';
 
-
-const currencies = (state = {}, action) => {
-  switch (action.type) {
+const initialState = {
+  status: 'idle',
+  statusCurrencies: 'idle',
+  statusRates: 'idle',
+  currencies: [],
+  errorMsg: false,
+  rates: {},
+  active: 'USD'
+}
+const currencies = (state = initialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
     case currenciesConstants.GETCURRENCIES_REQUEST:
       return {
         ...state,
-        loading: true,
+        status: 'loading',
       };
     case currenciesConstants.GETCURRENCIES_SUCCESS:
       return {
         ...state,
-        loading: false,
-        currencies: action.currencies,
+        currencies: payload,
+        statusCurrencies: 'succedded',
+        status: state.statusRates === 'succedded' ? 'succedded' : state.status
       };
     case currenciesConstants.GETCURRENCIES_FAILURE:
       return {
         ...state,
-        loading: false,
-        errorMsg: action.error,
+        status: 'failed',
+        errorMsg: payload,
+      };
+    case currenciesConstants.GETRATES_REQUEST:
+      return {
+        ...state,
+        status: 'loading',
+      };
+    case currenciesConstants.GETRATES_SUCCESS:
+      return {
+        ...state,
+        statusRates: 'succedded',
+        status: state.statusCurrencies === 'succedded' ? 'succedded' : state.status,
+        rates: payload,
+      };
+    case currenciesConstants.GETRATES_FAILURE:
+      return {
+        ...state,
+        status: 'failed',
+        errorMsg: payload,
       };
     default:
       return state;
