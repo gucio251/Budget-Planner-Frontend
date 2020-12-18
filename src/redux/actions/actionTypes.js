@@ -12,9 +12,6 @@ export const userConstants = {
 
     GETUSERS_REQUEST: 'USERS_GETALL_REQUEST',
     GETUSERS_SUCCESS: 'USERS_GETALL_SUCCESS',
-<<<<<<< HEAD
-    GETUSERS_FAILURE: 'USERS_GETALL_FAILURE'
-=======
     GETUSERS_FAILURE: 'USERS_GETALL_FAILURE',
 }
 
@@ -90,5 +87,4 @@ export const filteredTransactionsConstants = {
 export const groupedExpensesConstants = {
   GROUPEDEXPENSES_REQUEST: 'GROUPED_EXPENSES_REQUEST',
   GROUPEDEXPENSES_LOAD: 'GROUPED_EXPENSES_LOAD',
->>>>>>> c6ad148a2ecfaac525fdf265c0de8230d298eab2
 }

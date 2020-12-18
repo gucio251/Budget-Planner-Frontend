@@ -2,13 +2,6 @@ import { combineReducers } from "redux";
 import users from './usersReducer';
 import registration from './registrationReducer';
 import login from './loginReducer'
-<<<<<<< HEAD
-
-const rootReducer = combineReducers({
-  users,
-  registration,
-  login
-=======
 import expenseTypes from './expenseTypesReducer'
 import incomeTypes from './incomeTypesReducer'
 import currencies from './currencyReducer'
@@ -26,7 +19,6 @@ const rootReducer = combineReducers({
   currencies,
   expenses,
   datesRange,
->>>>>>> c6ad148a2ecfaac525fdf265c0de8230d298eab2
 });
 
 export default rootReducer;

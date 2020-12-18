@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import React , {useState} from 'react';
-import {ManageSidebar} from './../ManageSidebar/ManageSidebar'
-
-const Dashboard = () => {
-
-    return (
-        <ManageSidebar/>
-    );
-};
-
-export {Dashboard};
-=======
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -36,7 +23,7 @@ const StyledDashboard = styled.div`
 `;
 const StyledToolbar = styled.div`
   grid-area: toolbar;
-`
+`;
 const StyledReportsSide = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,36 +36,35 @@ const StyledSideBar = styled.div`
 
 const StyledDashboardOverview = styled.div`
   grid-area: dashboardMain;
-  margin: 10px 40px 30px 30px ;
-`
+  margin: 10px 40px 30px 30px;
+`;
 
 const Dashboard = () => {
-    const dispatch = useDispatch();
-    useEffect(()=> {
-      dispatch(expenseTypesActions.load(localStorage.getItem('token')));
-      dispatch(incomeTypesActions.load(localStorage.getItem('token')));
-      dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
-      dispatch(expensesActions.load(localStorage.getItem('token')));
-      dispatch(incomesActions.load(localStorage.getItem('token')));
-      dispatch(currencyActions.loadRatesFromApi());
-    }, [])
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(expenseTypesActions.load(localStorage.getItem('token')));
+    dispatch(incomeTypesActions.load(localStorage.getItem('token')));
+    dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
+    dispatch(expensesActions.load(localStorage.getItem('token')));
+    dispatch(incomesActions.load(localStorage.getItem('token')));
+    dispatch(currencyActions.loadRatesFromApi());
+  }, []);
 
-    return (
-      <StyledDashboard>
-        <StyledSideBar>
-          <Sidebar />
-        </StyledSideBar>
-        <StyledReportsSide>
-          <StyledToolbar>
-            <TopToolbar />
-          </StyledToolbar>
-          <StyledDashboardOverview>
-            <DashboardOverviewHandling />
-          </StyledDashboardOverview>
-        </StyledReportsSide>
-      </StyledDashboard>
-    );
+  return (
+    <StyledDashboard>
+      <StyledSideBar>
+        <Sidebar />
+      </StyledSideBar>
+      <StyledReportsSide>
+        <StyledToolbar>
+          <TopToolbar />
+        </StyledToolbar>
+        <StyledDashboardOverview>
+          <DashboardOverviewHandling />
+        </StyledDashboardOverview>
+      </StyledReportsSide>
+    </StyledDashboard>
+  );
 };
 
 export default Dashboard;
->>>>>>> c6ad148a2ecfaac525fdf265c0de8230d298eab2

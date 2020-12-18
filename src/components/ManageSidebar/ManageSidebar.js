@@ -1,36 +1,4 @@
 import React, {useState} from 'react';
-<<<<<<< HEAD
-import {Sidebar} from './../Sidebar/Sidebar'
-
-const ManageSidebar = () => {
-    const [hoveredEl, sethoveredEl] = useState();
-    const [activeElement, setActiveEl] = useState(0);
-
-    const onClick = (id) => {
-        setActiveEl(id);
-    };
-
-    const onmouseEnterHandler = id => {
-        sethoveredEl(id);
-    }
-
-    const onmouseLeaveHandler = () => {
-        sethoveredEl(null);
-    }
-
-    return (
-      <Sidebar
-        onClick={onClick}
-        onmouseEnterHandler={onmouseEnterHandler}
-        onmouseLeaveHandler={onmouseLeaveHandler}
-        hoveredEl={hoveredEl}
-        activeElement={activeElement}
-      />
-    );
-};
-
-export {ManageSidebar};
-=======
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -81,4 +49,3 @@ ManageSidebar.propTypes = {
 };
 
 export default ManageSidebar;
->>>>>>> c6ad148a2ecfaac525fdf265c0de8230d298eab2
