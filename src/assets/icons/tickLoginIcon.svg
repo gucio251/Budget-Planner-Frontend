@@ -1,0 +1,9 @@
+      <svg data-name="check active" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <g id="circle" data-name="Group 3">
+          <g id="Oval_Copy_23" data-name="Oval Copy 23" fill="none" stroke="#02ae9d" strokeMiterlimit="10" strokeWidth="2">
+            <circle cx="12" cy="12" r="12" stroke="none" />
+            <circle cx="12" cy="12" r="11" fill="none" />
+          </g>
+          <path id="line" d="M0,5.948,3.79,6V0" transform="translate(13.002 7.259) rotate(45)" fill="none" stroke="#02ae9d" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth="2"/>
+        </g>
+      </svg>

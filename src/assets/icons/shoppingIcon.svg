@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon_shopping</title>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="List-of-categories" transform="translate(-55.000000, -661.000000)">
+            <g id="Icon_shopping" transform="translate(55.000000, 661.000000)">
+                <circle id="Oval" fill="#FF7E87" cx="16" cy="16" r="16"></circle>
+                <path d="M12.5,21 C11.675,21 11,21.675 11,22.5 C11,23.325 11.675,24 12.5,24 C13.325,24 14,23.325 14,22.5 C14,21.675 13.325,21 12.5,21 Z M8,8 L8,9.6 L9.6,9.6 L12.48,15.68 L11.36,17.6 C11.28,17.84 11.2,18.16 11.2,18.4 C11.2,19.28 11.92,20 12.8,20 L22.4,20 L22.4,18.4 L13.12,18.4 C13.04,18.4 12.96,18.32 12.96,18.24 L12.96,18.1599686 L13.68,16.7999686 L19.6,16.7999686 C20.24,16.7999686 20.72,16.4799686 20.96,15.9999686 L23.84,10.8 C24,10.64 24,10.56 24,10.4 C24,9.92 23.68,9.6 23.2,9.6 L11.36,9.6 L10.64,8 L8,8 Z M20.5,21 C19.675,21 19,21.675 19,22.5 C19,23.325 19.675,24 20.5,24 C21.325,24 22,23.325 22,22.5 C22,21.675 21.325,21 20.5,21 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g id="Group_5" data-name="Group 5" transform="translate(-55 -345)">
+    <g id="Group_5-2" data-name="Group 5" transform="translate(55 345)">
+      <circle id="Oval" cx="16" cy="16" r="16" fill="#ff2d55"/>
+    </g>
+    <g id="heart_2_" data-name="heart (2)" transform="translate(62 354)">
+      <path id="Path" d="M8.995,1.287C5.071-1.67.083.928,0,4.451A4.128,4.128,0,0,0,.879,7.03h3.88l.69-.991a.574.574,0,0,1,.9-.01L7.8,8,9.924,4.139a.569.569,0,0,1,.941-.021L12.685,7.03H17.11C20.389,2.614,13.909-2.417,8.995,1.287Z" fill="#fff"/>
+      <path id="Path-2" data-name="Path" d="M9.8,2.725,8.381,0l-2,4.381a.5.5,0,0,1-.886.057L4.039,2.075l-.389.671A.5.5,0,0,1,3.215,3H0c.1.109-.436-.446,6.642,6.846a.5.5,0,0,0,.715,0C14.327,2.668,13.9,3.11,14,3H10.244A.5.5,0,0,1,9.8,2.725Z" transform="translate(2 6)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
