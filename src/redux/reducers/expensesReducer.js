@@ -40,17 +40,11 @@ const expenses = (state = initialState, {type, payload}) => {
     case expensesConstants.ADDEXPENSE_REQUEST:
       return {
         ...state,
-        status: 'adding',
       };
     case expensesConstants.ADDEXPENSE_SUCCESS:
-      const expenseWithSvg = handleSvgAddition(
-        payload,
-        'category',
-        expenseTypeSvgCorrelation
-      );
       return {
         ...state,
-        expenses: [].concat(state.expenses, expenseWithSvg),
+        expenses: [].concat(state.expenses, {...payload, type: 'expense'}),
         status: 'succedded',
       };
     case expensesConstants.DELETEEXPENSE_SUCCESS:

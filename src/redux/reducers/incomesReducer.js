@@ -46,7 +46,6 @@ const incomes = (state = initialState, {type, payload}) => {
         ...state,
       };
     case incomesConstants.ADDINCOME_SUCCESS:
-      debugger;
       return {
         ...state,
         incomes: [].concat(state.incomes, {...payload, type: 'income'}),

@@ -5,11 +5,11 @@ const load = (token) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.GETINCOMES_REQUEST };
   };
-  const success = (incomes) => {
-    return { type: incomesConstants.GETINCOMES_SUCCESS, payload: incomes };
+  const success = (payload) => {
+    return { type: incomesConstants.GETINCOMES_SUCCESS, payload };
   };
-  const failure = (error) => {
-    return { type: incomesConstants.GETINCOMES_FAILURE, payload: error };
+  const failure = (payload) => {
+    return { type: incomesConstants.GETINCOMES_FAILURE, payload };
   };
 
   dispatch(request());

@@ -31,7 +31,7 @@ const getDateRangeBasedOnOptionChosen = (optionChosen) => {
 
 const DatesRangeContainer = ({ children }) => {
   const dispatch = useDispatch();
-  const [activeRangeName, setActiveRangeName] = useState('This month');
+  const [activeRangeName, setActiveRangeName] = useState('This Month');
 
   const setActiveSettingName = (name) => {
     setActiveRangeName(name);

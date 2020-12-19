@@ -7,7 +7,7 @@ export const EmptyDiv = styled.div`
 export const StyledOverview = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 48px 330px 375px;
+  grid-template-rows: 5% 45% 50%;
   grid-template-areas:
     'welcomeTextArea dateMenu'
     'budgetSummary graphs'
@@ -19,7 +19,6 @@ export const WelcomeText = styled.span`
   grid-area: welcomeTextArea;
   font-size: 32px;
   font-weight: bold;
-  padding: 0 5%;
   margin-top: 0;
 `;
 

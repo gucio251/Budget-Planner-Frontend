@@ -10,7 +10,6 @@ const StyledMenu = styled.nav`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  padding-right: 140px;
 `;
 
 const StyledList = styled.ul`

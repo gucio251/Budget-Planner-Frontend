@@ -65,14 +65,14 @@ const renderGraphArea = props => {
     plugins: {
       datalabels: {
         formatter: (value, ctx) => {
-            Object.keys(ctx.dataset._meta).map(key => {
+            return Object.keys(ctx.dataset._meta).map(key => {
               const sum = ctx.dataset._meta[key].total;
               const percentage =((value * 100) / sum).toFixed(0) + '%';
               return percentage;
             })
-          }
-        },
-        color: '#fff',
+          },
+          color: '#fff',
+        }
       },
   };
   return (
@@ -128,22 +128,22 @@ const prepareTransactions = props => {
     return {
       expenses: {
         popular: {
-          graph: prepareDataForGraph(sortedExpensesByPopularity, graphColors, 'howManyOccurences'),
-          data: sortedExpensesByPopularity,
+          graph: prepareDataForGraph(sortedExpensesByPopularity.slice(0,4), graphColors, 'howManyOccurences'),
+          data: sortedExpensesByPopularity.slice(0,4),
         },
         expensive: {
-          graph: prepareDataForGraph(sortedExpensesByHighestAmount, graphColors, 'howManyOccurences'),
-          data: sortedExpensesByHighestAmount,
+          graph: prepareDataForGraph(sortedExpensesByHighestAmount.slice(0,4), graphColors, 'amount'),
+          data: sortedExpensesByHighestAmount.slice(0,4),
         },
       },
       incomes: {
         popular: {
-          graph: prepareDataForGraph(sortedIncomesByPopularity, graphColors, 'howManyOccurences'),
-          data: sortedIncomesByPopularity,
+          graph: prepareDataForGraph(sortedIncomesByPopularity.slice(0,4), graphColors, 'howManyOccurences'),
+          data: sortedIncomesByPopularity.slice(0.4),
         },
         expensive: {
-          graph: prepareDataForGraph(sortedIncomesByHighestAmount, graphColors, 'howManyOccurences'),
-          data: sortedIncomesByHighestAmount,
+          graph: prepareDataForGraph(sortedIncomesByHighestAmount.slice(0,4), graphColors, 'amount'),
+          data: sortedIncomesByHighestAmount.slice(0,4),
         },
       },
     };

@@ -106,6 +106,7 @@ const renderNavigation = (props) => {
 };
 
 const checkIfTransactionIsModified = (props) => {
+  debugger;
   return props.initialValues.hasOwnProperty('id');
 }
 
@@ -225,7 +226,7 @@ const renderForm = ({
                     type="submit"
                     disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
                   >
-                    {checkIfTransactionIsModified(props) ? 'MODIFY' : 'ADD'}
+                  ADD
                   </Button>
                 </Grid>
               </Grid>

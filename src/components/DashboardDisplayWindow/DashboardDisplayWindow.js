@@ -13,7 +13,8 @@ import {
 const useStyles = makeStyles({
   borderRadiusRemoved: {
     borderRadius: 0,
-    height: `100%`
+    height: `100%`,
+    position: 'relative',
   },
   root: {
     minWidth: 275,
@@ -25,15 +26,24 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: 18,
-    fontWeight: 500
+    fontWeight: 500,
   },
   pos: {
     marginBottom: 12,
   },
   paddingBottom0: {
     paddingBottom: 0,
-    paddingTop: 0
-  }
+    paddingTop: 0,
+    position: 'absolute',
+    display: 'flex',
+    width: '100%',
+  },
+  boxStyling: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 10px 10px 0'
+  },
 });
 
 
@@ -46,8 +56,8 @@ const DashboardDisplayWindow = ({children, title}) => {
           {children}
         </CardContent>
         <CardActions className={classes.paddingBottom0}>
-          <Grid container justify='flex-end' alignItems='center'>
-            <Grid item xs={4}>
+          <Grid container justify="flex-end" alignItems="center">
+            <Grid item xs={3} className={classes.boxStyling}>
               {'See more'}
               <Arrow />
             </Grid>
