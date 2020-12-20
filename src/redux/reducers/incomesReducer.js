@@ -19,7 +19,6 @@ const incomes = (state = initialState, {type, payload}) => {
         status: 'loading',
       };
     case incomesConstants.GETINCOMES_SUCCESS:
-      debugger;
       const incomesWithSvg = handleSvgAddition(
         payload,
         'category',

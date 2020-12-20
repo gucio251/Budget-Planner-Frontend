@@ -9,8 +9,7 @@ const initialState = {
   rates: {},
   active: 'USD'
 }
-const currencies = (state = initialState, action) => {
-  const { type, payload } = action;
+const currencies = (state = initialState, { type, payload }) => {
   switch (type) {
     case currenciesConstants.GETCURRENCIES_REQUEST:
       return {
@@ -30,6 +29,11 @@ const currencies = (state = initialState, action) => {
         status: 'failed',
         errorMsg: payload,
       };
+    case currenciesConstants.CHANGECURRENCY_SUCCESS:
+      return {
+        ...state,
+        active: payload,
+      }
     case currenciesConstants.GETRATES_REQUEST:
       return {
         ...state,

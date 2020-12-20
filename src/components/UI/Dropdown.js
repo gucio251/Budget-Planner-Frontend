@@ -91,6 +91,7 @@ const Dropdown = ({
   name,
   handleBlur,
   disabledWithoutOption,
+  placeholder
 }) => {
   return (
     <Select
@@ -102,6 +103,7 @@ const Dropdown = ({
       value={value}
       onChange={onChange}
       onBlur={handleBlur}
+      placeholder={placeholder}
       name={name}
       noOptionsMessage={() => null}
       disabledWithoutOption={disabledWithoutOption}

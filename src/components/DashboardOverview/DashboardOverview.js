@@ -6,6 +6,7 @@ import {
   WelcomeText,
   EmptyDiv,
   StyledDateMenu,
+  StyledDropdown,
   StyledBudgetSummary,
   StyledGraphArea,
   StyledAllTransactions,
@@ -16,18 +17,31 @@ import DashboardDateMenu from 'components/DashboardDateMenu/DashboardDateMenu';
 import DashboardDisplayWindow from 'components/DashboardDisplayWindow/DashboardDisplayWindow';
 import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType';
 import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
+import CustomDropdownDashboard from 'components/UI/Dropdown';
+import {currencyActions} from 'redux/actions/currencyActions'
 
 import FilteredTransactionsContainer from 'containers/FilteredTransactionsContainer/FilteredTransactionsContainer';
+import {useDispatch} from 'react-redux';
 
 const DashboardOverview = () => {
+  const dispatch=useDispatch();
   return (
     <FilteredTransactionsContainer>
-      {({ recalculatedExpenses, recalculatedIncomes }) => (
+      {({ recalculatedExpenses, recalculatedIncomes, availableCurrenciesState }) => (
         <StyledOverview>
           <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
           <EmptyDiv />
           <EmptyDiv />
           <StyledDateMenu>
+            <StyledDropdown>
+              <CustomDropdownDashboard
+                list={availableCurrenciesState.currencies}
+                onChange={value => dispatch(currencyActions.changeActiveCurrency(value.value))}
+                placeholder={availableCurrenciesState.active}
+                isSearchable={true}
+                name='currencies'
+              />
+            </StyledDropdown>
             <DashboardDateMenu />
           </StyledDateMenu>
           <StyledBudgetSummary>

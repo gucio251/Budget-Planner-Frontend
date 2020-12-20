@@ -7,7 +7,6 @@ import Modal from 'components/Modal/Modal';
 import CustomRangePicker from 'containers/CustomRange/CustomRange';
 
 const StyledMenu = styled.nav`
-  width: 100%;
   display: flex;
   justify-content: flex-end;
 `;

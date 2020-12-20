@@ -24,6 +24,8 @@ export const WelcomeText = styled.span`
 
 export const StyledDateMenu = styled.div`
   grid-area: dateMenu;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const StyledBudgetSummary = styled.div`
@@ -37,3 +39,7 @@ export const StyledGraphArea = styled.div`
 export const StyledAllTransactions = styled.div`
   grid-area: aa;
 `;
+
+export const StyledDropdown = styled.div`
+  width: 30%
+`

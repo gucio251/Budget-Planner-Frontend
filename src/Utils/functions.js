@@ -150,8 +150,9 @@ export const recalculateTransactionsForActiveCurrency = ({
     if (transaction.currency === currencies.active) {
       return transaction;
     } else {
-      const calculatedAmount =
-        transaction.amount / currencies.rates[transaction.currency];
+      const calculatedAmount = transaction.amount *
+        (currencies.rates[currencies.active] /
+          currencies.rates[transaction.currency]);
       return {
         ...transaction,
         currency: currencies.active,

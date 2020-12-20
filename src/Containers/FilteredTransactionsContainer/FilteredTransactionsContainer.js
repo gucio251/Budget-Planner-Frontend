@@ -13,10 +13,12 @@ const FilteredTransactionsContainer = ({children, expenses, incomes, datesRange,
     const recalculatedExpenses = recalculateTransactionsForActiveCurrency({transactions: filteredExpenses, currencies});
     const recalculatedIncomes = recalculateTransactionsForActiveCurrency({transactions: filteredIncomes, currencies});
 
+    const availableCurrenciesState = currencies;
 
     return children({
       recalculatedExpenses,
       recalculatedIncomes,
+      availableCurrenciesState,
     });
 };
 

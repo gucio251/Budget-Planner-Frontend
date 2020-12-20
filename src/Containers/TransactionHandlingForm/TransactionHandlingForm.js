@@ -37,7 +37,8 @@ const useStyles = makeStyles(() => ({
     top: '5%',
     width: '30%',
     backgroundColor: '#f8f9fb',
-    padding: '2%'
+    padding: '2%',
+    overflow: 'visible'
   }
 }));
 

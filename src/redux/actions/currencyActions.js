@@ -50,7 +50,15 @@ const loadRatesFromApi = () => (dispatch) => {
     );
 }
 
+const changeActiveCurrency = (currencyName) => (dispatch) => {
+  const success = (payload) => {
+    return { type: currenciesConstants.CHANGECURRENCY_SUCCESS, payload };
+  };
+
+  dispatch(success(currencyName));
+}
 export const currencyActions = {
   loadCurrencies,
   loadRatesFromApi,
+  changeActiveCurrency
 };
