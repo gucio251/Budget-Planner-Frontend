@@ -1,4 +1,4 @@
-import { expensesConstants, filteredTransactionsConstants } from 'redux/actions/actionTypes';
+import { expensesConstants } from 'redux/actions/actionTypes';
 import * as expensesApi from 'api/expensesApi';
 
 const load = (token) => (dispatch) => {
@@ -53,15 +53,14 @@ const add = (expense) => (dispatch) => {
 }
 
 const update = (expense) => (dispatch) => {
-  debugger;
   const request = () => {
     return { type: expensesConstants.UPDATEEXPENSE_REQUEST };
   };
-  const success = (payload) => {
-    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, payload };
+  const success = (expense) => {
+    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, expense };
   };
-  const failure = (payload) => {
-    return { type: expensesConstants.UPDATEEXPENSE_FAILURE, payload };
+  const failure = (error) => {
+    return { type: expensesConstants.UPDATEEXPENSE_FAILURE, error };
   };
 
   dispatch(request());

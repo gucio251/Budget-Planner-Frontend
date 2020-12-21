@@ -40,7 +40,7 @@ const renderDashboard = ({ expenses, incomes }) => {
 const renderDashboardLoading = props => {
   return (
     <>
-
+      xoxoxox
     </>
   )
 }

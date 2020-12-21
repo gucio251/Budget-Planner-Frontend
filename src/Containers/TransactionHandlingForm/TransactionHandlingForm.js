@@ -52,10 +52,16 @@ const TransactionHandlingForm = props => {
       switch(name){
         case 'Income':
           setCategoriesToBeDisplayed('incomeTypes');
-          setInitialValues({ ...initialValues, type: 'income' });
+          setInitialValues((prevState) => ({
+            ...prevState,
+            type: 'income',
+          }));
           break;
         case 'Expense':
-          setInitialValues({...initialValues, type: 'expense'})
+          setInitialValues((prevState) => ({
+            ...prevState,
+            type: 'expense'
+          }))
           setCategoriesToBeDisplayed('expenseTypes');
           break;
         default:
@@ -79,16 +85,16 @@ const TransactionHandlingForm = props => {
               renderNavigation(handleSourceChange)}
           </Grid>
           {renderForm({
+            ...props,
             initialValues: initialValues,
             categories: props[categoriesToBeDisplayed],
             currencies: props.currencies,
             handleSubmit: returnSubmitHandler({
-              initialValues: props.initialValues,
+              initialValues: initialValues,
               category: categoriesToBeDisplayed,
             }),
             dispatch: dispatch,
             handleClose: props.handleClose,
-            ...props,
           })}
         </Card>
       </Container>
@@ -107,7 +113,6 @@ const renderNavigation = (props) => {
 };
 
 const checkIfTransactionIsModified = (props) => {
-  debugger;
   return props.initialValues.hasOwnProperty('id');
 }
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ReactComponent as Arrow} from 'assets/icons/arrowDashboardRight.svg';
+import { ReactComponent as Arrow } from 'assets/icons/arrowDashboardRight.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
   CardContent,
   Grid,
-  Typography
+  Typography,
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -42,34 +42,33 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: '0 10px 10px 0'
+    padding: '0 10px 10px 0',
   },
 });
 
-
-const DashboardDisplayWindow = ({children, title}) => {
-    const classes = useStyles();
-    return (
-      <Card className={classes.borderRadiusRemoved}>
-        <CardContent>
-          <Typography className={classes.title}>{title}</Typography>
-          {children}
-        </CardContent>
-        <CardActions className={classes.paddingBottom0}>
-          <Grid container justify="flex-end" alignItems="center">
-            <Grid item xs={3} className={classes.boxStyling}>
-              {'See more'}
-              <Arrow />
-            </Grid>
+const DashboardDisplayWindow = ({ children, title }) => {
+  const classes = useStyles();
+  return (
+    <Card className={classes.borderRadiusRemoved}>
+      <CardContent>
+        <Typography className={classes.title}>{title}</Typography>
+        {children}
+      </CardContent>
+      <CardActions className={classes.paddingBottom0}>
+        <Grid container justify="flex-end" alignItems="center">
+          <Grid item xs={3} className={classes.boxStyling}>
+            {'See more'}
+            <Arrow />
           </Grid>
-        </CardActions>
-      </Card>
-    );
+        </Grid>
+      </CardActions>
+    </Card>
+  );
 };
 
 DashboardDisplayWindow.propTypes = {
-    children: PropTypes.element.isRequired,
-    title: PropTypes.string.isRequired
+  children: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default DashboardDisplayWindow;
