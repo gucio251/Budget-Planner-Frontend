@@ -6,6 +6,7 @@ export const EmptyDiv = styled.div`
 
 export const StyledOverview = styled.div`
   display: grid;
+  height: 100%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 5% 45% 50%;
   grid-template-areas:

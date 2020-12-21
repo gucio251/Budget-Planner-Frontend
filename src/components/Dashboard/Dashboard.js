@@ -10,6 +10,7 @@ import { Sidebar } from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
 import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
+
 const StyledDashboard = styled.div`
   width: 100vw;
   height: 100vh;
@@ -37,6 +38,8 @@ const StyledSideBar = styled.div`
 const StyledDashboardOverview = styled.div`
   grid-area: dashboardMain;
   margin: 10px 40px 30px 30px;
+  height: 100vh;
+  padding-bottom: 130px;
 `;
 
 const Dashboard = () => {

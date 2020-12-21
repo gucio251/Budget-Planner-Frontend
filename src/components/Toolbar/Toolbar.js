@@ -15,7 +15,6 @@ import Typography from '@material-ui/core/Typography';
 
 import {getTodaysDate} from 'Utils/functions';
 
-
 const ButtonItemsWrapper = styled.div`
     display: flex;
     gap: 10px;
