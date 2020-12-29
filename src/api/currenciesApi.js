@@ -1,5 +1,5 @@
 import { handleResponse, handleError } from './apiUtils';
-const baseUrl = 'http://budget-planner-api.herokuapp.com/api/';
+const baseUrl = 'https://budget-planner-api.herokuapp.com/api/';
 
 export const loadCurrencies = (token) => {
   return fetch(baseUrl + 'currencies/all', {
