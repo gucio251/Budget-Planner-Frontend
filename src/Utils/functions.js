@@ -212,9 +212,5 @@ export const addPropertyLoListOfObjects = (propertyName, value, listOfObjects) =
 
 export const getTodaysDate = () => {
   const todaysDate = new Date();
-  return {
-    day: todaysDate.getDate(),
-    month: todaysDate.getMonth() +1,
-    year: todaysDate.getFullYear()
-  };
+  return `${todaysDate.getFullYear()}-${todaysDate.getMonth() +1}-${todaysDate.getDate()}`
 }
