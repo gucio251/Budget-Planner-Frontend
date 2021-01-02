@@ -10,6 +10,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid'
 import Modal from 'components/Modal/Modal'
+import UserFeaturesList from 'components/UserFeaturesList/UserFeaturesList';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
 import Typography from '@material-ui/core/Typography';
 
@@ -24,11 +25,17 @@ const ButtonItemsWrapper = styled.div`
 const UserSectionWrapper = styled.div`
   padding-left: 30px;
   display: flex;
+  position: relative;
   align-items: center;
   gap: 10px;
   font-size: 16px;
   color: #1c245d;
 `;
+
+const StyledExpendedArrow = styled(ExpandArrow)`
+  cursor: pointer;
+`
+
 
 const useStyles = makeStyles({
   root: {
@@ -63,6 +70,7 @@ const initialValues = {
 const TopToolbar = () => {
     const classes = useStyles();
     const [openModal, setModalOpen] = useState(false);
+    const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
 
     const handleModalOpen = () => {
       setModalOpen(true);
@@ -94,7 +102,8 @@ const TopToolbar = () => {
                   <Typography className={classes.typographyRoot}>
                     Caroline
                   </Typography>
-                  <ExpandArrow />
+                  <StyledExpendedArrow onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}/>
+                  {userFeatureListOpened && (<UserFeaturesList />)}
                 </UserSectionWrapper>
               </Grid>
             </Grid>

@@ -51,10 +51,19 @@ const login = user => dispatch => {
     );
 }
 
+const logout = () => dispatch => {
+    const success = () => {return {type: userConstants.LOGOUT}}
+
+    localStorage.removeItem('token');
+    dispatch(success());
+    navigate(routes.loginPage);
+}
+
 
 export const userActions = {
     load,
     add,
     login,
+    logout
 }
 

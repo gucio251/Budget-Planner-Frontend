@@ -28,6 +28,12 @@ const login = (state = initialState, action) => {
         loggedIn: false,
         error: payload
       };
+    case userConstants.LOGOUT:
+      return {
+        ...state,
+        status: 'succedded',
+        loggedIn: false,
+      }
     default:
       return state;
   }
