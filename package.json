@@ -15,7 +15,7 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "formik": "^2.1.5",
     "framer-motion": "^1.11.0",
-    "gsap": "./gsap-bonus.tgz",
+    "gsap": "^3.5.1",
     "moment": "^2.29.1",
     "normalizr": "^3.6.1",
     "react": "^16.14.0",
