@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-  "node": "10.15.3"
+    "node": "10.15.3"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -15,7 +15,7 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "formik": "^2.1.5",
     "framer-motion": "^1.11.0",
-    "gsap": "^3.5.1",
+    "gsap": "./gsap-bonus.tgz",
     "moment": "^2.29.1",
     "normalizr": "^3.6.1",
     "react": "^16.14.0",

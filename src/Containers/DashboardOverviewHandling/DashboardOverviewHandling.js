@@ -2,19 +2,20 @@ import React from 'react';
 import {connect} from 'react-redux';
 import DashboardOverview from 'components/DashboardOverview/DashboardOverview';
 import WelcomeStateDashboard from 'components/WelcomeStateDashboard/WelcomeStateDashboard';
+import LoadingInProgress from 'components/LoadingInProgress/LoadingInProgress';
 
 const DashboardOverviewHandling = props => {
     return (
       <>
         {checkIfSingleStatesAreInitialized(props)
           ? renderDashboard(props)
-          : renderDashboardLoading(props)}
+          : renderDashboardLoading()}
       </>
     );
 };
 
 const checkIfStateIsInitialized = props => {
-  return props.status === 'succedded' ? true : false;
+  return props.status !== 'loading' && props.status !== 'idle' ? true : false;
 }
 
 const checkIfSingleStatesAreInitialized = props => {
@@ -37,12 +38,8 @@ const renderDashboard = ({ expenses, incomes }) => {
   }
 };
 
-const renderDashboardLoading = props => {
-  return (
-    <>
-      xoxoxox
-    </>
-  )
+const renderDashboardLoading = () => {
+  return <LoadingInProgress />
 }
 
 DashboardOverviewHandling.propTypes = {
