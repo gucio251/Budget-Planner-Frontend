@@ -19,6 +19,14 @@ import { ReactComponent as AwardIcon } from 'assets/icons/awardIcon.svg';
 import { ReactComponent as GiftIcon } from 'assets/icons/giftIcon.svg';
 import { ReactComponent as SalaryIcon } from 'assets/icons/salaryIcon.svg';
 import { ReactComponent as SellingAndTradeIcon } from 'assets/icons/sellingAndTradeIcon.svg';
+import { ReactComponent as EuroIcon} from 'assets/icons/euroIcon.svg';
+import { ReactComponent as PoundIcon} from 'assets/icons/poundIcon.svg';
+import { ReactComponent as ZlotyIcon} from 'assets/icons/zlotyIcon.svg';
+import { ReactComponent as DollarIcon} from 'assets/icons/dollarIcon.svg';
+import { ReactComponent as EuroIconSmall } from 'assets/icons/euroIconSmall.svg';
+import { ReactComponent as PoundIconSmall } from 'assets/icons/poundIconSmall.svg';
+import { ReactComponent as ZlotyIconSmall } from 'assets/icons/zlotyIconSmall.svg';
+import { ReactComponent as DollarIconSmall } from 'assets/icons/dollarIconSmall.svg';
 
 export const expenseTypeSvgCorrelation = {
   Bills: BillsIcon,
@@ -69,5 +77,16 @@ export const incomeTypeSvgCorrelation = {
   Salary: SalaryIcon,
   ['Selling & Trade']: SellingAndTradeIcon,
 }
+
+export const currenciesSvgCorrelation = {
+  PLN: ZlotyIcon,
+  EUR: EuroIcon,
+  GBP: PoundIcon,
+  USD: DollarIcon,
+  PLNSmall: ZlotyIconSmall,
+  EURSmall: EuroIconSmall,
+  GBPSmall: PoundIconSmall,
+  USDSmall: DollarIconSmall,
+};
 
 

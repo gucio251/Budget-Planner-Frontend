@@ -18,22 +18,22 @@ const GridBox = styled.div`
   }
 `;
 
-const BudgetSummary = ({ expenses, incomes }) => {
+const BudgetSummary = ({ expenses, incomes, Icon }) => {
   const incomesSum = getSumOfTransactions(incomes);
   const expensesSum = getSumOfTransactions(expenses);
 
   return (
     <GridBox>
-      <SingleSummaryField amount={incomesSum-expensesSum} name="Balance">
+      <SingleSummaryField amount={incomesSum-expensesSum} name="Balance" Icon={Icon}>
         <BilanceIcon />
       </SingleSummaryField>
-      <SingleSummaryField amount={incomesSum} name="Income">
+      <SingleSummaryField amount={incomesSum} name="Income" Icon={Icon}>
         <IncomeIcon />
       </SingleSummaryField>
-      <SingleSummaryField amount={1000} name="Savings">
+      <SingleSummaryField amount={1000} name="Savings" Icon={Icon}>
         <SavingsIcon />
       </SingleSummaryField>
-      <SingleSummaryField amount={0 - expensesSum} name="Expenses">
+      <SingleSummaryField amount={0 - expensesSum} name="Expenses" Icon={Icon}>
         <ExpensesIcon />
       </SingleSummaryField>
     </GridBox>

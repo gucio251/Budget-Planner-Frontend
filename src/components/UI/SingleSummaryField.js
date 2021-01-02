@@ -26,13 +26,14 @@ const useStyles = makeStyles({
   },
 });
 
-const SingleSummaryField = ({children, amount, name}) => {
+const SingleSummaryField = ({children, amount, name, Icon}) => {
     const classes = useStyles();
     return (
       <Card className={classes.root}>
         <CardContent>
           <CardMedia className={classes.media}>{children}</CardMedia>
           <Typography className={classes.amount}>
+            <Icon />
             <CountUp
               className="account-balance"
               start={0}
@@ -41,7 +42,6 @@ const SingleSummaryField = ({children, amount, name}) => {
               useEasing={true}
               useGrouping={true}
               separator="."
-              prefix="$"
               decimals={0}
             />
           </Typography>

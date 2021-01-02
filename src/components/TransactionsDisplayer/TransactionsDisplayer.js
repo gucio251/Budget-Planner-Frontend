@@ -22,114 +22,119 @@ const useStyles = makeStyles({
   },
 });
 
-const TransactionsDisplayer = ({ expenses, incomes }) => {
-  return <Displayer transactionList={getSortedTransactions([].concat(expenses, incomes))} />;
+const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon }) => {
+  return <Displayer transactionList={getSortedTransactions([].concat(expenses, incomes))} CurrencyIcon={CurrencyIcon} />;
 }
 
 
-const Displayer = ({transactionList = []}) => {
-      const dispatch = useDispatch();
-      const classes = useStyles();
-      const [openDeleteModal, setOpenDeleteModal] = useState(false);
-      const [openModifyModal, setOpenModifyModal] = useState(false)
-      const [clickedElementData, setClickedElementData] = useState({})
+const Displayer = ({ transactionList = [], CurrencyIcon }) => {
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openModifyModal, setOpenModifyModal] = useState(false);
+  const [clickedElementData, setClickedElementData] = useState({});
 
-      const handleCloseDeleteModal = () => {
-        setOpenDeleteModal(false);
-      }
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
+  };
 
-      const handleOpenDeleteModal = () => {
-        setOpenDeleteModal(true);
-      }
+  const handleOpenDeleteModal = () => {
+    setOpenDeleteModal(true);
+  };
 
-      const handleOpenModifyModal = () => {
-        setOpenModifyModal(true);
-      }
+  const handleOpenModifyModal = () => {
+    setOpenModifyModal(true);
+  };
 
-      const handleCloseModifyModal = () => {
-        setOpenModifyModal(false)
-      }
+  const handleCloseModifyModal = () => {
+    setOpenModifyModal(false);
+  };
 
-      const onIconClickHandler = e => {
-        handleOpenDeleteModal();
-        const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
-        const transactionData =  transactionList.find(singleTransaction => singleTransaction.id === clickedTransactionId );
-        setClickedElementData(transactionData);
-      }
+  const onIconClickHandler = (e) => {
+    handleOpenDeleteModal();
+    const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
+    const transactionData = transactionList.find(
+      (singleTransaction) => singleTransaction.id === clickedTransactionId
+    );
+    setClickedElementData(transactionData);
+  };
 
-      const handleModifyIconClick = e => {
-        handleOpenModifyModal();
-        const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
-        const transactionData =  transactionList.find(singleTransaction => singleTransaction.id === clickedTransactionId );
-        setClickedElementData(transactionData);
-      }
+  const handleModifyIconClick = (e) => {
+    handleOpenModifyModal();
+    const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
+    const transactionData = transactionList.find(
+      (singleTransaction) => singleTransaction.id === clickedTransactionId
+    );
+    setClickedElementData(transactionData);
+  };
 
-      const deleteTransaction = () => {
-        const {id, type} = clickedElementData;
-        const token = localStorage.getItem('token');
-        if(type === "income"){
-          dispatch(incomesActions.deleteSingle(token, {id}));
-        }else if(type === "expense"){
-          dispatch(expensesActions.deleteSingle(token, { id }));
-        }
-        handleCloseDeleteModal();
-      }
+  const deleteTransaction = () => {
+    const { id, type } = clickedElementData;
+    const token = localStorage.getItem('token');
+    if (type === 'income') {
+      dispatch(incomesActions.deleteSingle(token, { id }));
+    } else if (type === 'expense') {
+      dispatch(expensesActions.deleteSingle(token, { id }));
+    }
+    handleCloseDeleteModal();
+  };
 
-      return (
-        <>
-          <Modal open={openDeleteModal} handleClose={handleCloseDeleteModal}>
-            <DeleteTransactionContent
-              category={clickedElementData.category}
-              subcategory={clickedElementData.subcategory}
-              submitHandler={deleteTransaction}
-            />
-          </Modal>
-          <Modal open={openModifyModal} handleClose={handleCloseModifyModal}>
-            <TransactionHandlingForm
-              initialValues={clickedElementData}
-              handleClose={handleCloseModifyModal}
-            />
-          </Modal>
-          <TableContainer>
-            <Table className={classes.table} aria-label="simple table">
-              <TableBody>
-                {transactionList.map(
-                  (
-                    {
-                      id,
-                      category,
-                      Icon,
-                      subcategory,
-                      amount,
-                      comments,
-                      transaction_date,
-                      type,
-                    },
-                    index
-                  ) => {
-                    return (
-                      <MemoizedSingleTransaction
-                        id={id}
-                        key={id}
-                        category={category}
-                        Svg={Icon}
-                        subcategory={subcategory}
-                        amount={amount}
-                        transaction_date={convertDate(transaction_date)}
-                        comments={comments}
-                        index={index}
-                        type={type}
-                        onIconClickHandler={onIconClickHandler}
-                        handleModifyIconClick={handleModifyIconClick}
-                      />
-                    );
-                  }
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      );
+  return (
+    <>
+      <Modal open={openDeleteModal} handleClose={handleCloseDeleteModal}>
+        <DeleteTransactionContent
+          category={clickedElementData.category}
+          subcategory={clickedElementData.subcategory}
+          submitHandler={deleteTransaction}
+        />
+      </Modal>
+      <Modal open={openModifyModal} handleClose={handleCloseModifyModal}>
+        <TransactionHandlingForm
+          initialValues={clickedElementData}
+          handleClose={handleCloseModifyModal}
+        />
+      </Modal>
+      <TableContainer>
+        <Table className={classes.table} aria-label="simple table">
+          <TableBody>
+            {transactionList.map(
+              (
+                {
+                  id,
+                  category,
+                  Icon,
+                  subcategory,
+                  amount,
+                  comments,
+                  transaction_date,
+                  type,
+                },
+                index
+              ) => {
+                return (
+                  <MemoizedSingleTransaction
+                    id={id}
+                    key={id}
+                    category={category}
+                    Svg={Icon}
+                    subcategory={subcategory}
+                    amount={amount}
+                    transaction_date={convertDate(transaction_date)}
+                    comments={comments}
+                    index={index}
+                    type={type}
+                    onIconClickHandler={onIconClickHandler}
+                    handleModifyIconClick={handleModifyIconClick}
+                    CurrencyIcon={CurrencyIcon}
+                  />
+                );
+              }
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
 };
 
 const getSortedTransactions = props => {

@@ -1,4 +1,5 @@
 import { currenciesConstants } from './../actions/actionTypes';
+import { currenciesSvgCorrelation } from 'Utils/svgCorrelation'
 
 const initialState = {
   status: 'idle',
@@ -7,7 +8,9 @@ const initialState = {
   currencies: [],
   errorMsg: false,
   rates: {},
-  active: 'USD'
+  active: 'USD',
+  Icon: currenciesSvgCorrelation['USD'],
+  SmallIcon: currenciesSvgCorrelation['USDSmall']
 }
 const currencies = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -24,6 +27,7 @@ const currencies = (state = initialState, { type, payload }) => {
         status: state.statusRates === 'succedded' ? 'succedded' : state.status
       };
     case currenciesConstants.GETCURRENCIES_FAILURE:
+      debugger;
       return {
         ...state,
         status: 'failed',
@@ -33,7 +37,9 @@ const currencies = (state = initialState, { type, payload }) => {
       return {
         ...state,
         active: payload,
-      }
+        Icon: currenciesSvgCorrelation[payload],
+        SmallIcon: currenciesSvgCorrelation[`${payload}Small`]
+      };
     case currenciesConstants.GETRATES_REQUEST:
       return {
         ...state,

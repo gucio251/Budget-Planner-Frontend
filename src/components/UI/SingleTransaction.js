@@ -44,6 +44,7 @@ const SingleTransaction = ({
   transaction_date,
   onIconClickHandler,
   handleModifyIconClick,
+  CurrencyIcon
 }) => {
   return (
     <TableRow key={id}>
@@ -66,9 +67,11 @@ const SingleTransaction = ({
           <DeleteIcon id={id} type={type} onClick={onIconClickHandler} />
         </BootstrapTooltip>
       </StyledTableCell>
-      <StyledTableCell>{`${type === 'expense' ? '-' : '+'}$${amount.toFixed(
-        2
-      )}`}</StyledTableCell>
+      <StyledTableCell>
+        {`${type === 'expense' ? '-' : '+'}`}
+        <CurrencyIcon />
+        {amount.toFixed(2)}
+      </StyledTableCell>
     </TableRow>
   );
 };

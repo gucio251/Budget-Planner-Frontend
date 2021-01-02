@@ -27,7 +27,11 @@ const DashboardOverview = () => {
   const dispatch=useDispatch();
   return (
     <FilteredTransactionsContainer>
-      {({ recalculatedExpenses, recalculatedIncomes, availableCurrenciesState }) => (
+      {({
+        recalculatedExpenses,
+        recalculatedIncomes,
+        availableCurrenciesState,
+      }) => (
         <StyledOverview>
           <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
           <EmptyDiv />
@@ -36,10 +40,12 @@ const DashboardOverview = () => {
             <StyledDropdown>
               <CustomDropdownDashboard
                 list={availableCurrenciesState.currencies}
-                onChange={value => dispatch(currencyActions.changeActiveCurrency(value.value))}
+                onChange={(value) =>
+                  dispatch(currencyActions.changeActiveCurrency(value.value))
+                }
                 placeholder={availableCurrenciesState.active}
                 isSearchable={true}
-                name='currencies'
+                name="currencies"
               />
             </StyledDropdown>
             <DashboardDateMenu />
@@ -48,6 +54,7 @@ const DashboardOverview = () => {
             <BudgetSummary
               expenses={recalculatedExpenses}
               incomes={recalculatedIncomes}
+              Icon={availableCurrenciesState.Icon}
             />
           </StyledBudgetSummary>
           <StyledGraphArea>
@@ -63,6 +70,7 @@ const DashboardOverview = () => {
               <TransactionsDisplayer
                 expenses={recalculatedExpenses}
                 incomes={recalculatedIncomes}
+                CurrencyIcon={availableCurrenciesState.SmallIcon}
               />
             </DashboardDisplayWindow>
           </StyledAllTransactions>
