@@ -1,12 +1,13 @@
 import React from 'react';
-import {Link} from '@reach/router'
+import {Redirect} from '@reach/router'
 import {routes} from 'routes'
 
-const ProtectedRoutes = ({component:Component}) => {
-    //const Component = component
+const ProtectedRoutes = ({component:Component, ...rest}) => {
     const isAuthenticated = localStorage.getItem('token');
-    return (
-       isAuthenticated ? (<Component/>) : (<Link to = {{pathname: routes.loginPage}}/>)
+    return isAuthenticated ? (
+      <Component {...rest} />
+    ) : (
+      <Redirect from={rest.path} to={routes.loginPage} noThrow />
     );
 };
 

@@ -6,15 +6,16 @@ import Dashboard from 'components/Dashboard/Dashboard';
 import LoginPage from 'views/LoginPage/LoginPage';
 import ProtectedRoutes from 'components/ProtectedRoutes/ProtectedRoutes';
 import RegistrationPage from 'views/RegistrationPage/RegistrationPage';
+import StandardRoutes from 'components/StandardRoutes/StandardRoutes';
 import SuccessPage from 'views/SuccessPage/SuccessPage';
 
 const App = () => {
   return (
     <Router style={{ width: '100%' }}>
-      <RegistrationPage path={routes.registrationPage} />
-      <SuccessPage path={routes.successRegistrationPage} />
-      <LoginPage path={routes.loginPage} />
-      <Dashboard path={routes.dashboard} />
+      <StandardRoutes component={RegistrationPage} path={routes.registrationPage} />
+      <StandardRoutes component={SuccessPage} path={routes.successRegistrationPage} />
+      <StandardRoutes component={LoginPage} path={routes.loginPage} />
+      <ProtectedRoutes component={Dashboard} path={routes.dashboard}/>
     </Router>
   );
 };
