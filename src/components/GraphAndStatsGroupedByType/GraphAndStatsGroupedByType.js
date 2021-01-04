@@ -33,6 +33,23 @@ const StyledList = styled.div`
   grid-area: list;
 `;
 
+const StyledTextArea = styled.div`
+  grid-area: graph / graph / graph / list;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledMainText = styled.h3`
+  font-size: 21px;
+  font-weight: 450;
+`
+
+const Text = styled.p`
+  font-size: 14px;
+`
+
 const GraphAndStatsGroupedByType = (props) => {
   const [dataToBeDisplayed, setDataToBeDisplayed] = useState({
     category: 'expenses',
@@ -91,27 +108,35 @@ const renderGraphArea = props => {
           value={dataToBeDisplayed.type}
         />
       </StyledDropdowns>
-      <StyledGraph>
-        <Doughnut
-          data={
-            Transactions[dataToBeDisplayed.category][
-              dataToBeDisplayed.type
-            ].graph
-          }
-          options={options}
-        />
-      </StyledGraph>
-      <StyledList>
-        <GroupedTransactionsDisplayer
-          transactions={
-            Transactions[dataToBeDisplayed.category][
-              dataToBeDisplayed.type
-            ].data
-          }
-        />
-      </StyledList>
+      {Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type].data.length === 0 ? (
+        <StyledTextArea>
+          <StyledMainText>
+            {`No ${dataToBeDisplayed.category} to analyze yet`}
+          </StyledMainText>
+          <Text>{`Add ${dataToBeDisplayed.category} and start analysing your spendings`}</Text>
+        </StyledTextArea>
+      ) : (
+        <>
+          <StyledGraph>
+            <Doughnut
+              data={
+                Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type]
+                  .graph
+              }
+              options={options}
+            />
+          </StyledGraph>
+          <StyledList>
+            <GroupedTransactionsDisplayer
+              transactions={
+                Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type]
+                  .data
+              }
+            />
+          </StyledList>
+        </>
+      )}
     </>
-
   );
 }
 
