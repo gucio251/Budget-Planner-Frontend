@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
+import {PropTypes} from 'prop-types';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import {ReactComponent as LogOutIcon} from 'assets/icons/logOutIcon.svg'
@@ -35,10 +36,29 @@ const ListItemText = styled.span`
   font-weight: 450;
 `;
 
-const UserFeaturesList = () => {
+const useOutsideClickDetector = (ref, toggleFunc) => {
+  useEffect(()=> {
+    const handleClickOutside = (e) => {
+      if(ref.current && !ref.current.contains(e.target)){
+        toggleFunc(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [ref])
+}
+
+const UserFeaturesList = ({setToggle}) => {
+    const wrapperRef = useRef(null);
     const dispatch=useDispatch();
+    useOutsideClickDetector(wrapperRef, setToggle);
+
     return (
-      <Wrapper>
+      <Wrapper ref={wrapperRef}>
           <List>
             <ListItem onClick={() => dispatch(userActions.logout())}>
                 <LogOutIcon/>
@@ -51,4 +71,7 @@ const UserFeaturesList = () => {
     );
 };
 
+UserFeaturesList.propTypes = {
+  setToggle: PropTypes.func.isRequired
+}
 export default UserFeaturesList;

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
+import gsap from 'gsap';
 import Button from 'components/UI/Button'
 import {ReactComponent as AddSign} from 'assets/icons/addSignButton.svg';
 import { ReactComponent as Avatar } from 'assets/icons/userAvatar.svg';
@@ -23,19 +24,16 @@ const ButtonItemsWrapper = styled.div`
 `
 
 const UserSectionWrapper = styled.div`
-  padding-left: 30px;
+  width: 60%;
+  margin-left: 30px;
   display: flex;
   position: relative;
   align-items: center;
   gap: 10px;
   font-size: 16px;
   color: #1c245d;
-`;
-
-const StyledExpendedArrow = styled(ExpandArrow)`
   cursor: pointer;
-`
-
+`;
 
 const useStyles = makeStyles({
   root: {
@@ -68,6 +66,7 @@ const initialValues = {
 
 
 const TopToolbar = () => {
+    const arrowWrapper = useRef(null);
     const classes = useStyles();
     const [openModal, setModalOpen] = useState(false);
     const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
@@ -80,10 +79,19 @@ const TopToolbar = () => {
       setModalOpen(false);
     }
 
+    useEffect(() => {
+      const [elements] = arrowWrapper.current.children;
+      const degreesToRotate = userFeatureListOpened ? "180_ccw" : "0_cw";
+      gsap.to(elements, { rotation: degreesToRotate, duration: 0.25 });
+    }, [userFeatureListOpened]);
+
     return (
       <>
         <Modal open={openModal} handleClose={handleModalClose}>
-          <TransactionHandlingForm initialValues={initialValues} handleClose={handleModalClose}/>
+          <TransactionHandlingForm
+            initialValues={initialValues}
+            handleClose={handleModalClose}
+          />
         </Modal>
         <AppBar position="relative" className={classes.root}>
           <Toolbar className={classes.toolbarRoot}>
@@ -92,18 +100,28 @@ const TopToolbar = () => {
                 <Button onClick={handleModalOpen} color="#2F54F3">
                   <ButtonItemsWrapper>
                     <AddSign />
-                    <Typography className={classes.buttonSign}>Add new transaction</Typography>
+                    <Typography className={classes.buttonSign}>
+                      Add new transaction
+                    </Typography>
                   </ButtonItemsWrapper>
                 </Button>
               </Grid>
-              <Grid item xs={3}>
-                <UserSectionWrapper>
+              <Grid item xs={2}>
+                <UserSectionWrapper
+                  onClick={() =>
+                    setUserFeatureListOpened(!userFeatureListOpened)
+                  }
+                >
                   <Avatar />
                   <Typography className={classes.typographyRoot}>
                     Caroline
                   </Typography>
-                  <StyledExpendedArrow onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}/>
-                  {userFeatureListOpened && (<UserFeaturesList />)}
+                  <div ref={arrowWrapper}>
+                    <ExpandArrow />
+                  </div>
+                  {userFeatureListOpened && (
+                    <UserFeaturesList setToggle={setUserFeatureListOpened} />
+                  )}
                 </UserSectionWrapper>
               </Grid>
             </Grid>
