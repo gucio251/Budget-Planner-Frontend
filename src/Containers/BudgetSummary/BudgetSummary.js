@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import SingleSummaryField from 'components/UI/SingleSummaryField';
 import { ReactComponent as BilanceIcon } from 'assets/icons/balanceDashboardIcon.svg';
 import { ReactComponent as IncomeIcon } from 'assets/icons/incomeDashboardIcon.svg';
-import { ReactComponent as SavingsIcon } from 'assets/icons/savingsDashboardIcon.svg';
 import { ReactComponent as ExpensesIcon } from 'assets/icons/expensesDashboardIcon.svg';
 
 const GridBox = styled.div`
@@ -12,11 +11,18 @@ const GridBox = styled.div`
   height: 100%;
   grid-template-columns: 47% 47%;
   grid-template-rows: 49% 49%;
+  grid-template-areas:
+    'balance balance'
+    'income expense';
   grid-gap: 2% 1%;
   &:first-child {
     align-self: center;
   }
 `;
+
+const BalanceWrapper = styled.div`
+  grid-area: balance;
+`
 
 const BudgetSummary = ({ expenses, incomes, Icon }) => {
   const incomesSum = getSumOfTransactions(incomes);
@@ -24,14 +30,17 @@ const BudgetSummary = ({ expenses, incomes, Icon }) => {
 
   return (
     <GridBox>
-      <SingleSummaryField amount={incomesSum-expensesSum} name="Balance" Icon={Icon}>
-        <BilanceIcon />
-      </SingleSummaryField>
+      <BalanceWrapper>
+        <SingleSummaryField
+          amount={incomesSum - expensesSum}
+          name="Balance"
+          Icon={Icon}
+        >
+          <BilanceIcon />
+        </SingleSummaryField>
+      </BalanceWrapper>
       <SingleSummaryField amount={incomesSum} name="Income" Icon={Icon}>
         <IncomeIcon />
-      </SingleSummaryField>
-      <SingleSummaryField amount={1000} name="Savings" Icon={Icon}>
-        <SavingsIcon />
       </SingleSummaryField>
       <SingleSummaryField amount={0 - expensesSum} name="Expenses" Icon={Icon}>
         <ExpensesIcon />
