@@ -46,7 +46,6 @@ export const StyledForm = styled.form`
 
 export const StyledInputFields = styled.div`
   position: relative;
-  margin-bottom: 48px;
 
   ${({ theme }) => theme.devices.mobile} {
     width: 80%;
@@ -54,11 +53,11 @@ export const StyledInputFields = styled.div`
 `;
 
 
-export const StyledInputSideHeader = styled.span`
+export const StyledInputSideHeader = styled.h3`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 32px;
-  color: ${({ theme }) => theme.mainBlue};
+  color: ${({ theme }) => theme.dashboardBlack};
   width: 259px;
 
   ${({ theme }) => theme.devices.mobile} {
@@ -69,6 +68,6 @@ export const StyledInputSideHeader = styled.span`
 `;
 
 export const RedirectComponentWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: 16px;
   color: ${({ theme }) => theme.darkGray};
 `;

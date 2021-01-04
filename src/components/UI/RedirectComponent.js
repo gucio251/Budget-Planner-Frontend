@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledRedirectComponent = styled.span`
+const StyledRedirectComponent = styled.p`
   display: flex;
   justify-content: flex-start;
   font-size: 16px;
@@ -12,6 +12,7 @@ const StyledRedirectComponent = styled.span`
 
 const StyledLink = styled.a`
     color: ${({ theme, linkColor }) => theme[linkColor]};
+    font-weight: 510;
     text-decoration: none;
 `
 

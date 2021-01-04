@@ -122,6 +122,7 @@ const FormInputSide = ({
                   );
                 })}
                 <Button
+                  color="#264AE7"
                   handleSubmit={handleSubmit}
                   disabled={stateErrors.disabled || buttonDisabled}
                 >
