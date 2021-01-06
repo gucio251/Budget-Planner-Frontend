@@ -1,4 +1,0 @@
-[1128/232833.691:ERROR:directory_reader_win.cc(43)] FindFirstFile: System nie moøe odnaleüÊ okreúlonej úcieøki. (0x3)
-[1201/234111.283:ERROR:directory_reader_win.cc(43)] FindFirstFile: System nie moøe odnaleüÊ okreúlonej úcieøki. (0x3)
-[1203/212748.300:ERROR:process_info.cc(359)] UncheckedAllocate
-[1203/212748.396:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\≈Åukasz\AppData\Local\Google\Chrome\User Data\Crashpad\reports\1e394329-4b26-4813-a012-771c4db339bb.dmp: Proces nie moøe uzyskaÊ dostÍpu do pliku, poniewaø jest on uøywany przez inny proces. (0x20)
