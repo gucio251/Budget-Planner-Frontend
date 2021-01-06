@@ -123,6 +123,7 @@ export const StyledInput = styled.input`
   &:focus + ${StyledLabel}, &:not(:placeholder-shown) + ${StyledLabel} {
     color: ${({ theme }) => theme.darkGray};
     transform: translateY(-25px);
+    position: absolute;
     font-size: 14px;
     font-weight: bold;
     transition: all 0.5s ease;
@@ -142,11 +143,11 @@ export const StyledInput = styled.input`
   }
 
   &:not(:focus) ~ ${StyledErrorIcon} {
-    display: ${({ fieldCorrectness, fieldInitialized }) => !fieldInitialized ? "none" : !fieldCorrectness ? "block" : "none"};
+    display: ${({ fieldCorrectness, touched }) => !touched ? "none" : !fieldCorrectness ? "block" : "none"};
   }
 
   &:not(:focus) ~ ${StyledUnderline}:after {
-    background-color: ${({ fieldCorrectness, fieldInitialized, theme }) => !fieldInitialized ? theme.lightGray : fieldCorrectness ? theme.darkMint : theme.errorRed};
+    background-color: ${({ fieldCorrectness, touched, theme }) => !touched ? theme.lightGray : fieldCorrectness ? theme.darkMint : theme.errorRed};
   }
 
   &:focus ~ ${StyledUnderline} {

@@ -15,14 +15,17 @@ const getRegistrationValidationSchema = (values, registeredUsers) => {
   return Yup.object().shape({
     email: Yup.string()
       .email("Valid email address")
-      .notOneOf(registeredUsers, "Email shall be unique"),
+      .notOneOf(registeredUsers, "Email shall be unique")
+      .required('Must be filled'),
     password: Yup.string()
       .min(8, "Minimum 8 characters")
       .matches(/[A-Z]/, "One uppercase character")
       .matches(/[a-zA-Z]+[^a-zA-Z\s]+/, "One special character"),
     passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required('Must be filled'),
+      .required('Must be filled')
+      .test('password-match', 'Passwords must match', function(value){
+        return this.parent.password === value;
+      }),
   });
 }
 

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ValidationItem from "components/UI/ValidationItem";
 import {
   StyledTickIcon,
   StyledErrorIcon,
@@ -13,7 +12,7 @@ import {
 
 
 
-const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,type, touched, disabled, errorsStatuses, fieldCorrectness, fieldInitialized}) => {
+const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,type, touched, disabled, errors}) => {
   return (
     <StyledTextInput>
       <StyledInput
@@ -27,19 +26,15 @@ const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,
         autocomplete="off"
         disabled={disabled ? true : false}
         touched={touched}
-        fieldCorrectness={fieldCorrectness}
-        fieldInitialized={fieldInitialized}
+        fieldCorrectness={touched && errors.length === 0 ? true : false}
       />
       <StyledLabel htmlFor={name}>{label}</StyledLabel>
       <StyledTickIcon />
       <StyledErrorIcon />
       <StyledUnderline touched={touched} />
       <StyledValidations>
-        {fieldInitialized && errorsStatuses.map((errorMsg) => (
-            <ValidationItem
-              key={errorMsg}
-              text={errorMsg}
-            />
+        {errors.map((errorMsg) => (
+            <li key={errorMsg}>{errorMsg}</li>
         ))}
       </StyledValidations>
     </StyledTextInput>
@@ -54,12 +49,8 @@ TextInputWithValidation.propTypes = {
   handleBlur: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   touched: PropTypes.bool,
-  fieldCorrectness: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
-  errorStatuses: PropTypes.shape({
-    errorMsg: PropTypes.string.isRequired,
-    correctness: PropTypes.bool.isRequired
-  })
+  errors: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default TextInputWithValidation;

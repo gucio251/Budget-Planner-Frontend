@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {Form} from 'formik'
 
 export const StyledInputSide = styled.div`
   display: flex;
@@ -16,13 +17,15 @@ export const StyledInputSide = styled.div`
   }
 
   ${({ theme }) => theme.devices.mobile}{
+    display: ${({ displayedOnMobile }) =>
+      displayedOnMobile === true ? 'flex' : 'none'};
     width: 100vw;
     height: 100vh;
     margin-top: 0;
   }
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   justify-content: center;
