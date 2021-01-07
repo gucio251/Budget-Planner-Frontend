@@ -70,11 +70,10 @@ const Displayer = ({ transactionList = [], CurrencyIcon }) => {
 
   const deleteTransaction = () => {
     const { id, type } = clickedElementData;
-    const token = localStorage.getItem('token');
     if (type === 'income') {
-      dispatch(incomesActions.deleteSingle(token, { id }));
+      dispatch(incomesActions.deleteSingle(id));
     } else if (type === 'expense') {
-      dispatch(expensesActions.deleteSingle(token, { id }));
+      dispatch(expensesActions.deleteSingle(id));
     }
     handleCloseDeleteModal();
   };

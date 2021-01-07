@@ -1,16 +1,16 @@
 import {userConstants} from 'redux/actions/actionTypes';
 import { navigate } from '@reach/router';
 import { routes } from 'routes';
-import * as userApi from 'api/userApi';
+import {Users} from 'api/services/API'
 
 const load = () => dispatch => {
     const request = () => { return { type: userConstants.GETUSERS_REQUEST } }
-    const success = users => { return { type: userConstants.GETUSERS_SUCCESS, payload: users } }
-    const failure = error => { return { type: userConstants.GETUSERS_FAILURE, payload: error } }
+    const success = payload => { return { type: userConstants.GETUSERS_SUCCESS, payload} }
+    const failure = payload => { return { type: userConstants.GETUSERS_FAILURE, payload} }
 
     dispatch(request());
 
-    userApi.getAllUsers()
+    Users.index()
         .then(
             ({users}) => {
                 dispatch(success(users));
@@ -26,7 +26,7 @@ const add = user => dispatch => {
 
     dispatch(request());
 
-    userApi.saveUser(user).then(
+    Users.create(user).then(
         ({email}) => {
             navigate(routes.successRegistrationPage);
             dispatch(success(email));},
@@ -40,12 +40,13 @@ const login = user => dispatch => {
     const failure = error => { return { type: userConstants.LOGIN_FAILURE, payload: error }}
 
     dispatch(request());
-    userApi.authLogin(user).then(
+    Users.login(user).then(
         ({token}) => {
             dispatch(success(token));
             navigate(routes.dashboard);
         },
         (error) => {
+            debugger;
             dispatch(failure(error.message));
         }
     );

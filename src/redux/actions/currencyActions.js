@@ -1,7 +1,8 @@
 import { currenciesConstants } from 'redux/actions/actionTypes';
 import * as currenciesApi from 'api/currenciesApi';
+import {Currencies} from 'api/services/API';
 
-const loadCurrencies = (token) => (dispatch) => {
+const loadCurrencies = () => (dispatch) => {
   const request = () => {
     return { type: currenciesConstants.GETCURRENCIES_REQUEST };
   };
@@ -14,7 +15,7 @@ const loadCurrencies = (token) => (dispatch) => {
 
   dispatch(request());
 
-  currenciesApi.loadCurrencies(token).then(
+  Currencies.index().then(
     ({result}) => {
       const finalResult = result.map(({id, name}) => {
           return {

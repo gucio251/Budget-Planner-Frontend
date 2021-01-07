@@ -14,7 +14,8 @@ const withLoginFunc = Component => props => {
     useEffect(() => {
         if(loginState.error){
             setErrors({msg: loginState.error})
-            window.MyComponentRef.current.setFieldValue("password", "");
+            console.log(window.MyComponentRef);
+            //window.MyComponentRef.current.setFieldValue("password", "");
         }else{
             setErrors(false);
         }

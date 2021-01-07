@@ -1,12 +1,12 @@
 import { expensesConstants } from 'redux/actions/actionTypes';
-import * as expensesApi from 'api/expensesApi';
+import {Expenses} from 'api/services/API'
 
-const load = (token) => (dispatch) => {
+const load = () => (dispatch) => {
   const request = () => {
     return { type: expensesConstants.GETEXPENSES_REQUEST};
   };
-  const success = (expenses) => {
-    return { type: expensesConstants.GETEXPENSES_SUCCESS, payload: expenses };
+  const success = (payload) => {
+    return { type: expensesConstants.GETEXPENSES_SUCCESS, payload };
   };
   const failure = (error) => {
     return { type: expensesConstants.GETEXPENSES_FAILURE, payload: error };
@@ -15,7 +15,7 @@ const load = (token) => (dispatch) => {
 
   dispatch(request());
 
-  expensesApi.load(token).then(
+  Expenses.index().then(
     ({ result }) => {
       dispatch(success(result));
     },
@@ -38,9 +38,7 @@ const add = (expense) => (dispatch) => {
 
     dispatch(request());
 
-    const token = localStorage.getItem('token');
-
-    expensesApi.save(token, expense).then(
+    Expenses.create(expense).then(
         ({insertId}) => {
             const payload = { ...expense, id: insertId };
             dispatch(success(payload))
@@ -56,8 +54,8 @@ const update = (expense) => (dispatch) => {
   const request = () => {
     return { type: expensesConstants.UPDATEEXPENSE_REQUEST };
   };
-  const success = (expense) => {
-    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, expense };
+  const success = (payload) => {
+    return { type: expensesConstants.UPDATEEXPENSE_SUCCESS, payload };
   };
   const failure = (error) => {
     return { type: expensesConstants.UPDATEEXPENSE_FAILURE, error };
@@ -65,9 +63,7 @@ const update = (expense) => (dispatch) => {
 
   dispatch(request());
 
-  const token = localStorage.getItem('token');
-
-  expensesApi.save(token, expense).then(
+  Expenses.update(expense).then(
     (result) => {
       dispatch(success(expense));
     },
@@ -77,7 +73,7 @@ const update = (expense) => (dispatch) => {
   );
 };
 
-const deleteSingle = (token, expenseId) => (dispatch) => {
+const deleteSingle = (expenseId) => (dispatch) => {
       const request = () => {
         return { type: expensesConstants.DELETEEXPENSE_REQUEST };
       };
@@ -90,7 +86,7 @@ const deleteSingle = (token, expenseId) => (dispatch) => {
 
       dispatch(request());
 
-      expensesApi.deleteSingle(token, expenseId).then(
+      Expenses.remove(expenseId).then(
         ({id}) => {
           dispatch(success(id));
         },

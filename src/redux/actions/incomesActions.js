@@ -1,7 +1,7 @@
 import { incomesConstants } from 'redux/actions/actionTypes';
-import * as incomesApi from 'api/incomesApi';
+import {Incomes} from 'api/services/API'
 
-const load = (token) => (dispatch) => {
+const load = () => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.GETINCOMES_REQUEST };
   };
@@ -14,7 +14,7 @@ const load = (token) => (dispatch) => {
 
   dispatch(request());
 
-  incomesApi.load(token).then(
+  Incomes.index().then(
     ({results}) => {
       dispatch(success(results));
     },
@@ -37,9 +37,7 @@ const add = (income) => (dispatch) => {
 
   dispatch(request());
 
-  const token = localStorage.getItem('token');
-
-  incomesApi.save(token, income).then(
+  Incomes.create(income).then(
     ({id}) => {
       dispatch(success({ ...income, id: id }));
     },
@@ -53,8 +51,8 @@ const update = (income) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.UPDATEINCOME_REQUEST };
   };
-  const success = (income) => {
-    return { type: incomesConstants.UPDATEINCOME_SUCCESS, income };
+  const success = (payload) => {
+    return { type: incomesConstants.UPDATEINCOME_SUCCESS, payload };
   };
   const failure = (error) => {
     return { type: incomesConstants.UPDATEINCOME_FAILURE, error };
@@ -62,9 +60,7 @@ const update = (income) => (dispatch) => {
 
   dispatch(request());
 
-  const token = localStorage.getItem('token');
-
-  incomesApi.save(token, income).then(
+  Incomes.update(income).then(
     (result) => {
       dispatch(success(income));
     },
@@ -74,7 +70,7 @@ const update = (income) => (dispatch) => {
   );
 };
 
-const deleteSingle = (token, incomeId) => (dispatch) => {
+const deleteSingle = (incomeId) => (dispatch) => {
   const request = () => {
     return { type: incomesConstants.DELETEINCOME_REQUEST };
   };
@@ -87,7 +83,7 @@ const deleteSingle = (token, incomeId) => (dispatch) => {
 
   dispatch(request());
 
-  incomesApi.deleteSingle(token, incomeId).then(
+  Incomes.remove(incomeId).then(
     ({ id }) => {
       dispatch(success(id));
     },

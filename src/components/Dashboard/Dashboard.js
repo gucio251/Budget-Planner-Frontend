@@ -45,11 +45,11 @@ const StyledDashboardOverview = styled.div`
 const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(expenseTypesActions.load(localStorage.getItem('token')));
-    dispatch(incomeTypesActions.load(localStorage.getItem('token')));
-    dispatch(currencyActions.loadCurrencies(localStorage.getItem('token')));
-    dispatch(expensesActions.load(localStorage.getItem('token')));
-    dispatch(incomesActions.load(localStorage.getItem('token')));
+    dispatch(expenseTypesActions.load());
+    dispatch(incomeTypesActions.load());
+    dispatch(currencyActions.loadCurrencies());
+    dispatch(expensesActions.load());
+    dispatch(incomesActions.load());
     dispatch(currencyActions.loadRatesFromApi());
   }, []);
 
