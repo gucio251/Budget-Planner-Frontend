@@ -7,6 +7,7 @@ import {
   StyledInputFields,
   StyledForm,
   StyledInputSideHeader,
+  ButtonWrapper,
   RedirectComponentWrapper
 } from "components/FormInputSide/FormInputSide.styled"
 import Button from "components/UI/Button";
@@ -91,17 +92,19 @@ const FormContainer = ({
                       />
                     );
                   })}
-                  <Button
-                    color="#264AE7"
-                    disabled={
-                      Object.keys(touched).length === formData.length &&
-                      Object.keys(errors).length === 0
-                        ? false
-                        : true
-                    }
-                  >
-                    {buttonName}
-                  </Button>
+                  <ButtonWrapper>
+                    <Button
+                      color="#264AE7"
+                      disabled={
+                        Object.keys(touched).length === formData.length &&
+                        Object.keys(errors).length === 0
+                          ? false
+                          : true
+                      }
+                    >
+                      {buttonName}
+                    </Button>
+                  </ButtonWrapper>
                   <RedirectComponentWrapper>
                     <RedirectComponent
                       spanText={text}

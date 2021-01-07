@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import PropTypes from "prop-types";
 import {
   StyledAppInfoSide,
+  StyledWelcomeText,
   StyledPigLogo,
   StyledButtonWrapper,
   StyledSwitchMobile,
@@ -47,8 +48,8 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
 
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-      tl.fromTo(background,{ scale: 0.1 },{ duration: 0.7, scale: 1, autoAlpha: 0.1 })
-        .fromTo(floor, { y: "+=70" }, { duration: 0.7, y: 296, autoAlpha: 0.1 })
+      tl.fromTo(background,{ scale: 0.1 },{ duration: 0.7, scale: 1, autoAlpha: 0.4 })
+        .fromTo(floor, { y: "+=70" }, { duration: 0.7, y: 320, autoAlpha: 0.4 })
         .fromTo(body,{ y: "-800" }, { duration: 0.7, y: 0, autoAlpha: 1 }, "+=0.15")
         .fromTo(welcomeTextEl,{ x: "-800" },{ duration: 0.7, x: 0, autoAlpha: 1 },"+=0.15")
         .fromTo(mobileButtonEl,{ scale: 0 },{ duration: 0.7, scale: 1, autoAlpha: 1 },"+=0.15")
@@ -60,9 +61,9 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
   return (
 
     <StyledAppInfoSide displayedOnMobile={displayedOnMobile}>
-      <div ref={welcomeText}>
+      <StyledWelcomeText ref={welcomeText}>
         <WelcomeText />
-      </div>
+      </StyledWelcomeText>
       <div ref={wrapper}>
         <StyledPigLogo />
       </div>
@@ -74,7 +75,7 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
           spanText={text}
           linkText={linkText}
           href={href}
-          linkColor="darkGray"
+          linkColor="lightMint"
         />
       </StyledSwitchMobile>
     </StyledAppInfoSide>

@@ -1,11 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
-import {motion} from 'framer-motion';
 
-const StyledButton = styled(motion.button).attrs(({ className }) => ({
-  className,
-}))`
+const StyledButton = styled.button`
   width: 100%;
   height: 3.5em;
   border-radius: 0.4em;
@@ -13,7 +10,7 @@ const StyledButton = styled(motion.button).attrs(({ className }) => ({
   justify-content: center;
   align-items: center;
   background-color: ${({ theme, disabled, color }) =>
-    disabled ? theme.lightGrayDisabledButton : color};
+  disabled ? theme.lightGrayDisabledButton : color};
   text-decoration: none;
   border: none;
 
@@ -38,9 +35,14 @@ const StyledButton = styled(motion.button).attrs(({ className }) => ({
   }
 `;
 
-const Button = ({onClick, type, disabled, children, color="#02AE9D"}) => {
+const Button = ({ onClick, type, disabled, children, color = '#03C9B5' }) => {
   return (
-    <StyledButton type={type ? "submit" : ""} onClick={onClick} disabled={disabled} color={color}>
+    <StyledButton
+      type={type ? 'submit' : ''}
+      onClick={onClick}
+      disabled={disabled}
+      color={color}
+    >
       <div className="text">{children}</div>
     </StyledButton>
   );

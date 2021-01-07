@@ -11,21 +11,28 @@ export const StyledAppInfoSide = styled.div`
   width: 50vw;
   color: white;
   background-color: ${({ theme }) => theme.mainBlue};
+
   svg {
     overflow: visible;
   }
 
   ${({ theme }) => theme.devices.tablet} {
-    height: auto;
+    height: 50%;
     width: 100vw;
   }
 
   ${({ theme }) => theme.devices.mobile} {
     width: 100vw;
     height: 100vh;
-    flex: 0 0 100%;
+    padding: 0 5% 0 5%;
     align-items: center;
     display: ${({ displayedOnMobile }) => displayedOnMobile ? "flex" : "none"};
+  }
+`;
+
+export const StyledWelcomeText = styled.div`
+  ${({ theme }) => theme.devices.mobile} {
+    width: 100%;
   }
 `;
 
@@ -58,8 +65,8 @@ export const StyledButtonWrapper = styled.div`
 
   ${({ theme }) => theme.devices.mobile} {
     display: block;
-    width: 50vw;
-    margin-top: 50px;
+    width: 100%;
+    margin-top: 30px;
   }
 `;
 
@@ -70,6 +77,6 @@ export const StyledSwitchMobile = styled.div`
 
   ${({ theme }) => theme.devices.mobile} {
     display: block;
-    width: 50vw;
+    width: 100%;
   }
 `;

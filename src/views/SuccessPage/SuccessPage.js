@@ -15,7 +15,6 @@ const StyledPage = styled.div`
     ${({ theme }) => theme.devices.tablet} {
         display: block;
         flex-direction: column;
-        overflow-y: auto;
     }
 
   ${({ theme }) => theme.devices.mobile} {

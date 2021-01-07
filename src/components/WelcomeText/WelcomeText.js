@@ -2,16 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  margin-bottom: 45px;
+  margin-bottom: 10%;
+  width: 100%;
 `;
 
 const Header = styled.h1`
   font-size: 48px;
   margin-bottom: 15px;
+
+  ${({theme}) => theme.devices.mobile}{
+    font-size: 36px;
+  }
 `
 
 const HeaderTextWithColour = styled.p`
-  color: ${({ theme }) => theme.mint};
+  color: ${({ theme }) => theme.lightMint};
 `;
 
 const InfoText = styled.p`

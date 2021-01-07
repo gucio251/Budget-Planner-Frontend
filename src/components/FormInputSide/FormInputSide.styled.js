@@ -37,7 +37,8 @@ export const StyledForm = styled(Form)`
   }
 
   ${({ theme }) => theme.devices.mobile} {
-    width: 70%;
+    width: 100%;
+    padding: 0 5% 0 5%;
     height: 85%;
     display: flex;
     justify-content: center;
@@ -68,6 +69,12 @@ export const StyledInputSideHeader = styled.h3`
     display: flex;
     justify-content: flex-start;
   }
+`;
+
+export const ButtonWrapper = styled.div`
+    ${({ theme }) => theme.devices.mobile} {
+      margin-top: 45%;
+    }
 `;
 
 export const RedirectComponentWrapper = styled.div`
