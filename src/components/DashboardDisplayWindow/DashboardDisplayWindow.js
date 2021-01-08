@@ -32,15 +32,16 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   paddingBottom0: {
-    paddingBottom: 0,
-    paddingTop: 0,
     position: 'absolute',
     display: 'flex',
-    width: '100%',
+    bottom: '0px',
+    right: '0px',
+    cursor: 'pointer'
   },
   boxStyling: {
     display: 'flex',
     alignItems: 'center',
+    width: '100%',
     justifyContent: 'flex-end',
     padding: '0 10px 10px 0',
   },
@@ -56,7 +57,7 @@ const DashboardDisplayWindow = ({ children, title }) => {
       </CardContent>
       <CardActions className={classes.paddingBottom0}>
         <Grid container justify="flex-end" alignItems="center">
-          <Grid item xs={3} className={classes.boxStyling}>
+          <Grid item xs={12} className={classes.boxStyling}>
             {'See more'}
             <Arrow />
           </Grid>
