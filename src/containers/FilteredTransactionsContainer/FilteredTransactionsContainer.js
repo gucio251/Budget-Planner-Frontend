@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
@@ -6,6 +7,18 @@ import {
 } from 'Utils/functions';
 
 const FilteredTransactionsContainer = ({children, expenses, incomes, datesRange, currencies}) => {
+    const [filteredTransactions, setFilteredTransactions] = useState(calculateFilteredTransactions(expenses, incomes, datesRange, currencies))
+
+    useEffect(()=> {
+      setFilteredTransactions(calculateFilteredTransactions(expenses, incomes, datesRange, currencies));
+    }, [expenses, incomes, datesRange, currencies])
+
+    return children({
+      ...filteredTransactions
+    });
+};
+
+const calculateFilteredTransactions = (expenses, incomes, datesRange, currencies) => {
     const filteredExpenses = filterTransactionsByDates(expenses, datesRange);
     const filteredIncomes = filterTransactionsByDates(incomes, datesRange);
 
@@ -14,12 +27,12 @@ const FilteredTransactionsContainer = ({children, expenses, incomes, datesRange,
 
     const availableCurrenciesState = currencies;
 
-    return children({
+    return {
       recalculatedExpenses,
       recalculatedIncomes,
-      availableCurrenciesState,
-    });
-};
+      availableCurrenciesState
+    }
+}
 
 FilteredTransactionsContainer.propTypes = {
   children: PropTypes.oneOfType([

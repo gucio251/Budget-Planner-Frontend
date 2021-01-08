@@ -143,7 +143,8 @@ const CustomDatePicker = ({name, onChange, value, handleBlur}) => {
           selected={value}
           onChange={(val) => {
             setSelectedDate(val)
-            onChange(name, `${val.year}-${val.month}-${val.day}`);
+            const finalMonthValue = val.month.toString().length === 1 ? `0${val.month}` : val.month;
+            onChange(name, `${val.year}-${finalMonthValue}-${val.day}`);
           }}
           value={selectedDate}
           renderInput={renderCustomInput}
