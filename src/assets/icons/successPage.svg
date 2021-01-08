@@ -1,152 +1,41 @@
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="188.465"
-          height="188.481"
-          viewBox="0 0 188.465 188.481"
-        >
-          <g
-            id="Group_3"
-            data-name="Group 3"
-            transform="translate(1.635 1.879)"
-          >
-            <g transform="translate(0.45 0.45)">
-              <path
-                id="circle"
-                d="M63.446,130.232h0a52.462,52.462,0,0,1-10.021-.964l13.247.85C65.652,130.194,64.567,130.232,63.446,130.232ZM72.5,129.6,48,127.847A64.509,64.509,0,0,1,24.432,115.9,65.292,65.292,0,0,1,2.217,48.1a64.793,64.793,0,0,1,125.509,1.332,65.863,65.863,0,0,1,.994,26.339A64.722,64.722,0,0,1,72.5,129.6Z"
-                transform="matrix(0.719, -0.695, 0.695, 0.719, 0.301, 90.085)"
-                fill="#fff"
-                stroke="#264AE7"
-                stroke-linecap="round"
-                stroke-miterlimit="10"
-                stroke-width="3.375"
-              />
-              <g
-                id="bling"
-                transform="translate(155.7 25.65)"
-              >
-                <path
-                  id="Line"
-                  d="M.675,0V8.1"
-                  transform="translate(13.5)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-2"
-                  data-name="Line"
-                  d="M.675,0V8.1"
-                  transform="translate(13.5 18.9)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-3"
-                  data-name="Line"
-                  d="M.675,0V8.1"
-                  transform="translate(0.675 14.175) rotate(-90)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-4"
-                  data-name="Line"
-                  d="M.675,0V8.1"
-                  transform="translate(19.575 14.175) rotate(-90)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-              </g>
-              <g
-                id="bling-2"
-                data-name="bling"
-                transform="translate(0.45 133.65)"
-              >
-                <path
-                  id="Line-5"
-                  data-name="Line"
-                  d="M.675,0V5.4"
-                  transform="translate(10.8)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-6"
-                  data-name="Line"
-                  d="M.675,0V5.4"
-                  transform="translate(10.8 16.2)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-7"
-                  data-name="Line"
-                  d="M.675,0V5.4"
-                  transform="translate(0.675 11.475) rotate(-90)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-                <path
-                  id="Line-8"
-                  data-name="Line"
-                  d="M.675,0V5.4"
-                  transform="translate(16.875 11.475) rotate(-90)"
-                  fill="none"
-                  stroke="#02ae9d"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="3.375"
-                />
-              </g>
-              <path
-                id="Shape-2"
-                data-name="Shape"
-                d="M43.649,4.639,15.3.3A57.038,57.038,0,0,1,35.258,1.765a56.354,56.354,0,0,1,8.391,2.872ZM.023,4.1v0c1.2-.485,2.439-.936,3.681-1.34C5.41,2.2,7.158,1.727,8.9,1.34Z"
-                transform="matrix(0.719, -0.695, 0.695, 0.719, 37.619, 65.734)"
-                fill="#fff"
-                stroke="#264AE7"
-                stroke-linecap="round"
-                stroke-miterlimit="10"
-                stroke-width="3.375"
-              />
-              <path
-                id="tick"
-                data-name="Path 7"
-                d="M7.329,18.7c-1.966-1.771-2.941-.411-4.737,1.528S-1.141,23.951.825,25.722l22.691,20.44a6.817,6.817,0,0,0,9.536-.425c.105-.115.105-.115.207-.234L47.42,28.708,65.641,7.1c1.7-2.019-.46-3.411-2.508-5.089s-3.2-3.009-4.907-.99L27.782,37.125Z"
-                transform="translate(59.245 72.246)"
-                stroke="#264AE7"
-                fill="#264AE7"
-                stroke-miterlimit="10"
-                stroke-width="6"
-              />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="188.465"
+      height="188.481"
+      viewBox="0 0 188.465 188.481"
+    >
+    <title>Done</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.113725 0 0 0 0 0.988235 0 0 0 0 0.898039 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+        <filter id="filter-2">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.113725 0 0 0 0 0.988235 0 0 0 0 0.898039 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile_00_success_account_created" transform="translate(-118.000000, -305.000000)">
+            <g id="Done" transform="translate(119.000000, 307.000000)">
+                <path d="M60.4982381,115.602814 C64.0417543,116.306889 67.6792316,116.428661 70.3112927,116.232849 M74.6244443,115.848768 L74.6244443,115.848768 C76.9068049,115.577776 79.1400976,115.146086 81.3127754,114.565285 C86.0913311,113.287881 90.5766744,111.289184 94.6459549,108.692475 C98.7614532,106.066273 102.451384,102.828398 105.588663,99.1063796 C108.32624,95.8585612 110.643015,92.242104 112.454551,88.3417402 C114.251784,84.4721737 115.551725,80.3231663 116.271922,75.977459 C116.701077,73.3879188 116.924377,70.7285347 116.924377,68.0168134 C116.924377,64.0355356 116.443046,60.1670723 115.535594,56.4668272 C114.560567,52.4910348 113.093592,48.7094469 111.203154,45.1907892 C108.835638,40.7841464 105.803956,36.7898878 102.242631,33.3430064 C99.4717055,30.661125 96.380146,28.3106135 93.0313148,26.3550563 C89.2612009,24.1534902 85.1650145,22.4524992 80.8331654,21.3428099 C77.0252055,20.3673252 73.0351377,19.8487679 68.9243769,19.8487679 C63.7584334,19.8487679 58.7830961,20.667707 54.1202516,22.183272 C49.5551198,23.6670775 45.289521,25.8186182 41.4378388,28.5231104 C37.4695921,31.3094494 33.9406938,34.6827145 30.9762299,38.517382 C27.1339305,43.4875691 24.2398386,49.232878 22.566314,55.4799956 C21.495474,59.4773449 20.9243769,63.6801523 20.9243769,68.0168134 C20.9243769,74.9013202 22.3636548,81.4484887 24.9567327,87.3718419 C28.110149,94.5751727 32.9698915,100.855959 39.0225442,105.698986 C44.1024278,109.763653 50.022591,112.815571 56.4795096,114.550153" id="circle" stroke="#264AE7" stroke-width="2.5" stroke-linecap="round" transform="translate(68.924377, 68.082804) rotate(-44.000000) translate(-68.924377, -68.082804) "></path>
+                <g filter="url(#filter-1)" id="bling" stroke-linecap="round" stroke-linejoin="round">
+                    <g transform="translate(116.000000, 19.000000)">
+                        <line x1="10.5" y1="0" x2="10.5" y2="6" id="Line" stroke="#02AE9D" stroke-width="2.5"></line>
+                        <line x1="10.5" y1="14" x2="10.5" y2="20" id="Line" stroke="#02AE9D" stroke-width="2.5"></line>
+                        <line x1="3.5" y1="7" x2="3.5" y2="13" id="Line" stroke="#02AE9D" stroke-width="2.5" transform="translate(3.500000, 10.000000) rotate(-90.000000) translate(-3.500000, -10.000000) "></line>
+                        <line x1="17.5" y1="7" x2="17.5" y2="13" id="Line" stroke="#02AE9D" stroke-width="2.5" transform="translate(17.500000, 10.000000) rotate(-90.000000) translate(-17.500000, -10.000000) "></line>
+                    </g>
+                </g>
+                <g filter="url(#filter-2)" id="bling" stroke-linecap="round" stroke-linejoin="round">
+                    <g transform="translate(1.000000, 99.000000)">
+                        <line x1="8.5" y1="0" x2="8.5" y2="4" id="Line" stroke="#02AE9D" stroke-width="2.5"></line>
+                        <line x1="8.5" y1="12" x2="8.5" y2="16" id="Line" stroke="#02AE9D" stroke-width="2.5"></line>
+                        <line x1="2.5" y1="6" x2="2.5" y2="10" id="Line" stroke="#02AE9D" stroke-width="2.5" transform="translate(2.500000, 8.000000) rotate(-90.000000) translate(-2.500000, -8.000000) "></line>
+                        <line x1="14.5" y1="6" x2="14.5" y2="10" id="Line" stroke="#02AE9D" stroke-width="2.5" transform="translate(14.500000, 8.000000) rotate(-90.000000) translate(-14.500000, -8.000000) "></line>
+                    </g>
+                </g>
+                <path d="M57.5264467,40.4152014 C55.5285363,39.5491455 53.4503157,38.8342909 51.3061064,38.285009 C47.9741415,37.4314599 44.4828321,36.9777222 40.8859164,36.9777222 C39.4114764,36.9777222 37.9547817,37.053965 36.5195338,37.202736 M31.781319,37.9707019 C30.4744022,38.2605598 29.1903559,38.6115095 27.9323067,39.0204134 C27.003155,39.3224157 26.0881841,39.6560308 25.1886538,40.0199947" id="Shape-2" stroke="#264AE7" stroke-width="2.5" fill="#FFFFFF" stroke-linecap="round" transform="translate(41.357550, 38.696462) rotate(-44.000000) translate(-41.357550, -38.696462) "></path>
+                <path d="M49.9801757,67.3685195 C48.523876,66.0566976 47.8014844,67.0639353 46.4711782,68.5 C45.1408719,69.9360647 43.7064109,71.2571479 45.1627106,72.5689698 L61.9710457,87.7097692 C64.0098652,89.5463198 67.1724519,89.4053137 69.0348807,87.3948231 C69.1127609,87.3094293 69.1127609,87.3094293 69.1879146,87.221692 C73.8498282,81.6926771 77.3462634,77.5459159 79.6772202,74.7814085 C82.6766516,71.2240922 87.1757988,65.8881177 93.1746618,58.7734851 C94.4357073,57.2778891 92.8337896,56.2470853 91.3171197,55.0035618 C89.8004497,53.7600382 88.9433596,52.7746919 87.6823141,54.270288 L65.1309175,81.0161736 L49.9801757,67.3685195 Z" id="tick" stroke-miterlimit="10" stroke-width="6" fill="#264ae7"></path>
             </g>
-          </g>
-        </svg>
+        </g>
+    </g>
+</svg>

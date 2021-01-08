@@ -10,7 +10,7 @@ const draw = keyframes`
 
 export const StyledTickIcon = styled(TickIcon)`
   position: absolute;
-  top: -8px;
+  top: 2px;
   right: 4px;
 
   #circle {
@@ -36,7 +36,7 @@ export const StyledTickIcon = styled(TickIcon)`
 
 export const StyledErrorIcon = styled(ErrorIcon)`
   position: absolute;
-  top: -8px;
+  top: 2px;
   right: 4px;
 
   #circle {
@@ -109,7 +109,7 @@ export const StyledInput = styled.input`
   width: 100%;
   height: 30px;
   font-size: 12px;
-  color: ${({ theme }) => theme.darkGray};
+  color: ${({ touched, theme }) => touched ? theme.dashboardBlack : theme.darkGray};
   background-color: transparent;
 
   &:hover {
@@ -124,8 +124,6 @@ export const StyledInput = styled.input`
     color: ${({ theme }) => theme.darkGray};
     transform: translateY(-25px);
     position: absolute;
-    font-size: 14px;
-    font-weight: bold;
     transition: all 0.5s ease;
     will-change: transform;
   }
@@ -147,7 +145,7 @@ export const StyledInput = styled.input`
   }
 
   &:not(:focus) ~ ${StyledUnderline}:after {
-    background-color: ${({ fieldCorrectness, touched, theme }) => !touched ? theme.lightGray : fieldCorrectness ? theme.darkMint : theme.errorRed};
+    background-color: ${({ touched,  theme }) => !touched ? theme.lightGray : theme.dashboardBlack};
   }
 
   &:focus ~ ${StyledUnderline} {

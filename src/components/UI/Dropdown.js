@@ -89,6 +89,7 @@ const Dropdown = ({
         Option: IconOption,
         SingleValue: CustomValueContainer,
       }}
+      isSearchable={false}
       value={value}
       onChange={onChange}
       onBlur={handleBlur}

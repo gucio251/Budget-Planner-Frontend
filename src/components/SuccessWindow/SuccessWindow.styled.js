@@ -47,15 +47,15 @@ export const StyledSuccessWindow = styled.div`
 
   #tick {
     fill: none;
-    stroke-dasharray: 192;
-    stroke-dashoffset: 192;
+    stroke-dasharray: 142;
+    stroke-dashoffset: 142;
     animation: draw 1s ease-in forwards;
     animation-delay: 1s;
   }
 
   #circle {
-    stroke-dasharray: 435;
-    stroke-dashoffset: 435;
+    stroke-dasharray: 294;
+    stroke-dashoffset: 294;
     animation: drawWithoutFill 1s ease-in forwards;
   }
 

@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { gsap } from "gsap";
 import PropTypes from "prop-types";
 import {
+  Wrapper,
   StyledInputSide,
   StyledInputFields,
   StyledForm,
@@ -63,33 +64,35 @@ const FormContainer = ({
       {({ handleChange, handleBlur, touched, values, errors }) => {
         return (
           <div ref={inputSide}>
-            <StyledInputSide displayedOnMobile={displayedOnMobile}>
-              <StyledForm>
+            <Wrapper displayedOnMobile={displayedOnMobile}>
+              <StyledInputSide>
                 <StyledInputSideHeader>{header}</StyledInputSideHeader>
-                <StyledInputFields>
-                  {formData.map(({ name, label, type }) => {
-                    return (
-                      <InputTextWithValidation
-                        key={name}
-                        name={name}
-                        label={label}
-                        value={values[name]}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        type={type}
-                        errors={
-                          values[name] !== '' && errors.hasOwnProperty(name)
-                            ? errors[name]
-                            : touched.hasOwnProperty(name) &&
-                              errors.hasOwnProperty(name)
-                            ? errors[name]
-                            : []
-                        }
-                        touched={touched[name]}
-                        disabled={stateErrors ? stateErrors.disabled : false}
-                      />
-                    );
-                  })}
+                <StyledForm>
+                  <StyledInputFields>
+                    {formData.map(({ name, label, type }) => {
+                      return (
+                        <InputTextWithValidation
+                          key={name}
+                          name={name}
+                          label={label}
+                          value={values[name]}
+                          handleChange={handleChange}
+                          handleBlur={handleBlur}
+                          type={type}
+                          errors={
+                            values[name] !== '' && errors.hasOwnProperty(name)
+                              ? errors[name]
+                              : touched.hasOwnProperty(name) &&
+                                errors.hasOwnProperty(name)
+                              ? errors[name]
+                              : []
+                          }
+                          touched={touched[name]}
+                          disabled={stateErrors ? stateErrors.disabled : false}
+                        />
+                      );
+                    })}
+                  </StyledInputFields>
                   <ButtonWrapper>
                     <Button
                       color="#264AE7"
@@ -103,18 +106,18 @@ const FormContainer = ({
                       {buttonName}
                     </Button>
                   </ButtonWrapper>
-                  <RedirectComponentWrapper>
-                    <RedirectComponent
-                      spanText={text}
-                      linkText={linkText}
-                      href={href}
-                      linkColor="mainBlue"
-                    />
-                  </RedirectComponentWrapper>
-                  {stateErrors && <ErrorMessageBox error={stateErrors} />}
-                </StyledInputFields>
-              </StyledForm>
-            </StyledInputSide>
+                </StyledForm>
+                <RedirectComponentWrapper>
+                  <RedirectComponent
+                    spanText={text}
+                    linkText={linkText}
+                    href={href}
+                    linkColor="mainBlue"
+                  />
+                </RedirectComponentWrapper>
+                {stateErrors && <ErrorMessageBox error={stateErrors} />}
+              </StyledInputSide>
+            </Wrapper>
           </div>
         );
       }}
