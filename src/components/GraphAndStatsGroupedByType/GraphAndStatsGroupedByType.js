@@ -175,7 +175,8 @@ const prepareTransactions = props => {
 }
 
 GraphAndStatsGroupedByType.propTypes = {
-    
+  incomes: PropTypes.array,
+  expenses: PropTypes.array,
 };
 
 

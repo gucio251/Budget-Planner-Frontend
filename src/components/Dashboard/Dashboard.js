@@ -51,7 +51,7 @@ const Dashboard = () => {
     dispatch(expensesActions.load());
     dispatch(incomesActions.load());
     dispatch(currencyActions.loadRatesFromApi());
-  }, []);
+  }, [dispatch]);
 
   return (
     <StyledDashboard>

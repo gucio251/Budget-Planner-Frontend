@@ -32,7 +32,7 @@ export const expenseTypeSvgCorrelation = {
   Bills: BillsIcon,
   Education: EducationIcon,
   Entertainment: EntertainmentIcon,
-  ['Fees & Charges']: FeesAndChargesIcon,
+  'Fees & Charges': FeesAndChargesIcon,
   Food: FoodIcon,
   Health: HealthIcon,
   Insurances: InsuranceIcon,
@@ -52,7 +52,7 @@ export const graphColors = {
   Bills: { base: '#32C5FF', hovered: '#006d98' },
   Education: { base: '#6E6CF2', hovered: '#100ea0' },
   Entertainment: { base: '#DB46B5', hovered: '#781760' },
-  ['Fees & Charges']: { base: '#3BE2E9', hovered: '#0e7e83' },
+  'Fees & Charges': { base: '#3BE2E9', hovered: '#0e7e83' },
   Food: { base: '#00D793', hovered: '#000906' },
   Health: { base: '#FF2D55', hovered: '#96001c' },
   Insurances: { base: '#FFCC00', hovered: '#7f6600' },
@@ -75,7 +75,7 @@ export const incomeTypeSvgCorrelation = {
   Award: AwardIcon,
   Gift: GiftIcon,
   Salary: SalaryIcon,
-  ['Selling & Trade']: SellingAndTradeIcon,
+  'Selling & Trade': SellingAndTradeIcon,
 }
 
 export const currenciesSvgCorrelation = {

@@ -8,14 +8,8 @@ export const addSvg = (categories, correlationEl) => {
 };
 
 export const filterTransactionsByDates = (transactions, datesRange) => {
-  if(transactions.length === 0){
-    return [];
-  }
-  return transactions.filter(transaction => {
-    if(checkIfTransactionIsInsideGivenRange(transaction, datesRange)){
-      return transaction;
-    }
-  })
+  if(transactions.length === 0) return [];
+  return transactions.filter(transaction => checkIfTransactionIsInsideGivenRange(transaction, datesRange))
 }
 
 export const checkIfTransactionIsInsideGivenRange = (transaction, datesRange) => {
@@ -59,7 +53,9 @@ export const groupTransactionsByCategory = (transactions) => {
             incomes: addItemToGroupedTransactions(transaction, groupedData.incomes)
         };
       default:
-        break;
+        return {
+          ...groupedData
+        }
     }
   }, {incomes: {}, expenses: {}});
 };

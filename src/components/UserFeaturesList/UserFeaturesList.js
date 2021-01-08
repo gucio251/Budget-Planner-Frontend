@@ -49,7 +49,7 @@ const useOutsideClickDetector = (ref, toggleFunc) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [ref])
+  }, [ref, toggleFunc])
 }
 
 const UserFeaturesList = ({setToggle}) => {

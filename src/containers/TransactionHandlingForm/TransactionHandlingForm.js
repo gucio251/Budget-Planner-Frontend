@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,6 @@ import DatePicker from 'components/UI/DatePicker';
 import Dropdown from 'components/UI/Dropdown';
 import InputWithBorder from 'components/UI/InputWithBorder';
 import LabelWrapper from 'components/UI/LabelWrapper';
-import {ModalContext} from 'components/Modal/Modal'
 import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import TextArea from 'components/UI/TextArea';
 import TabPane from 'components/UI/TabPane';

@@ -1,5 +1,4 @@
 import { incomeTypesConstants } from './../actions/actionTypes';
-import { addSvg } from 'Utils/functions';
 import { incomeTypeSvgCorrelation } from 'Utils/svgCorrelation';
 import { normalizePack, addSvgToData } from './expenseTypesReducer';
 import { normalize } from 'normalizr';

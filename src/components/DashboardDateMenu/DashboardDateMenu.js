@@ -1,11 +1,10 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
 
 import DatesRangeMenu from 'components/DatesRangeMenu/DatesRangeMenu'
 import TabPane from 'components/UI/TabPane'
 
-const DashboardDateMenu = props => {
+const DashboardDateMenu = () => {
     const datesRangeState = useSelector(state => state.datesRange);
 
     const generateTitle = () => {
@@ -16,7 +15,7 @@ const DashboardDateMenu = props => {
 
     return (
       <>
-        <DatesRangeMenu handleDateChange={props.handleDatePeriodChange}>
+        <DatesRangeMenu>
           <TabPane title="Last Month" display="Last Month" />
           <TabPane title="This Month" display="This Month" />
           <TabPane title="Custom" display={generateTitle()} />
@@ -31,9 +30,5 @@ const generateCustomDate = ({start, end}) => {
 
   return `${startDay}.${startMonth} - ${endDate}`
 }
-
-DashboardDateMenu.propTypes = {
-    
-};
 
 export default DashboardDateMenu;

@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { ReactComponent as DropdownArrow } from 'assets/icons/expandIconDropdown.svg';
 
 const BootstrapInput = withStyles((theme) => ({
@@ -59,7 +56,10 @@ const CustomDropdownDashboard = props => {
 };
 
 CustomDropdownDashboard.propTypes = {
-    
+    name: PropTypes.string,
+    value: PropTypes.string,
+    handleChange: PropTypes.func,
+    list: PropTypes.array
 };
 
 export default CustomDropdownDashboard;

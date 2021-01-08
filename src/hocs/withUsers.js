@@ -19,7 +19,7 @@ const withUsers = Component => props => {
             default:
                 break;
         }
-    }, [registeredUsers])
+    }, [registeredUsers, dispatch])
 
     return (
         <Component {...props} users={{emails: registeredUsers.emails}} stateErrors={errorMsg}/>

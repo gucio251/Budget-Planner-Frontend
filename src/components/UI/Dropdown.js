@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Select, { components } from 'react-select';
-import { Scrollbars } from 'react-custom-scrollbars';
 
 const StyledSingleOption = styled.div`
   width: 100%;
@@ -31,14 +30,6 @@ const IconWrapper = styled.div`
 `;
 
 const { Option, SingleValue } = components;
-
-const renderScrollbar = (props) => {
-  return (
-    <div style={{ height: 150 }}>
-      <Scrollbars>{props.children}</Scrollbars>
-    </div>
-  );
-};
 
 const CustomValueContainer = (props) => {
   const { options, data } = props;
@@ -87,11 +78,8 @@ const Dropdown = ({
   list,
   value,
   onChange,
-  isSearchable,
   name,
-  handleBlur,
-  disabledWithoutOption,
-  placeholder
+  handleBlur
 }) => {
   return (
     <Select
@@ -103,10 +91,8 @@ const Dropdown = ({
       value={value}
       onChange={onChange}
       onBlur={handleBlur}
-      placeholder={placeholder}
       name={name}
       noOptionsMessage={() => null}
-      disabledWithoutOption={disabledWithoutOption}
       styles={{
         dropdownIndicator: (provided, state) => ({
           ...provided,
@@ -162,6 +148,13 @@ const Dropdown = ({
   );
 };
 
-Dropdown.propTypes = {};
+Dropdown.propTypes = {
+  list: PropTypes.array,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  handleBlur: PropTypes.func,
+  name: PropTypes.string,
+
+};
 
 export default Dropdown;

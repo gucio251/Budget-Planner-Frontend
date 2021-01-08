@@ -49,7 +49,7 @@ const FormContainer = ({
       tl.fromTo(elements, { x: '600' }, { x: 0, autoAlpha: 1 }, '+=3');
 
     }
-  },[]);
+  },[animated]);
   const { text, linkText, href } = linkData;
 
   return (
@@ -139,7 +139,6 @@ FormContainer.propTypes = {
   buttonName: PropTypes.string.isRequired,
   initialValues: PropTypes.object.isRequired,
   header: PropTypes.string.isRequired,
-  additionalValidationData: PropTypes.array,
   handleSubmit: PropTypes.func,
   errorMsgs: PropTypes.string,
   displayedOnMobile: PropTypes.bool.isRequired,

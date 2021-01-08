@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
@@ -23,7 +22,15 @@ const FilteredTransactionsContainer = ({children, expenses, incomes, datesRange,
 };
 
 FilteredTransactionsContainer.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.element,
+    PropTypes.node,
+  ]).isRequired,
+  expenses: PropTypes.array,
+  incomes: PropTypes.array,
+  datesRange: PropTypes.object,
+  currencies: PropTypes.object
 };
 
 const mapStateToProps = state => {

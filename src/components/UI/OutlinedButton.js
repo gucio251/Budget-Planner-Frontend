@@ -30,7 +30,13 @@ const OutlinedButton = ({children, size="small", onClick}) => {
 };
 
 OutlinedButton.propTypes = {
-    
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.element,
+    PropTypes.node,
+  ]),
+  onClick: PropTypes.func,
+  size: PropTypes.string
 };
 
 export default OutlinedButton;

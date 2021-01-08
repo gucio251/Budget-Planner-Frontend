@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {useDispatch} from 'react-redux'
 import PropTypes from 'prop-types';
 import {datesRangeActions} from 'redux/actions/dateRangeActions';
