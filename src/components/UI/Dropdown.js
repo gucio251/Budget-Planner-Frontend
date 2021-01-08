@@ -79,7 +79,8 @@ const Dropdown = ({
   value,
   onChange,
   name,
-  handleBlur
+  handleBlur,
+  indexOfDefaultValue
 }) => {
   return (
     <Select
@@ -91,6 +92,7 @@ const Dropdown = ({
       value={value}
       onChange={onChange}
       onBlur={handleBlur}
+      defaultValue={list[indexOfDefaultValue]}
       name={name}
       noOptionsMessage={() => null}
       styles={{
@@ -154,7 +156,7 @@ Dropdown.propTypes = {
   onChange: PropTypes.func,
   handleBlur: PropTypes.func,
   name: PropTypes.string,
-
+  indexOfDefaultValue: PropTypes.number
 };
 
 export default Dropdown;

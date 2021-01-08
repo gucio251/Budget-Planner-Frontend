@@ -43,7 +43,9 @@ const DashboardOverview = () => {
                 onChange={(value) =>
                   dispatch(currencyActions.changeActiveCurrency(value.value))
                 }
-                placeholder={availableCurrenciesState.active}
+                indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
+                  currency =>  currency.value === availableCurrenciesState.active
+                )}
                 isSearchable={true}
                 name="currencies"
               />
