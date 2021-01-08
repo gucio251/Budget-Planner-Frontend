@@ -34,7 +34,7 @@ const add = user => dispatch => {
     );
 }
 
-const login = user => dispatch => {
+const login = (user, clearPasswordField) => dispatch => {
     const request = () => { return { type: userConstants.LOGIN_REQUEST }}
     const success = user => { return { type: userConstants.LOGIN_SUCCESS, payload: user }}
     const failure = error => { return { type: userConstants.LOGIN_FAILURE, payload: error }}
@@ -46,7 +46,7 @@ const login = user => dispatch => {
             navigate(routes.dashboard);
         },
         (error) => {
-            debugger;
+            clearPasswordField();
             dispatch(failure(error.message));
         }
     );

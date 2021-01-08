@@ -16,8 +16,6 @@ import InputTextWithValidation from "components/UI/InputTextWithValidation/Input
 import RedirectComponent from "components/UI/RedirectComponent";
 import validate from "components/validate-yup/validate-yup";
 
-window.MyComponentRef = React.createRef();
-
 const configureDisplayOnMobile = (fieldsStatues, func) => {
   if (Object.keys(fieldsStatues).length !== 0) {
     func();

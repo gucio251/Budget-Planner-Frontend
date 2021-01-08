@@ -7,15 +7,13 @@ const withLoginFunc = Component => props => {
     const loginState = useSelector(state => state.login);
     const [errors, setErrors] = useState(false);
 
-    const handleFormSubmit = (values) => {
-        dispatch(userActions.login(values))
+    const handleFormSubmit = (values, {setFieldValue}) => {
+        dispatch(userActions.login(values, () => setFieldValue('password', '')))
     }
 
     useEffect(() => {
         if(loginState.error){
             setErrors({msg: loginState.error})
-            console.log(window.MyComponentRef);
-            //window.MyComponentRef.current.setFieldValue("password", "");
         }else{
             setErrors(false);
         }
