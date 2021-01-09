@@ -63,7 +63,6 @@ export const StyledErrorIcon = styled(ErrorIcon)`
 export const StyledUnderline = styled.span`
   display: block;
   position: relative;
-  bottom: -3px;
   left: 0;
   width: 100%;
   height: 2px;
@@ -94,7 +93,7 @@ export const StyledValidations = styled.ul`
 
 export const StyledLabel = styled.label`
   position: absolute;
-  top: 12px;
+  top: 8px;
   display: block;
   font-size: 14px;
   transition: all 200ms ease-out;

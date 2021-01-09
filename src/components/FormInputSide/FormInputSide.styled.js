@@ -10,7 +10,7 @@ export const Wrapper = styled.section`
   height: 100vh;
 
   ${({ theme }) => theme.devices.tablet} {
-    height: auto;
+    height: 50vh;
     width: 100vw;
   }
 
@@ -25,8 +25,8 @@ export const Wrapper = styled.section`
 export const StyledInputSide = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  gap: 20px;
+  width: 40%;
+  gap: 30px;
 
   ${({ theme }) => theme.devices.mobile} {
     width: 80%;
