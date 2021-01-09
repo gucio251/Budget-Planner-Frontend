@@ -60,10 +60,10 @@ export const StyledInputSideHeader = styled.h3`
 
 export const StyledInputFields = styled.div`
   position: relative;
+  padding-top: 5%;
 
   ${({ theme }) => theme.devices.mobile} {
     width: 100%;
-    padding-top: 5%;
   }
 `;
 
