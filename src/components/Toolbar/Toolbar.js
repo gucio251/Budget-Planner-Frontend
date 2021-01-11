@@ -24,11 +24,10 @@ const ButtonItemsWrapper = styled.div`
 `
 
 const UserSectionWrapper = styled.div`
-  width: 60%;
-  margin-left: 30px;
   display: flex;
   position: relative;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
   font-size: 16px;
   color: #1c245d;
@@ -96,7 +95,7 @@ const TopToolbar = () => {
         <AppBar position="relative" className={classes.root}>
           <Toolbar className={classes.toolbarRoot}>
             <Grid container justify="flex-end" alignItems="center">
-              <Grid item xs={2}>
+              <Grid item md={3} xs={6}>
                 <Button onClick={handleModalOpen} color="#2F54F3">
                   <ButtonItemsWrapper>
                     <AddSign />
@@ -106,7 +105,7 @@ const TopToolbar = () => {
                   </ButtonItemsWrapper>
                 </Button>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item lg={2} md={3} xs={4}>
                 <UserSectionWrapper
                   onClick={() =>
                     setUserFeatureListOpened(!userFeatureListOpened)

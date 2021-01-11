@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     borderRadius: 0,
   },
   amount: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 'normal',
   },
   nameHolder: {

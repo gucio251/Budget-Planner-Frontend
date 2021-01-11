@@ -21,6 +21,11 @@ const StyledDashboard = styled.div`
     'sidebar toolbar'
     'sidebar dashboardMain';
   background-color: #f6f6f8;
+
+  ${({ theme }) => theme.devices.tablet} {
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 70px 1fr;
+  }
 `;
 const StyledToolbar = styled.div`
   grid-area: toolbar;

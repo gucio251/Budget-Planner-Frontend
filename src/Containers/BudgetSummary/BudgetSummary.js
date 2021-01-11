@@ -9,7 +9,7 @@ import { ReactComponent as ExpensesIcon } from 'assets/icons/expensesDashboardIc
 const GridBox = styled.div`
   display: grid;
   height: 100%;
-  grid-template-columns: 47% 47%;
+  grid-template-columns: 48.5% 48.5%;
   grid-template-rows: 49% 49%;
   grid-template-areas:
     'balance balance'
@@ -17,6 +17,10 @@ const GridBox = styled.div`
   grid-gap: 2% 1%;
   &:first-child {
     align-self: center;
+  }
+
+  ${({ theme }) => theme.devices.tablet} {
+    grid-template-columns: 49.5% 49.5%;
   }
 `;
 

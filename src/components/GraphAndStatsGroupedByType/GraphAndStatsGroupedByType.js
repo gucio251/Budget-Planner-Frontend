@@ -15,8 +15,8 @@ import CustomDropdownDashboard from 'components/UI/CustomDropdownDashboard'
 const StyledGraphArea = styled.section`
   display: grid;
   height: 100%;
-  grid-template-columns: 7fr 5fr;
-  grid-template-rows: 1fr 6fr;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 15% 85%;
   grid-template-areas:
   'dropdowns .'
   'graph list';
@@ -27,6 +27,8 @@ const StyledDropdowns = styled.div`
 
 const StyledGraph = styled.div`
   grid-area: graph;
+  display: flex;
+  align-items: center;
 `;
 
 const StyledList = styled.div`
@@ -88,7 +90,9 @@ const renderGraphArea = props => {
               return percentage;
             })
           },
-          color: '#fff',
+          color: 'black',
+          backgroundColor: 'white',
+          opacity: 0.8
         }
       },
   };

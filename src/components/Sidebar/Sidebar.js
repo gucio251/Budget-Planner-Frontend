@@ -27,6 +27,10 @@ const LogoNameWrapper = styled.span`
   margin-top: 12px;
   font-size: 12px;
   color: white;
+
+  ${({theme}) => theme.devices.tablet}{
+    display: none;
+  }
 `;
 
 const Sidebar = () => {

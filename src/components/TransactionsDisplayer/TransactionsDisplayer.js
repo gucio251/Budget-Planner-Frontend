@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import { MemoizedSingleTransaction } from 'components/UI/SingleTransaction';
-import TableContainer from '@material-ui/core/TableContainer';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import {expensesActions} from 'redux/actions/expensesActions';
@@ -15,12 +12,22 @@ import {
   sortTransactionsByChosenProperty,
 } from 'Utils/functions';
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-    maxWidth: '90%'
-  },
-});
+const Wrapper = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const Table = styled.table`
+  width: 95%;
+  height: 90%;
+  border-collapse: collapse;
+`;
+
+const TableBody = styled.tbody`
+
+`
 
 const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon }) => {
   return <Displayer transactionList={getSortedTransactions([].concat(expenses, incomes))} CurrencyIcon={CurrencyIcon} />;
@@ -29,7 +36,6 @@ const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon }) => {
 
 const Displayer = ({ transactionList = [], CurrencyIcon }) => {
   const dispatch = useDispatch();
-  const classes = useStyles();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openModifyModal, setOpenModifyModal] = useState(false);
   const [clickedElementData, setClickedElementData] = useState({});
@@ -93,8 +99,8 @@ const Displayer = ({ transactionList = [], CurrencyIcon }) => {
           handleClose={handleCloseModifyModal}
         />
       </Modal>
-      <TableContainer>
-        <Table className={classes.table} aria-label="simple table">
+      <Wrapper>
+        <Table>
           <TableBody>
             {transactionList.map(
               (
@@ -131,7 +137,7 @@ const Displayer = ({ transactionList = [], CurrencyIcon }) => {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      </Wrapper>
     </>
   );
 };

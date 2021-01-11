@@ -1,39 +1,50 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon
-} from '@material-ui/core';
 
-const useStyles = makeStyles({
-  primary: {
-    fontSize: '16px'
-  },
-});
+const Wrapper = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+`
+
+const List = styled.ul`
+  height: 80%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  list-style: none;
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding: 3%;
+
+  & > *:first-child{
+    margin-right: 10%;
+  }
+`
 
 const GroupedTransactionsDisplayer = ({transactions}) => {
-  const classes = useStyles();
   return (
-    <List>
-      {transactions.map(({ Icon, name }, index) => (
-        <ListItem key={index}>
-          <ListItemIcon>
+    <Wrapper>
+      <List>
+        {transactions.map(({ Icon, name }, index) => (
+          <ListItem key={index}>
             <Icon />
-          </ListItemIcon>
-          <ListItemText
-            primary={name}
-            classes={{primary: classes.primary}}/>
-        </ListItem>
-      ))}
-    </List>
+            {name}
+          </ListItem>
+        ))}
+      </List>
+    </Wrapper>
   );
 };
 
 GroupedTransactionsDisplayer.propTypes = {
-    
+  transactions: PropTypes.object
 };
 
 export default GroupedTransactionsDisplayer;

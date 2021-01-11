@@ -4,23 +4,39 @@ import { theme } from '../../localData/theme';
 
 const ListItem = styled.li`
   display: flex;
+  position: relative;
   gap: 25px;
   align-items: center;
   width: 100%;
-  color: ${({ theme, isActive, isHover }) => isActive || isHover ? theme.mint : theme.grayForDashboard};
+  color: ${({ theme, isActive, isHover }) =>
+    isActive || isHover ? theme.lightMint : theme.grayForDashboard};
   font-size: 16px;
-  padding: 18px 30px 18px 0;
+  padding: 18px 30px 18px 18px;
   cursor: pointer;
+
+  ${({ theme }) => theme.devices.tablet} {
+    padding-right: 0;
+    padding-left: 0;
+    justify-content: center;
+  }
 `;
 
 const Active = styled.div`
+    position: absolute;
+    left: 0px;
     width: 4px;
     height: 16px;
-    background-color: ${({ theme }) => theme.mint};
+    background-color: ${({ theme }) => theme.lightMint};
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     opacity: ${({isActive}) => isActive ? 1: 0};
 `
+
+const Text = styled.span`
+  ${({ theme }) => theme.devices.tablet} {
+    display: none;
+  }
+`;
 
 const SidebarItem = ({Icon, name, isActive, isHover, onClick, onMouseEnter, onMouseLeave}) => {
     return (
@@ -34,10 +50,12 @@ const SidebarItem = ({Icon, name, isActive, isHover, onClick, onMouseEnter, onMo
         {<Active isActive={isActive} />}
         <Icon
           style={
-            isActive || isHover ? { fill: theme.mint } : { fill: theme.grayForDashboard }
+            isActive || isHover
+              ? { fill: theme.lightMint }
+              : { fill: theme.grayForDashboard }
           }
         />
-        {name}
+        <Text>{name}</Text>
       </ListItem>
     );
 };

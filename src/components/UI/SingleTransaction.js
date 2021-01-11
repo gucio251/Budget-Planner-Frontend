@@ -1,10 +1,21 @@
 import React from 'react';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip'
 import {ReactComponent as EditIcon} from 'assets/icons/editIconTable.svg'
 import {ReactComponent as DeleteIcon} from 'assets/icons/deleteIconTable.svg'
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+
+const TableRow = styled.tr`
+  border-bottom: 1px solid #efeff3;
+
+    & > *:first-child {
+      font-weight: 600;
+    }
+`;
+
+const TableCell = styled.td`
+  text-align: center;
+`;
 
 const useStylesBootstrap = makeStyles((theme) => ({
   arrow: {
@@ -23,16 +34,6 @@ function BootstrapTooltip(props) {
 }
 
 
-const StyledTableCell = withStyles(() => ({
-  body: {
-    fontSize: 16,
-    fontFamily: 'Rubik',
-    color: '#282C43',
-  },
-}))(TableCell);
-
-
-
 const SingleTransaction = ({
   type,
   id,
@@ -48,30 +49,30 @@ const SingleTransaction = ({
 }) => {
   return (
     <TableRow key={id}>
-      <StyledTableCell style={{ fontWeight: 'bold' }}>
+      <TableCell>
         {transaction_date}
-      </StyledTableCell>
-      <StyledTableCell align="left">
+      </TableCell>
+      <TableCell align="left">
         <Svg />
-      </StyledTableCell>
-      <StyledTableCell>{category}</StyledTableCell>
-      <StyledTableCell>{subcategory}</StyledTableCell>
-      <StyledTableCell>{comments}</StyledTableCell>
-      <StyledTableCell align="right">
+      </TableCell>
+      <TableCell>{category}</TableCell>
+      <TableCell>{subcategory}</TableCell>
+      <TableCell>{comments}</TableCell>
+      <TableCell align="right">
         <BootstrapTooltip title="Edit">
           <EditIcon id={id} type={type} onClick={handleModifyIconClick} />
         </BootstrapTooltip>
-      </StyledTableCell>
-      <StyledTableCell>
+      </TableCell>
+      <TableCell>
         <BootstrapTooltip title="Delete">
           <DeleteIcon id={id} type={type} onClick={onIconClickHandler} />
         </BootstrapTooltip>
-      </StyledTableCell>
-      <StyledTableCell>
+      </TableCell>
+      <TableCell>
         {`${type === 'expense' ? '-' : '+'}`}
         <CurrencyIcon />
         {amount.toFixed(2)}
-      </StyledTableCell>
+      </TableCell>
     </TableRow>
   );
 };
