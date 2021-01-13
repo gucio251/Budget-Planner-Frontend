@@ -12,9 +12,9 @@ import GroupedTransactionsDisplayer from 'components/GroupedTransactionsDisplaye
 import { graphColors } from 'Utils/svgCorrelation';
 import CustomDropdownDashboard from 'components/UI/CustomDropdownDashboard'
 
-const StyledGraphArea = styled.section`
+const StyledGraphArea = styled.div`
   display: grid;
-  height: 100%;
+  height: calc(100% - 75px);
   grid-template-columns: 60% 40%;
   grid-template-rows: 15% 85%;
   grid-template-areas:

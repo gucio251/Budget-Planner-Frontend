@@ -34,8 +34,6 @@ const DashboardOverview = () => {
       }) => (
         <StyledOverview>
           <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
-          <EmptyDiv />
-          <EmptyDiv />
           <StyledDateMenu>
             <StyledDropdown>
               <CustomDropdownDashboard

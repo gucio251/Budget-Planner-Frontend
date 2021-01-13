@@ -6,16 +6,31 @@ import {ReactComponent as AddSign} from 'assets/icons/addSignButton.svg';
 import { ReactComponent as Avatar } from 'assets/icons/userAvatar.svg';
 import { ReactComponent as ExpandArrow } from 'assets/icons/expandArrow.svg';
 
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Grid from '@material-ui/core/Grid'
 import Modal from 'components/Modal/Modal'
 import UserFeaturesList from 'components/UserFeaturesList/UserFeaturesList';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-import Typography from '@material-ui/core/Typography';
 
 import {getTodaysDate} from 'Utils/functions';
+
+const Header = styled.header`
+  height: 70px;
+  margin-left: 180px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #fff;
+
+  ${({theme}) => theme.devices.tablet}{
+    margin-left: 100px;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 400px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`
 
 const ButtonItemsWrapper = styled.div`
     display: flex;
@@ -34,23 +49,7 @@ const UserSectionWrapper = styled.div`
   cursor: pointer;
 `;
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-    boxShadow: 'none',
-  },
-  toolbarRoot: {
-    backgroundColor: 'white',
-  },
-  typographyRoot: {
-    color: 'black',
-    fontSize: 16
-  },
-  buttonSign: {
-    fontSize: 16,
-    fontWeight: 500,
-  }
-});
+
 
 const initialValues = {
   amount: 0,
@@ -66,7 +65,6 @@ const initialValues = {
 
 const TopToolbar = () => {
     const arrowWrapper = useRef(null);
-    const classes = useStyles();
     const [openModal, setModalOpen] = useState(false);
     const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
 
@@ -92,40 +90,28 @@ const TopToolbar = () => {
             handleClose={handleModalClose}
           />
         </Modal>
-        <AppBar position="relative" className={classes.root}>
-          <Toolbar className={classes.toolbarRoot}>
-            <Grid container justify="flex-end" alignItems="center">
-              <Grid item md={3} xs={6}>
-                <Button onClick={handleModalOpen} color="#2F54F3">
-                  <ButtonItemsWrapper>
-                    <AddSign />
-                    <Typography className={classes.buttonSign}>
-                      Add new transaction
-                    </Typography>
-                  </ButtonItemsWrapper>
-                </Button>
-              </Grid>
-              <Grid item lg={2} md={3} xs={4}>
-                <UserSectionWrapper
-                  onClick={() =>
-                    setUserFeatureListOpened(!userFeatureListOpened)
-                  }
-                >
-                  <Avatar />
-                  <Typography className={classes.typographyRoot}>
-                    Caroline
-                  </Typography>
-                  <div ref={arrowWrapper}>
-                    <ExpandArrow />
-                  </div>
-                  {userFeatureListOpened && (
-                    <UserFeaturesList setToggle={setUserFeatureListOpened} />
-                  )}
-                </UserSectionWrapper>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
+        <Header>
+          <Wrapper>
+            <Button onClick={handleModalOpen} color="#2F54F3">
+              <ButtonItemsWrapper>
+                <AddSign />
+                Add new transaction
+              </ButtonItemsWrapper>
+            </Button>
+            <UserSectionWrapper
+              onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}
+            >
+              <Avatar />
+              Caroline
+              <div ref={arrowWrapper}>
+                <ExpandArrow />
+              </div>
+              {userFeatureListOpened && (
+                <UserFeaturesList setToggle={setUserFeatureListOpened} />
+              )}
+            </UserSectionWrapper>
+          </Wrapper>
+        </Header>
       </>
     );
 };

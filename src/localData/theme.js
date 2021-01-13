@@ -3,6 +3,7 @@ import {devices} from "localData/devices"
 export const theme = {
   mainBlue: '#264AE7',
   navyBlue: '#2c303b',
+  sidebarBlue: '#2548e6',
   darkNavyBlue: '#1a1d2a',
   mint: '#03C9B5',
   lightMint: '#1DFCE5',

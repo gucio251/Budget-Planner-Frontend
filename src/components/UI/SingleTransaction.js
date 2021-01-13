@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const TableRow = styled.tr`
   border-bottom: 1px solid #efeff3;
+  text-align: left;
 
     & > *:first-child {
       font-weight: 600;
@@ -14,7 +15,7 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  text-align: center;
+  padding: 8px 0px;
 `;
 
 const useStylesBootstrap = makeStyles((theme) => ({

@@ -1,53 +1,45 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import { useSpring, animated } from 'react-spring';
 
-import CountUp from 'react-countup';
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  padding: 15px 15px 50px 15px;
+`
+const StyledNumber = styled(animated.div)`
+`;
 
-const useStyles = makeStyles({
-  root: {
-    borderRadius: 0,
-    height: '100%'
-  },
-  media: {
-    height: 40,
-    borderRadius: 0,
-  },
-  amount: {
-    fontSize: 30,
-    fontWeight: 'normal',
-  },
-  nameHolder: {
-    fontSize: 12,
-  },
-});
+const TextWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 32px;
+`
+
+const TitleWrapper = styled.p`
+  font-size: 12px;
+`
 
 const SingleSummaryField = ({children, amount, name, Icon}) => {
-    const classes = useStyles();
+    const data = useSpring({ number: parseInt(Math.abs(amount)), from: { number: 0.00 } });
     return (
-      <Card className={classes.root}>
-        <CardContent>
-          <CardMedia className={classes.media}>{children}</CardMedia>
-          <Typography className={classes.amount}>
-            <Icon />
-            <CountUp
-              className="account-balance"
-              start={0}
-              end={amount}
-              duration={2.75}
-              useEasing={true}
-              useGrouping={true}
-              separator="."
-              decimals={0}
-            />
-          </Typography>
-          <Typography className={classes.nameHolder}>{name}</Typography>
-        </CardContent>
-      </Card>
+      <Wrapper>
+        {children}
+        <TextWrapper>
+          {amount < 0 ? '-' : '+'}
+          <Icon />
+          <StyledNumber>
+            {data.number.interpolate((val) => parseInt(val).toLocaleString('de-DE'))}
+          </StyledNumber>
+        </TextWrapper>
+        <TitleWrapper>{name}</TitleWrapper>
+      </Wrapper>
     );
 };
 

@@ -9,6 +9,7 @@ import CustomRangePicker from 'containers/CustomRange/CustomRange';
 const StyledMenu = styled.nav`
   display: flex;
   justify-content: flex-end;
+  height: 2.5em;
 `;
 
 const StyledList = styled.ul`

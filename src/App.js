@@ -12,7 +12,7 @@ import SuccessPage from 'views/SuccessPage/SuccessPage';
 
 const App = () => {
   return (
-    <Router style={{ width: '100%' }}>
+    <Router style={{ width: '100%', height: '100%'}}>
       <StandardRoutes component={RegistrationPage} path={routes.registrationPage} />
       <StandardRoutes component={SuccessPage} path={routes.successRegistrationPage} />
       <StandardRoutes component={LoginPage} path={routes.loginPage} />

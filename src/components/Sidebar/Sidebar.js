@@ -10,9 +10,14 @@ import { ReactComponent as UsersIcon } from './../../assets/icons/usersDashboard
 import TabPane from 'components/UI/TabPane'
 
 const StyledSideBar = styled.nav`
-  height: 100vh;
-  width: 100%;
-  background-color: #2548e6;
+  height: 100%;
+  width: 180px;
+  position: fixed;
+  background-color: ${({theme}) => theme.sidebarBlue};
+
+  ${({theme}) => theme.devices.tablet}{
+    width: 100px;
+  }
 `
 
 const LogoWrapper = styled.div`

@@ -6,7 +6,7 @@ import { ReactComponent as BilanceIcon } from 'assets/icons/balanceDashboardIcon
 import { ReactComponent as IncomeIcon } from 'assets/icons/incomeDashboardIcon.svg';
 import { ReactComponent as ExpensesIcon } from 'assets/icons/expensesDashboardIcon.svg';
 
-const GridBox = styled.div`
+const Wrapper = styled.div`
   display: grid;
   height: 100%;
   grid-template-columns: 48.5% 48.5%;
@@ -33,7 +33,7 @@ const BudgetSummary = ({ expenses, incomes, Icon }) => {
   const expensesSum = getSumOfTransactions(expenses);
 
   return (
-    <GridBox>
+    <Wrapper>
       <BalanceWrapper>
         <SingleSummaryField
           amount={incomesSum - expensesSum}
@@ -49,7 +49,7 @@ const BudgetSummary = ({ expenses, incomes, Icon }) => {
       <SingleSummaryField amount={0 - expensesSum} name="Expenses" Icon={Icon}>
         <ExpensesIcon />
       </SingleSummaryField>
-    </GridBox>
+    </Wrapper>
   );
 };
 

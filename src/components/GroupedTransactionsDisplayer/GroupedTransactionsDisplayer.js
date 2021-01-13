@@ -9,22 +9,23 @@ const Wrapper = styled.div`
 `
 
 const List = styled.ul`
-  height: 80%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   list-style: none;
+  padding-right: 3%;
 `;
 
 const ListItem = styled.li`
   display: flex;
   align-items: center;
   font-size: 16px;
-  padding: 3%;
+  padding: 3% 1% 3% 1%;
 
   & > *:first-child{
-    margin-right: 10%;
+    margin-right: 5%;
   }
 `
 

@@ -6,9 +6,10 @@ export const EmptyDiv = styled.div`
 
 export const StyledOverview = styled.div`
   display: grid;
-  height: 100%;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 5% 45% 50%;
+  min-height: calc(100% - 100px);
+  margin: 15px 40px 0 230px;
+  grid-template-columns: 47% 52%;
+  grid-template-rows: 0.2fr 1fr 1fr;
   grid-template-areas:
     'welcomeTextArea dateMenu'
     'budgetSummary graphs'
@@ -16,6 +17,7 @@ export const StyledOverview = styled.div`
   row-gap: 10px;
 
   ${({ theme }) => theme.devices.tablet} {
+    margin-left: 150px;
     grid-template-rows: 8% 5% 40% 45%;
     grid-template-areas:
       'welcomeTextArea welcomeTextArea'
@@ -40,6 +42,7 @@ export const StyledDateMenu = styled.div`
   grid-area: dateMenu;
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 `;
 
 export const StyledBudgetSummary = styled.div`
@@ -48,10 +51,12 @@ export const StyledBudgetSummary = styled.div`
 
 export const StyledGraphArea = styled.div`
   grid-area: graphs;
+  display: flex;
 `;
 
 export const StyledAllTransactions = styled.div`
   grid-area: allTransactions;
+  display: flex;
 
   ${({ theme }) => theme.devices.tablet} {
     display: none;

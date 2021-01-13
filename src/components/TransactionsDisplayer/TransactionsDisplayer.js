@@ -12,17 +12,16 @@ import {
   sortTransactionsByChosenProperty,
 } from 'Utils/functions';
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
 `
 
 const Table = styled.table`
-  width: 95%;
-  height: 90%;
   border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
 `;
 
 const TableBody = styled.tbody`
