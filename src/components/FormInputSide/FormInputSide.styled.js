@@ -18,6 +18,7 @@ export const Wrapper = styled.section`
 `;
 
 export const StyledInputSide = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 5%;
