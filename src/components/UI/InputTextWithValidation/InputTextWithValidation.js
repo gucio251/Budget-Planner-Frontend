@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  StyledTextInput,
   StyledTickIcon,
   StyledErrorIcon,
-  StyledUnderline,
   StyledValidations,
   StyledLabel,
   StyledInput,
-  StyledTextInput
 } from "./InputTextWithValidation.styled"
 
 
@@ -31,7 +30,6 @@ const TextInputWithValidation = ({name, value, label, handleChange, handleBlur ,
       <StyledLabel htmlFor={name}>{label}</StyledLabel>
       <StyledTickIcon />
       <StyledErrorIcon />
-      <StyledUnderline touched={touched} />
       <StyledValidations>
         {errors.map((errorMsg) => (
             <li key={errorMsg}>{errorMsg}</li>

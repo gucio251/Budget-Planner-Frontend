@@ -6,34 +6,30 @@ export const StyledAppInfoSide = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  width: 50vw;
   color: white;
   background-color: ${({ theme }) => theme.mainBlue};
+  height: 100vh;
 
   svg {
     overflow: visible;
   }
 
   ${({ theme }) => theme.devices.tablet} {
-    height: 50%;
-    width: 100vw;
+    height: auto;
   }
 
   ${({ theme }) => theme.devices.mobile} {
-    width: 100vw;
-    height: 100vh;
-    padding: 0 5% 0 5%;
-    align-items: center;
-    display: ${({ displayedOnMobile }) => displayedOnMobile ? "flex" : "none"};
+    padding: 10% 5%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-around;
+    display: ${({ displayedOnMobile }) =>
+      displayedOnMobile ? 'flex' : 'none'};
+    overflow: hidden;
   }
 `;
 
 export const StyledWelcomeText = styled.div`
-  ${({ theme }) => theme.devices.mobile} {
-    width: 100%;
-  }
 `;
 
 export const StyledPigLogo = styled(PigLogo)`
@@ -66,7 +62,6 @@ export const StyledButtonWrapper = styled.div`
   ${({ theme }) => theme.devices.mobile} {
     display: block;
     width: 100%;
-    margin-top: 30px;
   }
 `;
 
@@ -77,6 +72,5 @@ export const StyledSwitchMobile = styled.div`
 
   ${({ theme }) => theme.devices.mobile} {
     display: block;
-    width: 100%;
   }
 `;

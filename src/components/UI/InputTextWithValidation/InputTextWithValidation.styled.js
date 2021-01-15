@@ -2,6 +2,9 @@ import styled, { keyframes } from "styled-components";
 import {ReactComponent as TickIcon} from "assets/icons/tickLoginIcon.svg"
 import {ReactComponent as ErrorIcon} from "assets/icons/errorLoginIcon.svg"
 
+export const StyledTextInput = styled.div`
+  position: relative;
+`;
 const draw = keyframes`
     to {
       stroke-dashoffset: 0;
@@ -60,95 +63,64 @@ export const StyledErrorIcon = styled(ErrorIcon)`
   }
 `;
 
-export const StyledUnderline = styled.span`
-  display: block;
-  position: relative;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: ${({ theme }) => theme.lightGray};
-  transition: all 200ms ease-out;
-
-  &::after {
-    content: "";
-    width: ${({ touched }) => (touched ? 100 : 0)}%;
-    height: 100%;
-    background: ${({ theme }) => theme.darkGray};
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    transition: all 1s;
-  }
-`;
-
 export const StyledValidations = styled.ul`
   overflow: hidden;
   max-height: 0;
   padding-top: 0;
   padding-bottom: 0;
-  margin-top: 6px;
   margin-bottom: 0;
-  color: ${({ theme }) => theme.darkGray};
+  color: #B5B6BD;
 `;
 
 export const StyledLabel = styled.label`
-  position: absolute;
-  top: 8px;
   display: block;
   font-size: 14px;
-  transition: all 200ms ease-out;
+  transform: translateY(-1.4em);
+  transform-origin: 0 0;
+  transition: all .3s;
   color: ${({ theme }) => theme.darkGray};
-  z-index: -1;
 `;
 
 export const StyledInput = styled.input`
-  display: block;
-  border: none;
+  border-color: ${({ theme, touched, fieldCorrectness }) =>  !touched ? theme.lightGray : fieldCorrectness ? '#00C48C' : '#DB0B0B'};
+  border-style: none none solid none;
+  height: 30px;
   outline: none;
   width: 100%;
-  height: 30px;
+  box-shadow: none;
   font-size: 12px;
-  color: ${({ touched, theme }) => touched ? theme.dashboardBlack : theme.darkGray};
+  color: ${({ touched, theme }) =>
+    touched ? theme.dashboardBlack : theme.darkGray};
   background-color: transparent;
+  transition: all 0.5s;
 
   &:hover {
-    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "context-menu")};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'context-menu')};
   }
 
-  &:placeholder-shown + ${StyledLabel} {
-    margin-top: 0%;
+  &:focus {
+    border-color: ${({ theme }) => theme.darkGray};
   }
 
   &:focus + ${StyledLabel}, &:not(:placeholder-shown) + ${StyledLabel} {
-    color: ${({ theme }) => theme.darkGray};
-    transform: translateY(-25px);
-    position: absolute;
-    transition: all 0.5s ease;
-    will-change: transform;
+    transform: translateY(-3.5em) scale(0.8);
   }
 
-  &:focus ~ ${StyledTickIcon}{
-    display: ${({fieldCorrectness }) =>  fieldCorrectness ? "block" : "none"};
+  &:focus ~ ${StyledTickIcon} {
+    display: ${({ fieldCorrectness }) => (fieldCorrectness ? 'block' : 'none')};
   }
 
-  &:focus ~ ${StyledErrorIcon}{
+  &:focus ~ ${StyledErrorIcon} {
     display: none;
   }
 
   &:not(:focus) ~ ${StyledTickIcon} {
-   display: ${({fieldCorrectness }) =>  fieldCorrectness ? "block" : "none"};
+    display: ${({ fieldCorrectness }) => (fieldCorrectness ? 'block' : 'none')};
   }
 
   &:not(:focus) ~ ${StyledErrorIcon} {
-    display: ${({ fieldCorrectness, touched }) => !touched ? "none" : !fieldCorrectness ? "block" : "none"};
-  }
-
-  &:not(:focus) ~ ${StyledUnderline}:after {
-    background-color: ${({ touched,  theme }) => !touched ? theme.lightGray : theme.dashboardBlack};
-  }
-
-  &:focus ~ ${StyledUnderline} {
-    background-color: ${({ theme }) => theme.darkGray};
+    display: ${({ fieldCorrectness, touched }) =>
+      !touched ? 'none' : !fieldCorrectness ? 'block' : 'none'};
   }
 
   &:focus ~ ${StyledValidations} {
@@ -157,11 +129,4 @@ export const StyledInput = styled.input`
     transition: all 1.5s ease;
     will-change: transform;
   }
-`;
-
-export const StyledTextInput = styled.div`
-  flex: 1 1 100%;
-  display: block;
-  position: relative;
-  margin-bottom: 40px;
 `;

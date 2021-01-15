@@ -59,7 +59,6 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
     setAnimationFinished(true);
   });
   return (
-
     <StyledAppInfoSide displayedOnMobile={displayedOnMobile}>
       <StyledWelcomeText ref={welcomeText}>
         <WelcomeText />
@@ -69,15 +68,15 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
       </div>
       <StyledButtonWrapper ref={mobileButton}>
         <Button onClick={handleClickOnMobile}>{buttonName}</Button>
+        <StyledSwitchMobile ref={redirectComponent}>
+          <RedirectComponent
+            spanText={text}
+            linkText={linkText}
+            href={href}
+            linkColor="lightMint"
+          />
+        </StyledSwitchMobile>
       </StyledButtonWrapper>
-      <StyledSwitchMobile ref={redirectComponent}>
-        <RedirectComponent
-          spanText={text}
-          linkText={linkText}
-          href={href}
-          linkColor="lightMint"
-        />
-      </StyledSwitchMobile>
     </StyledAppInfoSide>
   );
 };

@@ -63,62 +63,60 @@ const FormContainer = ({
     >
       {({ handleChange, handleBlur, touched, values, errors }) => {
         return (
-          <div ref={inputSide}>
-            <Wrapper displayedOnMobile={displayedOnMobile}>
-              <StyledInputSide>
-                <StyledInputSideHeader>{header}</StyledInputSideHeader>
-                <StyledForm>
-                  <StyledInputFields>
-                    {formData.map(({ name, label, type }) => {
-                      return (
-                        <InputTextWithValidation
-                          key={name}
-                          name={name}
-                          label={label}
-                          value={values[name]}
-                          handleChange={handleChange}
-                          handleBlur={handleBlur}
-                          type={type}
-                          errors={
-                            values[name] !== '' && errors.hasOwnProperty(name)
-                              ? errors[name]
-                              : touched.hasOwnProperty(name) &&
-                                errors.hasOwnProperty(name)
-                              ? errors[name]
-                              : []
-                          }
-                          touched={touched[name]}
-                          disabled={stateErrors ? stateErrors.disabled : false}
-                        />
-                      );
-                    })}
-                  </StyledInputFields>
-                  <ButtonWrapper>
-                    <Button
-                      color="#264AE7"
-                      disabled={
-                        Object.keys(touched).length === formData.length &&
-                        Object.keys(errors).length === 0
-                          ? false
-                          : true
-                      }
-                    >
-                      {buttonName}
-                    </Button>
-                  </ButtonWrapper>
-                </StyledForm>
-                <RedirectComponentWrapper>
-                  <RedirectComponent
-                    spanText={text}
-                    linkText={linkText}
-                    href={href}
-                    linkColor="mainBlue"
-                  />
-                </RedirectComponentWrapper>
-                {stateErrors && <ErrorMessageBox error={stateErrors} />}
-              </StyledInputSide>
-            </Wrapper>
-          </div>
+          <Wrapper displayedOnMobile={displayedOnMobile} ref={inputSide}>
+            <StyledInputSide>
+              <StyledInputSideHeader>{header}</StyledInputSideHeader>
+              <StyledForm>
+                <StyledInputFields>
+                  {formData.map(({ name, label, type }) => {
+                    return (
+                      <InputTextWithValidation
+                        key={name}
+                        name={name}
+                        label={label}
+                        value={values[name]}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        type={type}
+                        errors={
+                          values[name] !== '' && errors.hasOwnProperty(name)
+                            ? errors[name]
+                            : touched.hasOwnProperty(name) &&
+                              errors.hasOwnProperty(name)
+                            ? errors[name]
+                            : []
+                        }
+                        touched={touched[name]}
+                        disabled={stateErrors ? stateErrors.disabled : false}
+                      />
+                    );
+                  })}
+                </StyledInputFields>
+                <ButtonWrapper>
+                  <Button
+                    color="#264AE7"
+                    disabled={
+                      Object.keys(touched).length === formData.length &&
+                      Object.keys(errors).length === 0
+                        ? false
+                        : true
+                    }
+                  >
+                    {buttonName}
+                  </Button>
+                </ButtonWrapper>
+              </StyledForm>
+              <RedirectComponentWrapper>
+                <RedirectComponent
+                  spanText={text}
+                  linkText={linkText}
+                  href={href}
+                  linkColor="mainBlue"
+                />
+              </RedirectComponentWrapper>
+              {stateErrors && <ErrorMessageBox error={stateErrors} />}
+            </StyledInputSide>
+          </Wrapper>
         );
       }}
     </Formik>
