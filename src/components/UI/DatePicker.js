@@ -120,7 +120,11 @@ const CustomDatePicker = ({name, onChange, value, handleBlur}) => {
         readOnly
         ref={ref}
         name={name}
-        value={`${selectedDate.day}/${selectedDate.month}/${selectedDate.year}`}
+        value={`${selectedDate.day}/${
+          selectedDate.month.toString().length === 1
+            ? `0${selectedDate.month}`
+            : selectedDate.month
+        }/${selectedDate.year}`}
         onBlur={handleBlur}
         style={{
           display: 'flex',
