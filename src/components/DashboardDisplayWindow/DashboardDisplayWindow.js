@@ -10,6 +10,7 @@ const Wrapper = styled.section`
   width: 100%;
   padding: 2% 2% 0 2%;
   background: white;
+  border-radius: 4px;
 `
 
 const StyledHeader = styled.h3`

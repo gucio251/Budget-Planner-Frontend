@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background-color: white;
   padding: 20px;
+  border-radius: 4px;
 
   ${({theme}) => theme.devices.tablet}{
     padding: 10px;
