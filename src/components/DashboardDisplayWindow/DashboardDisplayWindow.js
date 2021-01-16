@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types';
 import { ReactComponent as Arrow } from 'assets/icons/arrowDashboardRight.svg';
 
-const StyledDisplayWindow = styled.section`
-  position: relative;
+const Wrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   padding: 2% 2% 0 2%;
   background: white;
@@ -16,30 +18,32 @@ const StyledHeader = styled.h3`
 `
 
 const StyledRedirectElement = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   color: #2F54F3;
   font-weight: 500;
   padding: 0 20px 20px 0;
+`;
+
+const ComponentWrapper = styled.span`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 
 const DashboardDisplayWindow = ({ children, title }) => {
   return (
-    <StyledDisplayWindow>
-      <StyledHeader>
-        {title}
-      </StyledHeader>
+    <Wrapper>
+      <StyledHeader>{title}</StyledHeader>
       {children}
       <StyledRedirectElement>
-        See more
-        <Arrow />
+        <ComponentWrapper>
+          See more
+          <Arrow />
+        </ComponentWrapper>
       </StyledRedirectElement>
-    </StyledDisplayWindow>
+    </Wrapper>
   );
 };
 

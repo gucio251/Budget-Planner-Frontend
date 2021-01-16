@@ -14,7 +14,7 @@ import CustomDropdownDashboard from 'components/UI/CustomDropdownDashboard'
 
 const StyledGraphArea = styled.div`
   display: grid;
-  height: calc(100% - 75px);
+  height: 100%;
   grid-template-columns: 60% 40%;
   grid-template-rows: 15% 85%;
   grid-template-areas:

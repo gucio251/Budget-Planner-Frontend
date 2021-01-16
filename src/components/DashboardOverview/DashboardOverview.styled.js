@@ -6,10 +6,9 @@ export const EmptyDiv = styled.div`
 
 export const StyledOverview = styled.div`
   display: grid;
-  min-height: calc(100% - 100px);
   margin: 15px 40px 0 230px;
   grid-template-columns: 47% 52%;
-  grid-template-rows: 0.2fr 1fr 1fr;
+  grid-template-rows: 0.2fr 1fr 1.1fr;
   grid-template-areas:
     'welcomeTextArea dateMenu'
     'budgetSummary graphs'
@@ -17,8 +16,8 @@ export const StyledOverview = styled.div`
   row-gap: 10px;
 
   ${({ theme }) => theme.devices.tablet} {
-    margin-left: 150px;
-    grid-template-rows: 8% 5% 40% 45%;
+    margin: 0 0 30px 150px;
+    grid-template-rows: 8% 5% 30% 65%;
     grid-template-areas:
       'welcomeTextArea welcomeTextArea'
       'dateMenu dateMenu'

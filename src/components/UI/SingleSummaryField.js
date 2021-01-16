@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 import { useSpring, animated } from 'react-spring';
 
 const Wrapper = styled.div`
-  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: white;
-  padding: 15px 15px 50px 15px;
+  padding: 20px;
+
+  ${({theme}) => theme.devices.tablet}{
+    padding: 10px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
 `
 const StyledNumber = styled(animated.div)`
 `;
@@ -20,11 +27,15 @@ const TextWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   font-size: 32px;
-`
+`;
 
 const TitleWrapper = styled.p`
   font-size: 12px;
-`
+
+  ${({ theme }) => theme.devices.tablet} {
+    display: none;
+  }
+`;
 
 const SingleSummaryField = ({children, amount, name, Icon}) => {
     const data = useSpring({ number: parseInt(Math.abs(amount)), from: { number: 0.00 } });

@@ -13,6 +13,7 @@ import {
 } from 'Utils/functions';
 
 const Wrapper = styled.div`
+  padding: 0.5em;
   width: 100%;
   display: flex;
   justify-content: center;

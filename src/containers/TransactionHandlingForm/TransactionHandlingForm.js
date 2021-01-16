@@ -9,9 +9,6 @@ import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
 import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Card } from '@material-ui/core';
-
 import Button from 'components/UI/Button';
 import DatePicker from 'components/UI/DatePicker';
 import Dropdown from 'components/UI/Dropdown';
@@ -22,30 +19,41 @@ import TextArea from 'components/UI/TextArea';
 import TabPane from 'components/UI/TabPane';
 import Tabs from 'components/Tabs/Tabs';
 
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-width: 600px;
+  background-color: #f8f9fb;
+  padding: 3%;
+`;
+
 const StyledCloseFormSign = styled(CloseFormSign)`
-  &:hover{
+  position: absolute;
+  right: 4%;
+  top: 4%;
+
+  &:hover {
     transform: scale(1.2);
     cursor: pointer;
   }
 `;
 
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'absolute',
-    left: '30%',
-    top: '5%',
-    width: '30%',
-    backgroundColor: '#f8f9fb',
-    padding: '2%',
-    overflow: 'visible'
-  }
-}));
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 
+`
 const TransactionHandlingForm = props => {
     const dispatch = useDispatch();
     const [categoriesToBeDisplayed, setCategoriesToBeDisplayed] = useState(setupCategoriesToBeDisplayed(props.initialValues));
     const [initialValues, setInitialValues] = useState(props.initialValues);
-    const classes = useStyles();
 
     const handleSourceChange = (name) => {
       switch(name){
@@ -69,20 +77,18 @@ const TransactionHandlingForm = props => {
     };
 
     return (
-      <Container>
-        <Card className={classes.root}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} align="right">
-              <StyledCloseFormSign onClick={props.handleClose} />
-            </Grid>
-            <Grid item xs={12} align="left">
-              {`${
-                checkIfTransactionIsModified(props) ? 'MODIFY' : 'NEW'
-              } TRANSACTION`}
-            </Grid>
-            {!checkIfTransactionIsModified(props) &&
-              renderNavigation(handleSourceChange)}
-          </Grid>
+      <Wrapper>
+        <StyledCloseFormSign onClick={props.handleClose} />
+        <>
+          {`${
+            checkIfTransactionIsModified(props) ? 'MODIFY' : 'NEW'
+          } TRANSACTION`}
+        </>
+        <>
+          {!checkIfTransactionIsModified(props) &&
+            renderNavigation(handleSourceChange)}
+        </>
+        <>
           {renderForm({
             ...props,
             initialValues: initialValues,
@@ -95,19 +101,17 @@ const TransactionHandlingForm = props => {
             dispatch: dispatch,
             handleClose: props.handleClose,
           })}
-        </Card>
-      </Container>
+        </>
+      </Wrapper>
     );
 };
 
 const renderNavigation = (props) => {
   return (
-    <Grid item xs={12} align="left">
       <Tabs handleSourceChange={props}>
         <TabPane tab="1" title="Income" />
         <TabPane tab="2" title="Expense"/>
       </Tabs>
-    </Grid>
   );
 };
 
@@ -137,9 +141,7 @@ const renderForm = ({
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
         return (
           <>
-            <Form>
-              <Grid container spacing={3}>
-                <Grid item xs={8}>
+            <StyledForm>
                   <LabelWrapper label={'Amount'}>
                     <InputWithBorder
                       id="amount"
@@ -150,8 +152,6 @@ const renderForm = ({
                       step="0.5"
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={4}>
                   <LabelWrapper label="Currency">
                     <Dropdown
                       name="currency"
@@ -169,8 +169,6 @@ const renderForm = ({
                       }}
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={12}>
                   <LabelWrapper label="Select category">
                     <Dropdown
                       name="category"
@@ -188,8 +186,6 @@ const renderForm = ({
                       }}
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={12}>
                   <LabelWrapper label="Select subcategory">
                     <Dropdown
                       name="subcategory"
@@ -206,8 +202,6 @@ const renderForm = ({
                       }}
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={12}>
                   <LabelWrapper label="Date">
                     <DatePicker
                       name="transaction_date"
@@ -215,8 +209,6 @@ const renderForm = ({
                       onChange={setFieldValue}
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={12}>
                   <LabelWrapper label={'Write a note'}>
                     <TextArea
                       name={'comments'}
@@ -225,17 +217,13 @@ const renderForm = ({
                       placeholder="Place for your note"
                     />
                   </LabelWrapper>
-                </Grid>
-                <Grid item xs={12}>
                   <Button
                     type="submit"
                     disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
                   >
-                  ADD
+                  {initialValues.hasOwnProperty('id') ? 'MODIFY' : 'ADD'}
                   </Button>
-                </Grid>
-              </Grid>
-            </Form>
+            </StyledForm>
           </>
         );
       }}

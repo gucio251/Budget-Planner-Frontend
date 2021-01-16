@@ -11,10 +11,18 @@ import TopToolbar from 'components/Toolbar/Toolbar';
 
 import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
 
+const Wrapper = styled.div`
+  height: 100vh;
+`;
+
 const StyledDashboard = styled.div`
   background-color: #f6f6f8;
-  height: 100%;
-  overflow: auto;
+  height: 100vh;
+  overflow-y: auto;
+
+  ${({ theme }) => theme.devices.tablet} {
+    height: 100%;
+  }
 `;
 
 const Dashboard = () => {
@@ -29,11 +37,13 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return (
-    <StyledDashboard>
-      <Sidebar />
-      <TopToolbar />
-      <DashboardOverviewHandling />
-    </StyledDashboard>
+    <Wrapper>
+      <StyledDashboard>
+        <Sidebar />
+        <TopToolbar />
+        <DashboardOverviewHandling />
+      </StyledDashboard>
+    </Wrapper>
   );
 };
 
