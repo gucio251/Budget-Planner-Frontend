@@ -29,8 +29,8 @@ const TableBody = styled.tbody`
 
 `
 
-const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon }) => {
-  return <Displayer transactionList={getSortedTransactions([].concat(expenses, incomes))} CurrencyIcon={CurrencyIcon} />;
+const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon, howManyItemsToBeDisplayed=4 }) => {
+  return <Displayer transactionList={getSortedTransactions({transactions: [].concat(expenses, incomes), numOfItems: howManyItemsToBeDisplayed})} CurrencyIcon={CurrencyIcon} />;
 }
 
 
@@ -143,7 +143,10 @@ const Displayer = ({ transactionList = [], CurrencyIcon }) => {
 };
 
 const getSortedTransactions = props => {
-  return sortTransactionsByChosenProperty(props, 'transaction_date').slice(0,4);
+  return sortTransactionsByChosenProperty(props.transactions, 'transaction_date').slice(
+    0,
+    props.numOfItems
+  );
 }
 
 export default TransactionsDisplayer;

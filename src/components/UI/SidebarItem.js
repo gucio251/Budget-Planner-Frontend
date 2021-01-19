@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../localData/theme';
+import { Link } from '@reach/router'
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`
 
 const ListItem = styled.li`
   display: flex;
@@ -38,25 +43,27 @@ const Text = styled.span`
   }
 `;
 
-const SidebarItem = ({Icon, name, isActive, isHover, onClick, onMouseEnter, onMouseLeave}) => {
+const SidebarItem = ({Icon, name, isActive, isHover, onClick, onMouseEnter, onMouseLeave, href}) => {
     return (
-      <ListItem
-        onClick={onClick}
-        isActive={isActive}
-        isHover={isHover}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        {<Active isActive={isActive} />}
-        <Icon
-          style={
-            isActive || isHover
-              ? { fill: theme.lightMint }
-              : { fill: theme.grayForDashboard }
-          }
-        />
-        <Text>{name}</Text>
-      </ListItem>
+      <StyledLink to={href}>
+        <ListItem
+          onClick={onClick}
+          isActive={isActive}
+          isHover={isHover}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {<Active isActive={isActive} />}
+          <Icon
+            style={
+              isActive || isHover
+                ? { fill: theme.lightMint }
+                : { fill: theme.grayForDashboard }
+            }
+          />
+          <Text>{name}</Text>
+        </ListItem>
+      </StyledLink>
     );
 };
 

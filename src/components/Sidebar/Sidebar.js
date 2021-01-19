@@ -48,8 +48,8 @@ const Sidebar = () => {
           </LogoNameWrapper>
         </LogoWrapper>
         <ManageSidebar>
-          <TabPane Icon={OverviewIcon} name="Overview" href="#" num="0" />
-          <TabPane Icon={ReportsIcon} name="Reports" href="#" num="1" />
+          <TabPane Icon={OverviewIcon} name="Overview" href="./" num="0" />
+          <TabPane Icon={ReportsIcon} name="Reports" href="reports" num="1" />
           <TabPane Icon={SavingsIcon} name="Savings" href="#" num="2" />
           <TabPane Icon={SettingsIcon} name="Settings" href="#" num="3" />
           <TabPane Icon={UsersIcon} name="Users" href="#" num="4" />

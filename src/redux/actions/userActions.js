@@ -43,7 +43,7 @@ const login = (user, clearPasswordField) => dispatch => {
     Users.login(user).then(
         ({token}) => {
             dispatch(success(token));
-            navigate(routes.dashboard);
+            navigate('dashboard');
         },
         (error) => {
             clearPasswordField();

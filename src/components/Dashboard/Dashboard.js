@@ -9,7 +9,12 @@ import { expensesActions } from 'redux/actions/expensesActions';
 import { Sidebar } from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
+import { Router } from '@reach/router';
+import { routes } from 'routes';
+import ProtectedRoutes from 'components/ProtectedRoutes/ProtectedRoutes';
+
 import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
+import DashboardReports from 'components/DashboardReports/DashboardReports';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -41,7 +46,12 @@ const Dashboard = () => {
       <StyledDashboard>
         <Sidebar />
         <TopToolbar />
-        <DashboardOverviewHandling />
+        <Router>
+          <DashboardOverviewHandling path='/' />
+          <DashboardReports
+            path={'xxx'}
+          />
+        </Router>
       </StyledDashboard>
     </Wrapper>
   );

@@ -3,5 +3,5 @@ export const routes = {
     loginPage: "/login",
     signUpPage: "/signup",
     successRegistrationPage: "/successReg",
-    dashboard: "/dashboard"
+    dashboard: "dashboard/*"
 }
