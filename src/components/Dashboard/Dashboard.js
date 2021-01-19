@@ -49,7 +49,7 @@ const Dashboard = () => {
         <Router>
           <DashboardOverviewHandling path='/' />
           <DashboardReports
-            path={'xxx'}
+            path='reports'
           />
         </Router>
       </StyledDashboard>

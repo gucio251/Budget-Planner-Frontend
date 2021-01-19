@@ -34,7 +34,7 @@ const TransactionsDisplayer = ({ expenses, incomes, CurrencyIcon, howManyItemsTo
 }
 
 
-const Displayer = ({ transactionList = [], CurrencyIcon }) => {
+export const Displayer = ({ transactionList = [], CurrencyIcon }) => {
   const dispatch = useDispatch();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openModifyModal, setOpenModifyModal] = useState(false);

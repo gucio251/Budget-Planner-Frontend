@@ -7,7 +7,7 @@ const StandardRoutes = ({ component: Component, ...rest }) => {
   return !isAuthenticated ? (
     <Component {...rest} />
   ) : (
-    <Redirect from={rest.path} to={routes.dashboard} noThrow />
+    <Redirect from={rest.path} to={'./'} noThrow />
   );
 };
 
