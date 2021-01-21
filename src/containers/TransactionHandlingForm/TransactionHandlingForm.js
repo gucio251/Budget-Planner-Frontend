@@ -231,12 +231,12 @@ const renderForm = ({
   );
 };
 
-const getCategories = props => {
+export const getCategories = props => {
   return Object.values(props).map(value => value);
 }
 
 
-const getSubcategories = ({category, dependencies}) => {
+export const getSubcategories = ({category, dependencies}) => {
   if (dependencies.categories.hasOwnProperty(category) === false) return [];
   if(category === '') return [];
   const subcategoriesIds = dependencies.categories[category].subcategories;

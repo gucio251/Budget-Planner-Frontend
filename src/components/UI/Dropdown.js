@@ -32,6 +32,7 @@ const IconWrapper = styled.div`
 const { Option, SingleValue } = components;
 
 const CustomValueContainer = (props) => {
+  console.log(props);
   const { options, data } = props;
   const { label } = data;
 
@@ -82,6 +83,7 @@ const Dropdown = ({
   handleBlur,
   indexOfDefaultValue
 }) => {
+  console.log(value)
   return (
     <Select
       options={list}

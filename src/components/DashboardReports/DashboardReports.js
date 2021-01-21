@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux'
 
+import ApplyFilters from 'containers/ApplyFilters/ApplyFilters'
+import FiltersSection from 'components/FiltersSection/FiltersSection'
 import Pagination from 'components/Pagination/Pagination';
 import {Displayer} from 'components/TransactionsDisplayer/TransactionsDisplayer'
 
@@ -37,26 +39,35 @@ const DashboardReports = () => {
     const indexOfLastTransaction = TransactionsPerPage * currentActivePage;
     const indexOfFirstTransaction = indexOfLastTransaction - TransactionsPerPage;
     const transactions = [].concat(expenses, incomes);
-    const transactionsToBeDisplayed = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
 
     return (
       <Wrapper>
-        <DisplayerWrapper>
-          <Displayer
-            transactionList={transactionsToBeDisplayed}
-            CurrencyIcon={CurrencyIcon}
-            howManyItemsToBeDisplayed={TransactionsPerPage}
-          />
-        </DisplayerWrapper>
-        <Pagination
-          postsPerPage={TransactionsPerPage}
-          currentActivePage={currentActivePage}
-          totalPosts={transactions.length}
-          handlePostsAmountChange={changeAmountOfPostsPerPage}
-          changeActivePage={changeActivePage}
-          moveToNextPage={moveToNextPage}
-          moveToPreviousPage={moveToPreviousPage}
-        />
+        <FiltersSection />
+        <ApplyFilters transactions={transactions}>
+          {({ filteredTransactions }) => (
+          <>
+            <DisplayerWrapper>
+              <Displayer
+                transactionList={filteredTransactions.slice(
+                  indexOfFirstTransaction,
+                  indexOfLastTransaction
+                )}
+                CurrencyIcon={CurrencyIcon}
+                howManyItemsToBeDisplayed={TransactionsPerPage}
+              />
+            </DisplayerWrapper>
+            <Pagination
+              postsPerPage={TransactionsPerPage}
+              currentActivePage={currentActivePage}
+              totalPosts={filteredTransactions.length}
+              handlePostsAmountChange={changeAmountOfPostsPerPage}
+              changeActivePage={changeActivePage}
+              moveToNextPage={moveToNextPage}
+              moveToPreviousPage={moveToPreviousPage}
+            />
+          </>
+          )}
+        </ApplyFilters>
       </Wrapper>
     );
 };
