@@ -96,7 +96,7 @@ const FormContainer = ({
                   <Button
                     color="#264AE7"
                     disabled={
-                      Object.keys(touched).length === formData.length &&
+                      Object.keys(touched).length!== 0 &&
                       Object.keys(errors).length === 0
                         ? false
                         : true
