@@ -1,27 +1,41 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import DatesRangeContainer from 'containers/DatesRangeContainer';
-import SingleDateMenuOption from 'components/UI/SingleDateMenuOption';
-import Modal from 'components/Modal/Modal';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomRangePicker from 'containers/CustomRange/CustomRange';
+import { datesRangeActions } from 'redux/actions/dateRangeActions';
+import Modal from 'components/Modal/Modal';
 
-const StyledMenu = styled.nav`
+const DateChangeWrapper = styled.nav`
   display: flex;
-  justify-content: flex-end;
   height: 2.5em;
+  flex: 1;
 `;
 
-const StyledList = styled.ul`
-    display: flex;
-    list-style: none;
+const Options = styled.ul`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+`;
 
-    & li:not(:last-child){
-        margin-right: 16px;
-    }
-`
+const Option = styled.li`
+  display: flex;
+  flex: 1;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: ${({ active }) => (active ? '#E5E7FA' : null)};
+  color: ${({ active }) => active ? '#2F54F3' : '#d0c9d6'};
+  border-bottom: ${({active, theme}) => active ? `1px solid ${theme.mainBlue}` : null};
+  border-radius: 4px;
+  font-size: 13px;
+`;
 
 const DatesRangeMenu = ({ children }) => {
+  const datesRangeState = useSelector(state => state.datesRange.datesRange);
+  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalOpening = () => {
@@ -31,39 +45,65 @@ const DatesRangeMenu = ({ children }) => {
   const handleModalClosing = () => {
     setModalOpen(false);
   }
+
+  const getDateRangeBasedOnOptionChosen = (optionChosen) => {
+    switch (optionChosen) {
+      case 'This Month':
+        return {
+          ...calculateMonthBeginningAndEnd(),
+          option: optionChosen
+        };
+      case 'Last Month':
+        return {
+          ...calculateMonthBeginningAndEnd(-1),
+          option: optionChosen,
+        };
+      default:
+        break;
+    }
+  };
   return (
-    <DatesRangeContainer>
-      {({ setActiveSettingName, activeRangeName }) => {
-        return (
-          <>
-            <Modal open={modalOpen} handleClose={handleModalClosing}>
-              <CustomRangePicker />
-            </Modal>
-            <StyledMenu>
-              <StyledList>
-                {children.map((el, i) => {
-                  return (
-                    <SingleDateMenuOption
-                      active={activeRangeName === el.props.title ? true : false}
-                      key={i}
-                      onClick={() => {
-                        setActiveSettingName(el.props.title);
-                        if(el.props.title === "Custom"){
-                          handleModalOpening(true);
-                        }
-                      }}
-                    >
-                      {el.props.display}
-                    </SingleDateMenuOption>
+    <>
+      <Modal open={modalOpen} handleClose={handleModalClosing}>
+        <CustomRangePicker />
+      </Modal>
+      <DateChangeWrapper>
+        <Options>
+          {children.map((el, i) => {
+            return (
+              <Option
+                active={datesRangeState.option === el.props.tab ? true : false}
+                key={i}
+                onClick={() => {
+                  el.props.tab === 'Custom' ? handleModalOpening():
+                  dispatch(
+                    datesRangeActions.setDateRange(
+                      getDateRangeBasedOnOptionChosen(el.props.tab)
+                    )
                   );
-                })}
-              </StyledList>
-            </StyledMenu>
-          </>
-        );}}
-    </DatesRangeContainer>
+                }}
+              >
+                {el}
+              </Option>
+            );
+          })}
+        </Options>
+      </DateChangeWrapper>
+    </>
   );
 };
+
+export const calculateMonthBeginningAndEnd = (
+  monthDifferenceFromCurrent = 0
+) => {
+  const currentDate = new Date();
+  const month = currentDate.getMonth() + monthDifferenceFromCurrent;
+  const year = currentDate.getFullYear();
+  const firstDay = `${year}-${month < 10 ? `0${month + 1}` : month}-01`;
+  const lastDay = new Date(year, month + 1, 0);
+  return {start: firstDay, end: lastDay.toJSON().slice(0, 10)}
+};
+
 
 DatesRangeMenu.propTypes = {
   children: PropTypes.oneOfType([

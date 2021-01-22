@@ -1,29 +1,45 @@
 import React from 'react';
+import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 
-import DatesRangeMenu from 'components/DatesRangeMenu/DatesRangeMenu'
-import TabPane from 'components/UI/TabPane'
+import DatesRangeMenu from 'components/DatesRangeMenu/DatesRangeMenu';
+import {ReactComponent as CalendarIcon} from 'assets/icons/calendarIcon.svg';
 
+const DateMenuTab = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+`;
+
+const Text = styled.span`
+  margin-left: 10px;
+`
 const DashboardDateMenu = () => {
-    const datesRangeState = useSelector(state => state.datesRange);
-
-    const generateTitle = () => {
-      return datesRangeState.datesRange.hasOwnProperty("custom") === true
-      ? generateCustomDate(datesRangeState.datesRange)
-      : "Custom"
-    }
+    const datesRangeState = useSelector(state => state.datesRange.datesRange);
 
     return (
       <>
         <DatesRangeMenu>
-          <TabPane title="Last Month" display="Last Month" />
-          <TabPane title="This Month" display="This Month" />
-          <TabPane title="Custom" display={generateTitle()} />
+          <DateMenuTab tab='Last Month'>Last Month</DateMenuTab>
+          <DateMenuTab tab='This Month'>This Month</DateMenuTab>
+          <DateMenuTab tab='Custom'>{datesRangeState.option === 'Custom' ? generateCalendarView(datesRangeState): 'Custom'}</DateMenuTab>
         </DatesRangeMenu>
       </>
     );
 };
 
+const generateCalendarView = props => {
+  return (
+    <>
+      <CalendarIcon />
+      <Text>
+        {generateCustomDate(props)}
+      </Text>
+    </>
+  );
+}
 const generateCustomDate = ({start, end}) => {
   const [startYear, startMonth, startDay] = start.split('-');
   const endDate = end.split('-').reverse().join('.');

@@ -68,7 +68,7 @@ const CustomRange = () => {
         datesRangeActions.setDateRange({
           start: startDate,
           end: endDate,
-          custom: true
+          option: 'Custom'
         })
       );
       modal.handleClose();
