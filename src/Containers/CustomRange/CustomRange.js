@@ -6,7 +6,6 @@ import Button from 'components/UI/Button';
 import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import { datesRangeActions } from 'redux/actions/dateRangeActions';
 import { ModalContext } from 'components/Modal/Modal';
-import RangeDatePicker from 'components/UI/RangeDatePicker/RangeDatePicker';
 
 import { convertDateToString } from 'Utils/functions';
 
@@ -79,7 +78,7 @@ const CustomRange = () => {
           Custom range
           <StyledCloseFormSign onClick={modal.handleClose}/>
         </StyledHeader>
-        <RangeDatePicker {...datesRange} updateRange={setDatesRange} />
+
         <ButtonWrapper>
           <Button
             color="#1665D8"

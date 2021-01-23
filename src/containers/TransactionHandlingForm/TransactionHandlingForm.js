@@ -10,7 +10,7 @@ import { expensesActions } from 'redux/actions/expensesActions';
 import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
 
 import Button from 'components/UI/Button';
-import DatePicker from 'components/UI/DatePicker';
+import SingleMonthDatePicker from 'components/UI/SingleMonthDatePicker';
 import Dropdown from 'components/UI/Dropdown';
 import InputWithBorder from 'components/UI/InputWithBorder';
 import LabelWrapper from 'components/UI/LabelWrapper';
@@ -139,90 +139,91 @@ const renderForm = ({
       }}
     >
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
+        console.log(values)
         return (
           <>
             <StyledForm>
-                  <LabelWrapper label={'Amount'}>
-                    <InputWithBorder
-                      id="amount"
-                      name="amount"
-                      autoComplete="off"
-                      placeholder="amount"
-                      type="number"
-                      step="0.5"
-                    />
-                  </LabelWrapper>
-                  <LabelWrapper label="Currency">
-                    <Dropdown
-                      name="currency"
-                      list={currencies}
-                      isSearchable={true}
-                      label="Select Currency"
-                      value={currencies.filter((currency) => {
-                        return currency.id === values['currency_id']
-                          ? currency.value
-                          : '';
-                      })}
-                      onChange={(selectedOption) => {
-                        setFieldValue('currency', selectedOption.value);
-                        setFieldValue('currency_id', selectedOption.id);
-                      }}
-                    />
-                  </LabelWrapper>
-                  <LabelWrapper label="Select category">
-                    <Dropdown
-                      name="category"
-                      list={getCategories(categories.categories)}
-                      isSearchable={true}
-                      isLoading={false}
-                      value={values.category ? { label: values.category } : ''}
-                      onChange={(selectedOption) => {
-                        setFieldValue('category', selectedOption.value);
-                        setFieldValue(
-                          'Icon',
-                          categories.categories[selectedOption.value].Icon
-                        );
-                        setFieldValue('subcategory', null);
-                      }}
-                    />
-                  </LabelWrapper>
-                  <LabelWrapper label="Select subcategory">
-                    <Dropdown
-                      name="subcategory"
-                      list={getSubcategories({
-                        category: values.category,
-                        dependencies: categories,
-                      })}
-                      value={
-                        values.subcategory ? { label: values.subcategory } : ''
-                      }
-                      onChange={(selectedOption) => {
-                        setFieldValue('category_id', selectedOption.id);
-                        setFieldValue('subcategory', selectedOption.value);
-                      }}
-                    />
-                  </LabelWrapper>
-                  <LabelWrapper label="Date">
-                    <DatePicker
-                      name="transaction_date"
-                      value={values.transaction_date}
-                      onChange={setFieldValue}
-                    />
-                  </LabelWrapper>
-                  <LabelWrapper label={'Write a note'}>
-                    <TextArea
-                      name={'comments'}
-                      value={values.comments}
-                      handleChange={handleChange}
-                      placeholder="Place for your note"
-                    />
-                  </LabelWrapper>
-                  <Button
-                    type="submit"
-                    disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
-                  >
-                  {initialValues.hasOwnProperty('id') ? 'MODIFY' : 'ADD'}
-                  </Button>
+              <LabelWrapper label={'Amount'}>
+                <InputWithBorder
+                  id="amount"
+                  name="amount"
+                  autoComplete="off"
+                  placeholder="amount"
+                  type="number"
+                  step="0.5"
+                />
+              </LabelWrapper>
+              <LabelWrapper label="Currency">
+                <Dropdown
+                  name="currency"
+                  list={currencies}
+                  isSearchable={true}
+                  label="Select Currency"
+                  value={currencies.filter((currency) => {
+                    return currency.id === values['currency_id']
+                      ? currency.value
+                      : '';
+                  })}
+                  onChange={(selectedOption) => {
+                    setFieldValue('currency', selectedOption.value);
+                    setFieldValue('currency_id', selectedOption.id);
+                  }}
+                />
+              </LabelWrapper>
+              <LabelWrapper label="Select category">
+                <Dropdown
+                  name="category"
+                  list={getCategories(categories.categories)}
+                  isSearchable={true}
+                  isLoading={false}
+                  value={values.category ? { label: values.category } : ''}
+                  onChange={(selectedOption) => {
+                    setFieldValue('category', selectedOption.value);
+                    setFieldValue(
+                      'Icon',
+                      categories.categories[selectedOption.value].Icon
+                    );
+                    setFieldValue('subcategory', null);
+                  }}
+                />
+              </LabelWrapper>
+              <LabelWrapper label="Select subcategory">
+                <Dropdown
+                  name="subcategory"
+                  list={getSubcategories({
+                    category: values.category,
+                    dependencies: categories,
+                  })}
+                  value={
+                    values.subcategory ? { label: values.subcategory } : ''
+                  }
+                  onChange={(selectedOption) => {
+                    setFieldValue('category_id', selectedOption.id);
+                    setFieldValue('subcategory', selectedOption.value);
+                  }}
+                />
+              </LabelWrapper>
+              <LabelWrapper label="Date">
+                <SingleMonthDatePicker
+                  name="transaction_date"
+                  value={values.transaction_date}
+                  onChange={setFieldValue}
+                />
+              </LabelWrapper>
+              <LabelWrapper label={'Write a note'}>
+                <TextArea
+                  name={'comments'}
+                  value={values.comments}
+                  handleChange={handleChange}
+                  placeholder="Place for your note"
+                />
+              </LabelWrapper>
+              <Button
+                type="submit"
+                disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
+              >
+                {initialValues.hasOwnProperty('id') ? 'MODIFY' : 'ADD'}
+              </Button>
             </StyledForm>
           </>
         );

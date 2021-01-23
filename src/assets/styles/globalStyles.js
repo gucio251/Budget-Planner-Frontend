@@ -18,38 +18,30 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     overflow: hidden;
   }
-  .custom-today-day::after {
-    visibility: hidden;
-  }
-  .DatePicker {
-    display: flex;
-    width: 100%;
-    z-index: 1;
-  }
-  .Calendar__weekDay {
-    color: #283593!important;
-    font-weight: bold!important;
-  }
-  .Calendar__day {
-    color: #8B8795!important;
-  }
-  .-selected {
-    color: white!important
-  }
-  .DatePicker__calendarContainer.-top{
-    z-index: 3!important;
-  }
-  .react-datepicker{
-    z-index: 200000;
-  }
-  input[type=number] {
-  -moz-appearance: textfield;
+
+  .DayPicker {
+    font-size: 1.4em;
+    background-color: white;
+    border-radius: 4px;
   }
 
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  .DayPicker-Day{
+    font-weight: 300;
+  }
+
+  .DayPicker * {
+    outline: none;
+  }
+
+  .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside){
+    background-color: #1665D8;
+  }
+
+  .DayPicker-Caption > div{
+    display: flex;
+    justify-content: center;
+    color: #707070;
+    font-weight: normal;
   }
 
 `;
