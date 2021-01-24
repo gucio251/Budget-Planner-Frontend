@@ -8,7 +8,8 @@ const Input = styled.input`
     border: none;
     outline: none;
     padding-left: 10px;
-    height: 100%;
+    height: 40px;
+    min-width: 100%;
 `
 
 const InputField = ({placeholder, type, step, name, value, handleChange}) => {

@@ -15,11 +15,11 @@ const CalendarWrapper = styled.div`
     display: ${({active}) => active ? 'block' : 'none'};
 `
 
-function Navbar({
+export const Navbar = ({
   onPreviousClick,
   onNextClick,
   className,
-}) {
+}) =>  {
   const styleLeft = {
     position: 'absolute',
     left: '0',
