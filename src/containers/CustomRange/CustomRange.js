@@ -3,34 +3,31 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
-import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import { datesRangeActions } from 'redux/actions/dateRangeActions';
+import DayPicker, {DateUtils} from 'react-day-picker/DayPicker';
 import { ModalContext } from 'components/Modal/Modal';
-
-import { convertDateToString } from 'Utils/functions';
+import {Navbar} from 'components/UI/SingleMonthDatePicker'
+import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 
 const StyledContent = styled.div`
   position: absolute;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 10% 80% 10%;
-  grid-template-areas:
-    'header header'
-    '. .'
-    '. footer';
-  left: 30%;
-  top: 15%;
-  height: 70%;
-  width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   background-color: #f8f9fb;
-  padding: 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2em;
+  width: min(40em, 100%);
+  overflow-y: auto;
+  max-height: 100%;
 `;
 
-const StyledHeader = styled.div`
-  grid-area: header;
+const StyledRow = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: 1.3em;
   font-weight: 500;
 `
 const StyledCloseFormSign = styled(CloseFormSign)`
@@ -40,48 +37,114 @@ const StyledCloseFormSign = styled(CloseFormSign)`
   }
 `;
 
+const InputFieldsWrapper = styled.div`
+  margin-top: 1em;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(240px, 1fr)
+  );
+  grid-gap: 25px;
+`;
+
+const InputControl = styled.div`
+  position: relative;
+  width: 100%;
+`
+const LabelWrapper = styled.label`
+  position: absolute;
+  top: -1.2em;
+  font-size: 0.85em;
+  font-weight: normal;
+`
+
+const InputField = styled.input`
+  height: 40px;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  padding-left: 1em;
+`
+
+const Wrapper = styled.div`
+  width: 100%;
+`
+
 const ButtonWrapper = styled.div`
-  grid-area: footer;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  padding: 0 30px 0 30px;
 `
 
 const CustomRange = () => {
     const dispatch = useDispatch();
     const modal = useContext(ModalContext);
     const [datesRange, setDatesRange] = useState({
-      startDate: null,
-      endDate: null,
+      from: undefined,
+      to: undefined,
     });
 
     const checkIfButtonShallBeDisabled = () => {
-      return (datesRange.startDate == null || datesRange.endDate == null) ? true : false;
+      return (datesRange.from == undefined || datesRange.to == undefined) ? true : false;
     }
 
+    const handleDayClick = (day) => {
+      const range = DateUtils.addDayToRange(day, datesRange);
+      setDatesRange(range)
+    }
     const submitDateRangeChange = () => {
-      const startDate = convertDateToString(datesRange.startDate._d);
-      const endDate = convertDateToString(datesRange.endDate._d);
       dispatch(
         datesRangeActions.setDateRange({
-          start: startDate,
-          end: endDate,
-          option: 'Custom'
+          start: convertToString(datesRange.from),
+          end: convertToString(datesRange.to),
+          option: 'Custom',
         })
       );
       modal.handleClose();
     }
     return (
       <StyledContent>
-        <StyledHeader>
+        <StyledRow>
           Custom range
-          <StyledCloseFormSign onClick={modal.handleClose}/>
-        </StyledHeader>
-
+          <StyledCloseFormSign onClick={modal.handleClose} />
+        </StyledRow>
+        <InputFieldsWrapper>
+          <InputControl>
+            <LabelWrapper>From</LabelWrapper>
+            <InputField
+              value={
+                datesRange.from != null
+                  ? calculateVisibleDate(datesRange.from)
+                  : null
+              }
+            />
+          </InputControl>
+          <InputControl>
+            <LabelWrapper>To</LabelWrapper>
+            <InputField
+              value={
+                datesRange.to != null
+                  ? calculateVisibleDate(datesRange.to)
+                  : null
+              }
+            />
+          </InputControl>
+        </InputFieldsWrapper>
+        <Wrapper>
+          <DayPicker
+            className="Selectable"
+            numberOfMonths={2}
+            onDayClick={handleDayClick}
+            selectedDays={[
+              datesRange.from,
+              { from: datesRange.from, to: datesRange.to },
+            ]}
+            modifiers={{ start: datesRange.from, end: datesRange.to }}
+            navbarElement={<Navbar />}
+          />
+        </Wrapper>
         <ButtonWrapper>
           <Button
-            color="#1665D8"
             disabled={checkIfButtonShallBeDisabled()}
             onClick={submitDateRangeChange}
           >
@@ -92,9 +155,13 @@ const CustomRange = () => {
     );
 };
 
-
-CustomRange.propTypes = {
-    
-};
+const convertToString = date => {
+  return date.toISOString().slice(0, 10);
+}
+const calculateVisibleDate = date => {
+  const dateString = convertToString(date);
+  const [year, month, day] = dateString.split('-');
+  return `${day}-${month}-${year}`;
+}
 
 export default CustomRange;
