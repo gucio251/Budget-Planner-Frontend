@@ -147,6 +147,7 @@ const CustomRange = () => {
           <Button
             disabled={checkIfButtonShallBeDisabled()}
             onClick={submitDateRangeChange}
+            color="#264AE7"
           >
             Save
           </Button>
