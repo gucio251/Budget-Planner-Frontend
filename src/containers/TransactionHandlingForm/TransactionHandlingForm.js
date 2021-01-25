@@ -20,24 +20,29 @@ import TabPane from 'components/UI/TabPane';
 import Tabs from 'components/Tabs/Tabs';
 
 const Wrapper = styled.div`
+  height: 100%;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2em;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
-  max-width: 600px;
+  width: min(450px, 100%);
   background-color: #f8f9fb;
-  padding: 3%;
+  padding: 2em;
+  border-radius: 4px;
 `;
 
-const StyledCloseFormSign = styled(CloseFormSign)`
-  position: absolute;
-  right: 4%;
-  top: 4%;
+const LineWrapper = styled.div`
+  font-size: 1.25em;
+  font-weight: 450;
+  display: flex;
+  justify-content: space-between;
+`
 
+const StyledCloseFormSign = styled(CloseFormSign)`
   &:hover {
     transform: scale(1.2);
     cursor: pointer;
@@ -47,9 +52,15 @@ const StyledCloseFormSign = styled(CloseFormSign)`
 const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  gap: 15px;
-
+  gap: 20px;
 `
+
+const FormLineWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-column-gap: 1em;
+`
+
 const TransactionHandlingForm = props => {
     const dispatch = useDispatch();
     const [categoriesToBeDisplayed, setCategoriesToBeDisplayed] = useState(setupCategoriesToBeDisplayed(props.initialValues));
@@ -78,12 +89,12 @@ const TransactionHandlingForm = props => {
 
     return (
       <Wrapper>
-        <StyledCloseFormSign onClick={props.handleClose} />
-        <>
+        <LineWrapper>
           {`${
-            checkIfTransactionIsModified(props) ? 'MODIFY' : 'NEW'
-          } TRANSACTION`}
-        </>
+            checkIfTransactionIsModified(props) ? 'Modify' : 'Add new'
+          } transaction`}
+          <StyledCloseFormSign onClick={props.handleClose} />
+        </LineWrapper>
         <>
           {!checkIfTransactionIsModified(props) &&
             renderNavigation(handleSourceChange)}
@@ -109,14 +120,23 @@ const TransactionHandlingForm = props => {
 const renderNavigation = (props) => {
   return (
       <Tabs handleSourceChange={props}>
-        <TabPane tab="1" title="Income" />
-        <TabPane tab="2" title="Expense"/>
+        <TabPane tab='1' title='Income' />
+        <TabPane tab='2' title='Expense'/>
       </Tabs>
   );
 };
 
 const checkIfTransactionIsModified = (props) => {
   return props.initialValues.hasOwnProperty('id');
+}
+
+const fieldsName = {
+  amount: 'amount',
+  currency: 'currency',
+  category: 'category',
+  subcategory: 'subcategory',
+  transactionDate: 'transaction_date',
+  comment: 'comments'
 }
 
 const renderForm = ({
@@ -139,67 +159,62 @@ const renderForm = ({
       }}
     >
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
-        console.log(values)
         return (
           <>
             <StyledForm>
-              <LabelWrapper label={'Amount'}>
-                <InputWithBorder
-                  id="amount"
-                  name="amount"
-                  autoComplete="off"
-                  placeholder="amount"
-                  type="number"
-                  step="0.5"
-                />
-              </LabelWrapper>
-              <LabelWrapper label="Currency">
-                <Dropdown
-                  name="currency"
-                  list={currencies}
-                  isSearchable={true}
-                  label="Select Currency"
-                  value={currencies.filter((currency) => {
-                    return currency.id === values['currency_id']
-                      ? currency.value
-                      : '';
-                  })}
-                  onChange={(selectedOption) => {
-                    setFieldValue('currency', selectedOption.value);
-                    setFieldValue('currency_id', selectedOption.id);
-                  }}
-                />
-              </LabelWrapper>
+              <FormLineWrapper>
+                <LabelWrapper label={'Amount'}>
+                  <InputWithBorder
+                    name={fieldsName.amount}
+                    autoComplete="off"
+                    type="number"
+                    step="0.5"
+                  />
+                </LabelWrapper>
+                <LabelWrapper label="Currency">
+                  <Dropdown
+                    name={fieldsName.currency}
+                    list={currencies}
+                    isSearchable={false}
+                    label="Select Currency"
+                    value={convertStringToDropdowObject(
+                      values[fieldsName.currency]
+                    )}
+                    onChange={({ value, id }) => {
+                      setFieldValue('currency', value);
+                      setFieldValue('currency_id', id);
+                    }}
+                  />
+                </LabelWrapper>
+              </FormLineWrapper>
               <LabelWrapper label="Select category">
                 <Dropdown
-                  name="category"
+                  name={fieldsName.category}
                   list={getCategories(categories.categories)}
-                  isSearchable={true}
-                  isLoading={false}
-                  value={values.category ? { label: values.category } : ''}
-                  onChange={(selectedOption) => {
-                    setFieldValue('category', selectedOption.value);
-                    setFieldValue(
-                      'Icon',
-                      categories.categories[selectedOption.value].Icon
-                    );
+                  isSearchable={false}
+                  value={convertStringToDropdowObject(
+                    values[fieldsName.category]
+                  )}
+                  onChange={({ value }) => {
+                    setFieldValue('Icon', categories.categories[value].Icon);
+                    setFieldValue(fieldsName.category, value);
                     setFieldValue('subcategory', null);
                   }}
                 />
               </LabelWrapper>
               <LabelWrapper label="Select subcategory">
                 <Dropdown
-                  name="subcategory"
+                  name={fieldsName.subcategory}
                   list={getSubcategories({
                     category: values.category,
                     dependencies: categories,
                   })}
-                  value={
-                    values.subcategory ? { label: values.subcategory } : ''
-                  }
-                  onChange={(selectedOption) => {
-                    setFieldValue('category_id', selectedOption.id);
-                    setFieldValue('subcategory', selectedOption.value);
+                  value={convertStringToDropdowObject(
+                    values[fieldsName.subcategory]
+                  )}
+                  onChange={({ value, id }) => {
+                    setFieldValue('category_id', id);
+                    setFieldValue(fieldsName.subcategory, value);
                   }}
                 />
               </LabelWrapper>
@@ -215,14 +230,15 @@ const renderForm = ({
                   name={'comments'}
                   value={values.comments}
                   handleChange={handleChange}
-                  placeholder="Place for your note"
+                  placeholder="Aa"
                 />
               </LabelWrapper>
               <Button
+                color="#264AE7"
                 type="submit"
                 disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
               >
-                {initialValues.hasOwnProperty('id') ? 'MODIFY' : 'ADD'}
+                {initialValues.hasOwnProperty('id') ? 'Modify' : 'Add'}
               </Button>
             </StyledForm>
           </>
@@ -233,7 +249,11 @@ const renderForm = ({
 };
 
 export const getCategories = props => {
-  return Object.values(props).map(value => value);
+  return Object.values(props).map(value => {return {...value, label: value.value}});
+}
+
+const convertStringToDropdowObject = value => {
+  return {value: value, label: value}
 }
 
 
@@ -241,7 +261,10 @@ export const getSubcategories = ({category, dependencies}) => {
   if (dependencies.categories.hasOwnProperty(category) === false) return [];
   if(category === '') return [];
   const subcategoriesIds = dependencies.categories[category].subcategories;
-  return subcategoriesIds.map(subcategoryId => dependencies.subcategories[subcategoryId]);
+  return subcategoriesIds.map(subcategoryId => {return {
+    ...dependencies.subcategories[subcategoryId],
+    label: dependencies.subcategories[subcategoryId].value,
+  };});
 }
 
 const returnSubmitHandler = ({initialValues, category}) => {
