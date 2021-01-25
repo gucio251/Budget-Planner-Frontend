@@ -20,7 +20,7 @@ import TabPane from 'components/UI/TabPane';
 import Tabs from 'components/Tabs/Tabs';
 
 const Wrapper = styled.div`
-  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   position: relative;
   display: flex;
