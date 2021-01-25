@@ -3,11 +3,19 @@ import styled from 'styled-components';
 import DayPicker from 'react-day-picker/DayPicker';
 import 'react-day-picker/lib/style.css';
 import { ReactComponent as RightChevron } from 'assets/icons/rightChevronDatePicker.svg';
+import { ReactComponent as CalendarIcon } from 'assets/icons/formCalendarIcon.svg'
 import InputWithBorder from 'components/UI/InputWithBorder';
 
 const Wrapper = styled.div`
     position: relative;
 `
+
+const StyledCalendarIcon = styled(CalendarIcon)`
+  position: absolute;
+  right: 10px;
+  top: 10.5px;
+
+`;
 const CalendarWrapper = styled.div`
     position: absolute;
     bottom: 50px;
@@ -73,6 +81,7 @@ const DatePicker = ({ name, value, onChange }) => {
     return (
       <>
         <Wrapper ref={calendarRef}>
+          <StyledCalendarIcon />
           <InputWithBorder name={name} onFocus={() => setInputFocused(true)} />
           <CalendarWrapper active={isInputFocused}>
             <DayPicker

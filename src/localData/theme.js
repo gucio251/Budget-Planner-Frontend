@@ -17,7 +17,7 @@ export const theme = {
   lightGray: '#D3D7DB',
   lightGrayDisabledButton: '#EFEFF3',
   grayForDashboard: '#b3b8d9',
-  labelGray: '#494949',
+  labelGray: '#7A7D8A',
   dashboardBlack: '#282C43',
   devices: devices,
 };

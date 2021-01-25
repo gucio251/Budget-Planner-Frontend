@@ -8,6 +8,7 @@ const ComponentWithLabelWrapper = styled.div`
 
 const Label = styled.label`
   position: relative;
+  font-size: 0.9em;
   top: -5px;
   color: ${({ theme }) => theme.labelGray};
 `

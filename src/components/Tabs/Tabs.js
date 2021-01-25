@@ -4,38 +4,43 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 const StyledNavigation = styled.nav`
-  width: 60%;
+  width: min(12em, 100%);
   display: flex;
-  justify-content: flex-start;
-  margin: 24px 0 19px 0;
+  justify-content: center;
+  background-color: white;
+  border-radius: 4px;
+  padding: 0.8em 0;
 `;
 
 const LinkElement = styled.li`
-    color: ${({ theme, active }) => active ? theme.mainBlue : theme.darkGray};
-    position: relative;
-    cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: ${({ theme, active }) =>
+    active ? theme.dashboardBlack : theme.darkGray};
+  font-size: 1em;
+  position: relative;
+  cursor: pointer;
 
-    &::after{
-        display: ${({active}) => active ? "block" : "none"};
-        position: absolute;
-        left: 0;
-        top: calc(100% + 10px);
-        content: ' ';
-        width: 100%;
-        height: 5px;
-        background-color: ${({theme}) => theme.darkMint};
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
-`
+  &::after {
+    display: ${({ active }) => (active ? 'block' : 'none')};
+    position: absolute;
+    left: 0;
+    top: calc(100% + 10px);
+    content: ' ';
+    width: 100%;
+    height: 5px;
+    background-color: ${({ theme }) => theme.mainBlue};
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+`;
 
 const StyledList = styled.ul`
+  width: 100%;
   display: flex;
+  justify-content: center;
   list-style-type: none;
-
-  & > ${LinkElement}:not(:last-child) {
-    margin-right: 30px;
-  }
 `;
 
 const Tabs = ({children, handleSourceChange}) => {

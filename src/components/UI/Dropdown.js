@@ -10,7 +10,7 @@ const StyledSingleOption = styled.div`
 `;
 
 const StyledOptionText = styled.div`
-  color: #b5b4b9;
+  color: #262C42;
   margin-left: 15px;
 `;
 
@@ -31,8 +31,11 @@ const IconWrapper = styled.div`
 
 const { Option, SingleValue } = components;
 
+const StyledOption = styled(Option)`
+  //background-color: ${({isFocused}) => isFocused ? 'black!important' : 'white'};
+`
+
 const CustomValueContainer = (props) => {
-  console.log(props);
   const { options, data } = props;
   const { label } = data;
 
@@ -66,12 +69,12 @@ const CustomValueContainer = (props) => {
 const IconOption = (props) => {
   const { data } = props;
   return (
-    <Option {...props}>
-      <StyledSingleOption id={data.id}>
+    <StyledOption {...props}>
+      <StyledSingleOption>
         {data.Icon && <data.Icon />}
         <StyledOptionText>{data.value}</StyledOptionText>
       </StyledSingleOption>
-    </Option>
+    </StyledOption>
   );
 };
 
@@ -83,7 +86,6 @@ const Dropdown = ({
   handleBlur,
   indexOfDefaultValue
 }) => {
-  console.log(value)
   return (
     <Select
       options={list}
@@ -93,7 +95,7 @@ const Dropdown = ({
       }}
       isSearchable={false}
       value={value}
-      onChange={onChange}
+      onChange={value => onChange(value)}
       onBlur={handleBlur}
       defaultValue={list[indexOfDefaultValue]}
       name={name}
@@ -106,13 +108,7 @@ const Dropdown = ({
             state.selectProps.disabledWithoutOption
               ? 'rotate(0deg)'
               : 'rotate(180deg)',
-          color: state.selectProps.disabledWithoutOption
-            ? '#75777F'
-            : '#02AE9D',
-
-          '&:active': {
-            color: '#02AE9D',
-          },
+          color: '#707070'
         }),
         indicatorSeparator: (provided) => ({
           ...provided,
@@ -125,26 +121,19 @@ const Dropdown = ({
         control: (provided, state) => ({
           ...provided,
           height: '40px',
-          border: state.selectProps.menuIsOpen
-            ? '1px solid #02AE9D'
-            : '1px solid #D3D7DB',
           boxShadow: 'none',
           overflow: 'auto',
+          border: 'none',
           backgroundColor: state.selectProps.disabledWithoutOption
             ? '#EFEFF3'
             : 'white',
           cursor: state.selectProps.disabledWithoutOption && 'not-allowed',
 
-          '&:hover': {
-            border: `1px solid ${
-              state.selectProps.menuIsOpen ? '#02AE9D' : '#D3D7DB'
-            }`,
-          },
           option: (provided) => ({
             ...provided,
 
             '&hover': {
-              backgroundColor: '#EFEFF3',
+              backgroundColor: 'red',
             },
           }),
         }),
