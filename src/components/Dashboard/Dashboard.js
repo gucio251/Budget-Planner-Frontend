@@ -6,7 +6,7 @@ import { currencyActions } from 'redux/actions/currencyActions';
 import { incomeTypesActions } from 'redux/actions/incomeTypesActions';
 import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
-import { Sidebar } from './../Sidebar/Sidebar';
+import Sidebar from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
 import { Router } from '@reach/router';

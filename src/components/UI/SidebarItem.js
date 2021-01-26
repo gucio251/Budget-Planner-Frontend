@@ -4,25 +4,31 @@ import { theme } from '../../localData/theme';
 import { Link } from '@reach/router'
 
 const StyledLink = styled(Link)`
+  width: 100%;
   text-decoration: none;
 `
 
 const ListItem = styled.li`
   display: flex;
   position: relative;
-  gap: 25px;
+  justify-content: space-between;
+  gap: 10px;
   align-items: center;
   width: 100%;
   color: ${({ theme, isActive, isHover }) =>
     isActive || isHover ? theme.lightMint : theme.grayForDashboard};
   font-size: 16px;
-  padding: 18px 30px 18px 18px;
+  padding: 18px 30px 18px 30px;
   cursor: pointer;
 
   ${({ theme }) => theme.devices.tablet} {
     padding-right: 0;
     padding-left: 0;
     justify-content: center;
+  }
+
+  ${({ theme }) => theme.devices.mobile} {
+    padding: 18px 30px 18px 30px;
   }
 `;
 
@@ -38,8 +44,14 @@ const Active = styled.div`
 `
 
 const Text = styled.span`
+  width: 100%;
+  padding-left: 1em;
   ${({ theme }) => theme.devices.tablet} {
     display: none;
+  }
+
+  ${({ theme }) => theme.devices.mobile}{
+    display: block;
   }
 `;
 
