@@ -35,7 +35,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ onClick, type, disabled, children, color = '#03C9B5' }) => {
+const Button = ({ onClick, type, disabled, children, color = '#264AE7' }) => {
   return (
     <StyledButton
       type={type ? 'submit' : ''}

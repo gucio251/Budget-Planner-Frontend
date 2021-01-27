@@ -37,20 +37,6 @@ const FormContainer = ({
   yupValidationSchema,
   additionalValidationData
 }) => {
-  const inputSide = useRef();
-
-  useEffect(() => {
-    if (animated) {
-      const [elements] = inputSide.current.children;
-
-      gsap.set([elements], { autoAlpha: 0 });
-
-      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } });
-
-      tl.fromTo(elements, { x: '600' }, { x: 0, autoAlpha: 1 }, '+=3');
-
-    }
-  },[animated]);
   const { text, linkText, href } = linkData;
 
   return (
@@ -63,11 +49,10 @@ const FormContainer = ({
     >
       {({ handleChange, handleBlur, touched, values, errors }) => {
         return (
-          <Wrapper displayedOnMobile={displayedOnMobile} ref={inputSide}>
+          <Wrapper displayedOnMobile={displayedOnMobile}>
             <StyledInputSide>
               <StyledInputSideHeader>{header}</StyledInputSideHeader>
               <StyledForm>
-                <StyledInputFields>
                   {formData.map(({ name, label, type }) => {
                     return (
                       <InputTextWithValidation
@@ -91,8 +76,6 @@ const FormContainer = ({
                       />
                     );
                   })}
-                </StyledInputFields>
-                <ButtonWrapper>
                   <Button
                     color="#264AE7"
                     disabled={
@@ -104,16 +87,13 @@ const FormContainer = ({
                   >
                     {buttonName}
                   </Button>
-                </ButtonWrapper>
               </StyledForm>
-              <RedirectComponentWrapper>
-                <RedirectComponent
-                  spanText={text}
-                  linkText={linkText}
-                  href={href}
-                  linkColor="mainBlue"
-                />
-              </RedirectComponentWrapper>
+              <RedirectComponent
+                spanText={text}
+                linkText={linkText}
+                href={href}
+                linkColor="mainBlue"
+              />
               {stateErrors && <ErrorMessageBox error={stateErrors} />}
             </StyledInputSide>
           </Wrapper>

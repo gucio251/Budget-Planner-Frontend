@@ -4,6 +4,7 @@ import {ReactComponent as ErrorIcon} from "assets/icons/errorLoginIcon.svg"
 
 export const StyledTextInput = styled.div`
   position: relative;
+  padding-bottom: 1em;
 `;
 const draw = keyframes`
     to {

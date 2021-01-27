@@ -5,25 +5,15 @@ import FormInputSide from "components/FormInputSide/FormInputSide";
 
 
 const Wrapper = styled.div`
+  display: flex;
   height: 100vh;
 
   ${({ theme }) => theme.devices.tablet} {
+    flex-direction: column;
     overflow-y: auto;
-  }
-`;
-const PageStyle = styled.div`
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100%;
-
-  ${({ theme }) => theme.devices.tablet} {
-    grid-template-columns: 100%;
-    grid-template-rows: 50% 50%;
   }
 
   ${({ theme }) => theme.devices.mobile} {
-    height: auto;
     display: flex;
     flex-direction: row;
   }
@@ -50,7 +40,6 @@ const InitialPageTemplate = ({
   } = settings;
   return (
     <Wrapper>
-      <PageStyle>
         <AppInfoSide
           handleClickOnMobile={handleMovingToInputSide}
           linkData={linkData}
@@ -72,7 +61,6 @@ const InitialPageTemplate = ({
           yupValidationSchema={validationSchema}
           animated={animatedInputSide}
         />
-      </PageStyle>
     </Wrapper>
   );
 };

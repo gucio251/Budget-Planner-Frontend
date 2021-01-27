@@ -2,26 +2,37 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  margin-bottom: 10%;
-  width: 100%;
+    margin: 1.5em 0 3.5em 0;
 `;
 
 const Header = styled.h1`
-  font-size: 48px;
-  margin-bottom: 15px;
+  font-size: 3em;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  color: ${({ theme }) => theme.dashboardBlack};
 
-  ${({theme}) => theme.devices.mobile}{
-    font-size: 36px;
+  ${({ theme }) => theme.devices.tablet} {
+    font-size: 2.5em;
   }
-`
+
+  ${({ theme }) => theme.devices.mobile} {
+    font-size: 2em;
+  }
+`;
 
 const HeaderTextWithColour = styled.p`
-  color: ${({ theme }) => theme.lightMint};
+  color: ${({ theme }) => theme.mainBlue};
 `;
 
 const InfoText = styled.p`
-  font-size: 16px;
-`
+  font-size: 1.2em;
+  font-weight: 600;
+  color: ${({ theme }) => theme.dashboardBlack};
+
+  ${({ theme }) => theme.devices.mobile} {
+    font-size: 0.8em;
+  }
+`;
 
 const WelcomeText = () => {
   return (

@@ -3,11 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const StyledRedirectComponent = styled.p`
-  display: flex;
-  justify-content: flex-start;
-  font-size: 16px;
-  position: relative;
-  display: inline-block;
+  margin-top: 0.75em;
 `
 
 const StyledLink = styled.a`
