@@ -1,15 +1,11 @@
-import React, {useEffect, useRef} from "react";
+import React from "react";
 import { Formik } from "formik";
-import { gsap } from "gsap";
 import PropTypes from "prop-types";
 import {
   Wrapper,
   StyledInputSide,
-  StyledInputFields,
   StyledForm,
   StyledInputSideHeader,
-  ButtonWrapper,
-  RedirectComponentWrapper
 } from "components/FormInputSide/FormInputSide.styled"
 import Button from "components/UI/Button";
 import ErrorMessageBox from "components/UI/ErrorMessageBox";

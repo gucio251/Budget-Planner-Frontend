@@ -12,6 +12,11 @@ export const StyledAppInfoSide = styled.section`
   ${({ theme }) => theme.devices.tablet} {
     display: block;
   }
+  ${({ theme }) => theme.devices.mobile} {
+    display: ${({ displayedOnMobile }) =>
+      displayedOnMobile ? 'flex' : 'none'};
+    padding: 1em;
+  }
 `;
 
 export const ContentWrapper = styled.div`

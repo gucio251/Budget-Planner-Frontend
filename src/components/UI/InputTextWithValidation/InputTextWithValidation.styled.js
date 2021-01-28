@@ -69,14 +69,14 @@ export const StyledValidations = styled.ul`
   max-height: 0;
   padding-top: 0;
   padding-bottom: 0;
-  margin-bottom: 0;
-  color: #B5B6BD;
+  margin-bottom: 1.5em;
+  color: #75767f;
 `;
 
 export const StyledLabel = styled.label`
   display: block;
   font-size: 14px;
-  transform: translateY(-1.4em);
+  transform: translateY(-1.6em);
   transform-origin: 0 0;
   transition: all .3s;
   color: ${({ theme }) => theme.darkGray};
@@ -89,7 +89,7 @@ export const StyledInput = styled.input`
   outline: none;
   width: 100%;
   box-shadow: none;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ touched, theme }) =>
     touched ? theme.dashboardBlack : theme.darkGray};
   background-color: transparent;

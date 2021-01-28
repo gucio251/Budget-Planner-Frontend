@@ -3,33 +3,29 @@ import {Form} from 'formik'
 
 export const Wrapper = styled.section`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: 2em;
+  padding: 4em;
 
   ${({ theme }) => theme.devices.tablet} {
-    display: block;
-    padding: 2em 20%;
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 2em;
   }
 
   ${({ theme }) => theme.devices.mobile} {
     display: ${({ displayedOnMobile }) =>
       displayedOnMobile === true ? 'flex' : 'none'};
-    width: 100vw;
-    height: 100vh;
-    padding: 0 5%;
-  }
+  };
 `;
 
 export const StyledInputSide = styled.div`
-  display: block;
+  width: max(400px, 50%);
 `;
 
 
 export const StyledInputSideHeader = styled.h2`
-  font-size: 1.2em;
-  font-weight: 550;
   margin-bottom: 2em;
 `;
 
@@ -37,13 +33,13 @@ export const StyledInputSideHeader = styled.h2`
 export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-bottom: 1.5em;
+
+  & > *:last-child{
+    margin-top: 2em;
+  }
 
   ${({ theme }) => theme.devices.mobile} {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
+
   }
 `;
