@@ -5,15 +5,11 @@ import { useDispatch } from 'react-redux';
 
 import InitialPageTemplate from 'components/InitialPageTemplate/InitialPageTemplate';
 import { formSettings } from './registrationPageData';
-import withMobileHandling from 'hocs/withMobileHandling';
 import withUsers from 'hocs/withUsers';
 
 const RegistrationPageTemplate = ({
   users,
-  stateErrors,
-  displayInfoSide,
-  handleMobileDisplay,
-  handleMovingToInputSide,
+  stateErrors
 }) => {
   const dispatch = useDispatch();
   const handleUserRegistration = (values) => {
@@ -24,9 +20,6 @@ const RegistrationPageTemplate = ({
       settings={formSettings}
       users={users}
       handleFormSubmit={handleUserRegistration}
-      displayInfoSide={displayInfoSide}
-      handleMovingToInputSide={handleMovingToInputSide}
-      handleMobileDisplay={handleMobileDisplay}
       stateErrors={stateErrors}
     />
   );
@@ -34,7 +27,6 @@ const RegistrationPageTemplate = ({
 
 const RegistrationPage = compose(
   withUsers,
-  withMobileHandling
 )(RegistrationPageTemplate);
 
 export default RegistrationPage;

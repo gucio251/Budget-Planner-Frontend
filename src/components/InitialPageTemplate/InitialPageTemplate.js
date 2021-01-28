@@ -23,17 +23,12 @@ const InitialPageTemplate = ({
   users,
   handleFormSubmit,
   stateErrors,
-  displayInfoSide,
-  handleMovingToInputSide,
-  handleMobileDisplay,
   settings,
 }) => {
   const {
     validationSchema,
     linkData,
     buttonName,
-    animatedInfoSide,
-    animatedInputSide,
     inputFieldsInformation,
     initialValues,
     header,
@@ -41,11 +36,8 @@ const InitialPageTemplate = ({
   return (
     <Wrapper>
         <AppInfoSide
-          handleClickOnMobile={handleMovingToInputSide}
           linkData={linkData}
           buttonName={buttonName}
-          animated={animatedInfoSide}
-          displayedOnMobile={displayInfoSide}
         />
         <FormInputSide
           formData={inputFieldsInformation}
@@ -56,10 +48,7 @@ const InitialPageTemplate = ({
           additionalValidationData={users.emails}
           handleFormSubmit={handleFormSubmit}
           stateErrors={stateErrors}
-          handleMobileDisplay={handleMobileDisplay}
-          displayedOnMobile={!displayInfoSide}
           yupValidationSchema={validationSchema}
-          animated={animatedInputSide}
         />
     </Wrapper>
   );

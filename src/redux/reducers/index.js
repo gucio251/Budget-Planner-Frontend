@@ -1,14 +1,15 @@
 import { combineReducers } from "redux";
-import users from './usersReducer';
-import registration from './registrationReducer';
-import login from './loginReducer'
-import expenseTypes from './expenseTypesReducer'
-import incomeTypes from './incomeTypesReducer'
-import currencies from './currencyReducer'
-import incomes from './incomesReducer'
-import expenses from './expensesReducer'
-import datesRange from './datesRangeReducer'
-import filtration from './filtrationReducer';
+import users from 'redux/reducers/usersReducer';
+import registration from 'redux/reducers/registrationReducer';
+import login from 'redux/reducers/loginReducer'
+import expenseTypes from 'redux/reducers/expenseTypesReducer'
+import incomeTypes from 'redux/reducers/incomeTypesReducer'
+import currencies from 'redux/reducers/currencyReducer'
+import incomes from 'redux/reducers/incomesReducer'
+import expenses from 'redux/reducers/expensesReducer'
+import datesRange from 'redux/reducers/datesRangeReducer';
+import filtration from 'redux/reducers/filtrationReducer';
+import mobileView from 'redux/reducers/mobileViewReducer';
 
 const rootReducer = combineReducers({
   users,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   expenses,
   datesRange,
   filtration,
+  mobileView
 });
 
 export default rootReducer;

@@ -4,18 +4,14 @@ import { formSettings } from "./loginPageData"
 import InitialPageTemplate from 'components/InitialPageTemplate/InitialPageTemplate';
 import withUsers from 'hocs/withUsers';
 import withLoginFunc from 'hocs/withLoginFunc';
-import withMobileHandling from 'hocs/withMobileHandling';
 
-const LoginPageTemplate = ({ users, handleFormSubmit, stateErrors, displayInfoSide, handleMobileDisplay, handleMovingToInputSide}) => {
+const LoginPageTemplate = ({ users, handleFormSubmit, stateErrors }) => {
   return (
     <InitialPageTemplate
       settings={formSettings}
       users={users}
       handleFormSubmit={handleFormSubmit}
       stateErrors={stateErrors}
-      displayInfoSide={displayInfoSide}
-      handleMovingToInputSide={handleMovingToInputSide}
-      handleMobileDisplay={handleMobileDisplay}
     />
   );
 };
@@ -23,7 +19,6 @@ const LoginPageTemplate = ({ users, handleFormSubmit, stateErrors, displayInfoSi
 const LoginPage = compose(
   withUsers,
   withLoginFunc,
-  withMobileHandling,
 )(LoginPageTemplate)
 
 export default LoginPage;

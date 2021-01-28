@@ -1,6 +1,8 @@
 import React from "react";
 import { Formik } from "formik";
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from "prop-types";
+import { mobileViewActions } from 'redux/actions/mobileViewActions';
 import {
   Wrapper,
   StyledInputSide,
@@ -13,28 +15,26 @@ import InputTextWithValidation from "components/UI/InputTextWithValidation/Input
 import RedirectComponent from "components/UI/RedirectComponent";
 import validate from "components/validate-yup/validate-yup";
 
-const configureDisplayOnMobile = (fieldsStatues, func) => {
-  if (Object.keys(fieldsStatues).length !== 0) {
-    func();
-  }
-}
-
 const FormContainer = ({
   formData,
   linkData,
-  displayedOnMobile,
   buttonName,
   handleFormSubmit,
   stateErrors,
   header,
-  handleMobileDisplay,
-  animated,
   initialValues,
   yupValidationSchema,
   additionalValidationData
 }) => {
+  const dispatch = useDispatch();
+  const visibleOnMobile = useSelector(state => state.mobileView.onlyWorkingViewVisible);
   const { text, linkText, href } = linkData;
 
+  const checkIfFormIsModified = touchedItems => {
+    if(Object.keys(touchedItems).length !== 0){
+      dispatch(mobileViewActions.setWorkingViewVisible());
+    }
+  }
   return (
     <Formik
       initialValues={initialValues}
@@ -44,8 +44,9 @@ const FormContainer = ({
       onSubmit={handleFormSubmit}
     >
       {({ handleChange, handleBlur, touched, values, errors }) => {
+        checkIfFormIsModified(touched);
         return (
-          <Wrapper displayedOnMobile={displayedOnMobile}>
+          <Wrapper displayedOnMobile={visibleOnMobile}>
             <StyledInputSide>
               <StyledInputSideHeader>{header}</StyledInputSideHeader>
               <StyledForm>
@@ -118,8 +119,6 @@ FormContainer.propTypes = {
   header: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func,
   errorMsgs: PropTypes.string,
-  displayedOnMobile: PropTypes.bool.isRequired,
-  animated: PropTypes.bool.isRequired,
 };
 
 export default FormContainer;

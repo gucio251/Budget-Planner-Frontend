@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {useDispatch, useSelector} from 'react-redux';
+import { mobileViewActions } from 'redux/actions/mobileViewActions';
 import {
   StyledAppInfoSide,
   ContentWrapper,
@@ -10,18 +12,18 @@ import WelcomeText from "components/WelcomeText/WelcomeText";
 import RedirectComponent from "components/UI/RedirectComponent";
 import Button from "components/UI/Button";
 
-
-const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonName, animated}) => {
+const AppInfoSide = ({linkData, buttonName}) => {
+  const dispatch = useDispatch()
+  const visibleOnMobile = useSelector(state => state.mobileView.onlyWorkingViewVisible);
   const { href, text, linkText } = linkData;
 
-
   return (
-    <StyledAppInfoSide displayedOnMobile={displayedOnMobile}>
+    <StyledAppInfoSide displayedOnMobile={!visibleOnMobile}>
       <ContentWrapper>
         <WelcomeText />
         <StyledLogo />
         <MobileSectionWrapper>
-          <Button onClick={handleClickOnMobile}>{buttonName}</Button>
+          <Button onClick={() => dispatch(mobileViewActions.setWorkingViewVisible())}>{buttonName}</Button>
           <RedirectComponent
             spanText={text}
             linkText={linkText}
@@ -35,12 +37,10 @@ const AppInfoSide = ({handleClickOnMobile, displayedOnMobile, linkData, buttonNa
 };
 
 AppInfoSide.propTypes = {
-  handleClickOnMobile: PropTypes.func,
   linkData: PropTypes.shape({
     text: PropTypes.string.isRequired,
     linkText: PropTypes.string.isRequired,
   }).isRequired,
-  animated: PropTypes.bool.isRequired,
   buttonName: PropTypes.string.isRequired,
 };
 

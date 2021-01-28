@@ -32,8 +32,6 @@ const SuccessPage = () => {
                 linkData={linkData}
                 buttonName={buttonName}
                 href={linkData.href}
-                animated={false}
-                displayedOnMobile={false}
             />
             <SuccessWindow
                 successMessage={"Account successfully created!"}
