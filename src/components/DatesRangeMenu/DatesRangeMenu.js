@@ -8,29 +8,34 @@ import Modal from 'components/Modal/Modal';
 
 const DateChangeWrapper = styled.nav`
   display: flex;
-  height: 2.5em;
-  flex: 1;
 `;
 
 const Options = styled.ul`
   display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  list-style: none;
+
+  ${({ theme }) => theme.devices.mobile} {
+    &>*:first-child{
+      display: none;
+    }
+  }
 `;
 
 const Option = styled.li`
   display: flex;
-  flex: 1;
-  height: 100%;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   background: ${({ active }) => (active ? '#E5E7FA' : null)};
-  color: ${({ active }) => active ? '#2F54F3' : '#d0c9d6'};
-  border-bottom: ${({active, theme}) => active ? `1px solid ${theme.mainBlue}` : null};
+  color: ${({ active }) => (active ? '#2F54F3' : '#d0c9d6')};
+  border-bottom: ${({ active, theme }) =>
+    active ? `1px solid ${theme.mainBlue}` : null};
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 1em;
+  padding: 0.5em 1.5em;
+
+  ${({ theme }) => theme.devices.tablet} {
+    padding: 0.5em 1.0em;
+  }
 `;
 
 const DatesRangeMenu = ({ children }) => {

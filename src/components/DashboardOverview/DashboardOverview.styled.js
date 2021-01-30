@@ -1,60 +1,67 @@
 import styled from 'styled-components';
 
-export const EmptyDiv = styled.div`
-  grid-area: 'emptySpace';
-`;
-
 export const StyledOverview = styled.div`
-  display: grid;
-  margin: 15px 40px 20px 230px;
-  grid-template-columns: 47% 52%;
-  grid-template-rows: 0.2fr 1fr 1.1fr;
-  grid-template-areas:
-    'welcomeTextArea dateMenu'
-    'budgetSummary graphs'
-    'allTransactions allTransactions';
-  row-gap: 10px;
+  padding: 1em;
+  margin-left: 180px;
 
   ${({ theme }) => theme.devices.tablet} {
-    margin: 0 0 30px 150px;
-    grid-template-rows: 8% 5% 30% 65%;
-    grid-template-areas:
-      'welcomeTextArea welcomeTextArea'
-      'dateMenu dateMenu'
-      'budgetSummary budgetSummary'
-      'graphs graphs';
+    margin-left: 100px;
+  }
+
+  ${({ theme }) => theme.devices.mobile} {
+    margin-left: 0;
+    padding: 1em 0;
+  }
+
+  & > *:not(:last-child) {
+    margin-bottom: 1em;
   }
 `;
 
-export const WelcomeText = styled.div`
-  grid-area: welcomeTextArea;
-  font-size: 2.0vw;
-  font-weight: bold;
-  margin-top: 0;
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+
 
   ${({theme}) => theme.devices.tablet}{
-    font-size: 4.0vw;
+    flex-direction: column;
+  }
+`
+export const WelcomeText = styled.div`
+  font-weight: bold;
+  font-size: 2em;
+  padding: 0 0 1em 0;
+  display: flex;
+  align-items: flex-start;
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: none;
   }
 `;
 
 export const StyledDateMenu = styled.div`
-  grid-area: dateMenu;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 `;
 
-export const StyledBudgetSummary = styled.div`
-  grid-area: budgetSummary;
-`;
-
-export const StyledGraphArea = styled.div`
-  grid-area: graphs;
+export const RowWithoutSpaceBetween = styled.div`
   display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: 0.5em;
+  }
+
+  ${({ theme }) => theme.devices.tablet} {
+    flex-direction: column;
+
+    & > *:not(:first-child) {
+      margin-top: 0.5em;
+    }
+  }
 `;
 
 export const StyledAllTransactions = styled.div`
-  grid-area: allTransactions;
   display: flex;
 
   ${({ theme }) => theme.devices.tablet} {
@@ -63,5 +70,5 @@ export const StyledAllTransactions = styled.div`
 `;
 
 export const StyledDropdown = styled.div`
-  width: 30%
+  width: 100px;
 `

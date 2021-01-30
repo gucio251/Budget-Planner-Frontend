@@ -18,10 +18,14 @@ import DashboardReports from 'components/DashboardReports/DashboardReports';
 
 const Wrapper = styled.div`
   height: 100vh;
+  background-color: #f6f6f8;
+
+  ${({ theme }) => theme.devices.mobile} {
+    padding: 1em 0.5em;
+  }
 `;
 
 const StyledDashboard = styled.div`
-  background-color: #f6f6f8;
   height: 100vh;
   overflow-y: auto;
 

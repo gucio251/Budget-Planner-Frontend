@@ -3,12 +3,11 @@ import { PropTypes } from 'prop-types';
 
 import {
   StyledOverview,
+  Row,
   WelcomeText,
-  EmptyDiv,
   StyledDateMenu,
   StyledDropdown,
-  StyledBudgetSummary,
-  StyledGraphArea,
+  RowWithoutSpaceBetween,
   StyledAllTransactions,
 } from './DashboardOverview.styled';
 
@@ -33,38 +32,39 @@ const DashboardOverview = () => {
         availableCurrenciesState,
       }) => (
         <StyledOverview>
-          <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
-          <StyledDateMenu>
-            <StyledDropdown>
-              <CustomDropdownDashboard
-                list={availableCurrenciesState.currencies}
-                onChange={(value) =>
-                  dispatch(currencyActions.changeActiveCurrency(value.value))
-                }
-                indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
-                  currency =>  currency.value === availableCurrenciesState.active
-                )}
-                isSearchable={true}
-                name="currencies"
-              />
-            </StyledDropdown>
-            <DashboardDateMenu />
-          </StyledDateMenu>
-          <StyledBudgetSummary>
+          <Row>
+            <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
+            <StyledDateMenu>
+              <StyledDropdown>
+                <CustomDropdownDashboard
+                  list={availableCurrenciesState.currencies}
+                  onChange={(value) =>
+                    dispatch(currencyActions.changeActiveCurrency(value.value))
+                  }
+                  indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
+                    (currency) =>
+                      currency.value === availableCurrenciesState.active
+                  )}
+                  isSearchable={true}
+                  name="currencies"
+                />
+              </StyledDropdown>
+              <DashboardDateMenu />
+            </StyledDateMenu>
+          </Row>
+          <RowWithoutSpaceBetween>
             <BudgetSummary
               expenses={recalculatedExpenses}
               incomes={recalculatedIncomes}
               Icon={availableCurrenciesState.Icon}
             />
-          </StyledBudgetSummary>
-          <StyledGraphArea>
             <DashboardDisplayWindow title="Expenses/incomes">
               <GraphAndStatsGroupedByType
                 expenses={recalculatedExpenses}
                 incomes={recalculatedIncomes}
               />
             </DashboardDisplayWindow>
-          </StyledGraphArea>
+          </RowWithoutSpaceBetween>
           <StyledAllTransactions>
             <DashboardDisplayWindow title="Recent transactions">
               <TransactionsDisplayer

@@ -12,16 +12,27 @@ import TransactionHandlingForm from 'containers/TransactionHandlingForm/Transact
 
 import {getTodaysDate} from 'Utils/functions';
 
+const MobileButtonWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: block;
+  }
+`;
 const Header = styled.header`
   height: 70px;
   margin-left: 180px;
-  padding-right: 30px;
   display: flex;
   justify-content: flex-end;
   background-color: #fff;
+  padding-right: 3.5em;
 
-  ${({theme}) => theme.devices.tablet}{
+  ${({ theme }) => theme.devices.tablet} {
     margin-left: 100px;
+  }
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: none;
   }
 `;
 
@@ -63,18 +74,16 @@ const initialValues = {
 };
 
 
+
+
 const TopToolbar = () => {
     const arrowWrapper = useRef(null);
-    const [openModal, setModalOpen] = useState(false);
+    const [modalVisibility,setModalVisiblity] = useState(false);
     const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
 
-    const handleModalOpen = () => {
-      setModalOpen(true);
-    }
-
-    const handleModalClose = () => {
-      setModalOpen(false);
-    }
+    const handleModalVisiblity = () => {setModalVisiblity(prevState => {
+      return !prevState;
+    })}
 
     useEffect(() => {
       const [elements] = arrowWrapper.current.children;
@@ -84,20 +93,18 @@ const TopToolbar = () => {
 
     return (
       <>
-        <Modal open={openModal} handleClose={handleModalClose}>
+        <MobileButtonWrapper>
+          {renderButton(handleModalVisiblity)}
+        </MobileButtonWrapper>
+        <Modal open={modalVisibility} handleClose={handleModalVisiblity}>
           <TransactionHandlingForm
             initialValues={initialValues}
-            handleClose={handleModalClose}
+            handleClose={handleModalVisiblity}
           />
         </Modal>
         <Header>
           <Wrapper>
-            <Button onClick={handleModalOpen} color="#2F54F3">
-              <ButtonItemsWrapper>
-                <AddSign />
-                Add new transaction
-              </ButtonItemsWrapper>
-            </Button>
+            {renderButton(handleModalVisiblity)}
             <UserSectionWrapper
               onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}
             >
@@ -116,4 +123,14 @@ const TopToolbar = () => {
     );
 };
 
+const renderButton = (handleModalVisiblity) => {
+  return (
+    <Button onClick={handleModalVisiblity}>
+      <ButtonItemsWrapper>
+        <AddSign />
+        Add new transaction
+      </ButtonItemsWrapper>
+    </Button>
+  );
+};
 export default TopToolbar;

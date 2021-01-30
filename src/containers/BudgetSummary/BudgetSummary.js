@@ -7,26 +7,36 @@ import { ReactComponent as IncomeIcon } from 'assets/icons/incomeDashboardIcon.s
 import { ReactComponent as ExpensesIcon } from 'assets/icons/expensesDashboardIcon.svg';
 
 const Wrapper = styled.div`
-  display: grid;
-  height: 100%;
-  grid-template-columns: 48.5% 48.5%;
-  grid-template-rows: 49% 49%;
-  grid-template-areas:
-    'balance balance'
-    'income expense';
-  grid-gap: 2% 1%;
-  &:first-child {
-    align-self: center;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  ${({ theme }) => theme.devices.tablet} {
-    grid-template-columns: 49.5% 49.5%;
+  & > *:not(:last-child) {
+    margin-bottom: 0.5em;
   }
 `;
 
-const BalanceWrapper = styled.div`
-  grid-area: balance;
-`
+const RowWrapper = styled.div`
+  display: flex;
+  height: 100%;
+
+  & > *:not(:first-child) {
+    margin-left: 0.5em;
+  }
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: block;
+
+    & > *:not(:first-child) {
+      margin-left: 0;
+    }
+
+    & > *:not(:last-child) {
+      margin-bottom: 0.5em;
+    }
+  }
+`;
 
 const BudgetSummary = ({ expenses, incomes, Icon }) => {
   const incomesSum = getSumOfTransactions(incomes);
@@ -34,7 +44,7 @@ const BudgetSummary = ({ expenses, incomes, Icon }) => {
 
   return (
     <Wrapper>
-      <BalanceWrapper>
+      <RowWrapper>
         <SingleSummaryField
           amount={incomesSum - expensesSum}
           name="Balance"
@@ -42,13 +52,19 @@ const BudgetSummary = ({ expenses, incomes, Icon }) => {
         >
           <BilanceIcon />
         </SingleSummaryField>
-      </BalanceWrapper>
-      <SingleSummaryField amount={incomesSum} name="Income" Icon={Icon}>
-        <IncomeIcon />
-      </SingleSummaryField>
-      <SingleSummaryField amount={0 - expensesSum} name="Expenses" Icon={Icon}>
-        <ExpensesIcon />
-      </SingleSummaryField>
+      </RowWrapper>
+      <RowWrapper>
+        <SingleSummaryField amount={incomesSum} name="Income" Icon={Icon}>
+          <IncomeIcon />
+        </SingleSummaryField>
+        <SingleSummaryField
+          amount={0 - expensesSum}
+          name="Expenses"
+          Icon={Icon}
+        >
+          <ExpensesIcon />
+        </SingleSummaryField>
+      </RowWrapper>
     </Wrapper>
   );
 };

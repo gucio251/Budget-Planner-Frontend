@@ -1,17 +1,31 @@
 import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import ManageSidebar from 'components/ManageSidebar/ManageSidebar';
 import {ReactComponent as CloseSign} from 'assets/icons/closeSign.svg';
+import { ReactComponent as LogOutIcon } from 'assets/icons/logOutIcon.svg';
 import {ReactComponent as PigLogo} from 'assets/icons/pigSidebarLogo.svg';
 import { ReactComponent as OverviewIcon } from './../../assets/icons/overviewIcon.svg';
 import { ReactComponent as ReportsIcon } from './../../assets/icons/reportsIcon.svg';
 import { ReactComponent as SavingsIcon } from './../../assets/icons/savingsIcon.svg';
 import { ReactComponent as SettingsIcon } from './../../assets/icons/settingsDashboard.svg';
 import { ReactComponent as UsersIcon } from './../../assets/icons/usersDashboard.svg';
+import { userActions } from 'redux/actions/userActions';
 import TabPane from 'components/UI/TabPane';
 
-const StyledButton = styled.button`
+const StyledHeader = styled.header`
   display: none;
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 0;
+  }
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: flex-start;
   font-size: 1em;
   padding: 0.25em;
   outline: none;
@@ -19,10 +33,9 @@ const StyledButton = styled.button`
   background: transparent;
   cursor: pointer;
   color: ${({theme}) => theme.mainBlue};
-  ${({ theme }) => theme.devices.mobile} {
-    display: ${({ visibility }) => (visibility ? 'block' : 'none')};
-  }
 `;
+
+
 const StyledSideBar = styled.nav`
   height: 100%;
   width: 180px;
@@ -34,6 +47,9 @@ const StyledSideBar = styled.nav`
   }
 
   ${({ theme }) => theme.devices.mobile} {
+    position: absolute;
+    left: 0;
+    top: 0;
     display: ${({ visibility }) => (visibility ? 'block' : 'none')};
     width: 280px;
     z-index: 400;
@@ -83,45 +99,56 @@ const LogoNameWrapper = styled.span`
 `;
 
 const Sidebar = () => {
-    const [sidebarVisibility, setSidebarVisibility]=useState(false);
-    const sidebarRef=useRef(null);
-    const buttonRef=useRef(null);
+  const dispatch = useDispatch();
+  const [sidebarVisibility, setSidebarVisibility] = useState(false);
+  const sidebarRef = useRef(null);
+  const buttonRef = useRef(null);
 
-    const detectClickOutside = (e) => {
-      if(!buttonRef.current.contains(e.target) && sidebarRef.current && !sidebarRef.current.contains(e.target)){
-        setSidebarVisibility((prevState) => {
-          setSidebarVisibility(!prevState);
-        })
-      }
+  const detectClickOutside = (e) => {
+    if (
+      sidebarRef.current &&
+      !sidebarRef.current.contains(e.target) &&
+      sidebarVisibility === true
+    ) {
+      setSidebarVisibility((prevState) => {
+        setSidebarVisibility(!prevState);
+      });
     }
-    useEffect(() => {
-      document.addEventListener('click', detectClickOutside);
+  };
+  useEffect(() => {
+    document.addEventListener('click', detectClickOutside);
 
-      return () => document.removeEventListener('click', detectClickOutside);
-    })
+    return () => document.removeEventListener('click', detectClickOutside);
+  });
 
-    const setVisiblity = () => setSidebarVisibility((prevState) => !prevState);
-    return (
-      <>
-        <StyledButton visibility={!sidebarVisibility} onClick={setVisiblity} ref={buttonRef}>
+  const setVisiblity = () => setSidebarVisibility((prevState) => !prevState);
+  return (
+    <>
+      <StyledHeader visibility={!sidebarVisibility}>
+        <StyledButton onClick={setVisiblity} ref={buttonRef}>
           MENU
         </StyledButton>
-        <StyledSideBar visibility={sidebarVisibility} ref={sidebarRef}>
-          <StyledCloseSign onClick={setVisiblity} />
-          <LogoWrapper>
-            <PigLogo />
-            <LogoNameWrapper>Budget Planner</LogoNameWrapper>
-          </LogoWrapper>
-          <ManageSidebar>
-            <TabPane Icon={OverviewIcon} name="Overview" href="./" num="0" />
-            <TabPane Icon={ReportsIcon} name="Reports" href="reports" num="1" />
-            <TabPane Icon={SavingsIcon} name="Savings" href="#" num="2" />
-            <TabPane Icon={SettingsIcon} name="Settings" href="#" num="3" />
-            <TabPane Icon={UsersIcon} name="Users" href="#" num="4" />
-          </ManageSidebar>
-        </StyledSideBar>
-      </>
-    );
+        <StyledButton onClick={() => dispatch(userActions.logout())}>
+          <LogOutIcon />
+          Log out
+        </StyledButton>
+      </StyledHeader>
+      <StyledSideBar visibility={sidebarVisibility} ref={sidebarRef}>
+        <StyledCloseSign onClick={setVisiblity} />
+        <LogoWrapper>
+          <PigLogo />
+          <LogoNameWrapper>Budget Planner</LogoNameWrapper>
+        </LogoWrapper>
+        <ManageSidebar>
+          <TabPane Icon={OverviewIcon} name="Overview" href="./" num="0" />
+          <TabPane Icon={ReportsIcon} name="Reports" href="reports" num="1" />
+          <TabPane Icon={SavingsIcon} name="Savings" href="#" num="2" />
+          <TabPane Icon={SettingsIcon} name="Settings" href="#" num="3" />
+          <TabPane Icon={UsersIcon} name="Users" href="#" num="4" />
+        </ManageSidebar>
+      </StyledSideBar>
+    </>
+  );
 };
 
 export default Sidebar;
