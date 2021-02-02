@@ -2,36 +2,32 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`
-
 const List = styled.ul`
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   list-style: none;
-  padding-right: 3%;
+
+  ${({ theme }) => theme.devices.mobile} {
+    padding-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const ListItem = styled.li`
   display: flex;
   align-items: center;
-  font-size: 16px;
-  padding: 3% 1% 3% 1%;
+  font-size: 1em;
+  padding: 0.3em 0.1em;
 
-  & > *:first-child{
-    margin-right: 5%;
+  & > *:first-child {
+    margin-right: 2%;
   }
-`
+`;
 
 const GroupedTransactionsDisplayer = ({transactions}) => {
   return (
-    <Wrapper>
       <List>
         {transactions.map(({ Icon, name }, index) => (
           <ListItem key={index}>
@@ -40,7 +36,6 @@ const GroupedTransactionsDisplayer = ({transactions}) => {
           </ListItem>
         ))}
       </List>
-    </Wrapper>
   );
 };
 

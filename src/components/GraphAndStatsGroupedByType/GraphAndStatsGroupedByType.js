@@ -10,47 +10,41 @@ import { Doughnut } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
 import GroupedTransactionsDisplayer from 'components/GroupedTransactionsDisplayer/GroupedTransactionsDisplayer'
 import { graphColors } from 'Utils/svgCorrelation';
-import CustomDropdownDashboard from 'components/UI/CustomDropdownDashboard'
+import Dropdown from 'components/UI/Dropdown';
 
-const StyledGraphArea = styled.div`
-  display: grid;
-  height: 100%;
-  width: 100%;
-  grid-template-columns: 60% 40%;
-  grid-template-rows: 15% 85%;
-  grid-template-areas:
-  'dropdowns .'
-  'graph list';
-`
 const StyledDropdowns = styled.div`
-  grid-area: dropdowns;
-`;
-
-const StyledGraph = styled.div`
-  grid-area: graph;
   display: flex;
-  align-items: center;
+  & > *{
+    width: 130px;
+  }
 `;
 
-const StyledList = styled.div`
-  grid-area: list;
+const Row = styled.div`
+  display: flex;
+  width: 65%;
+
+  ${({theme}) => theme.devices.mobile}{
+    flex-direction: column;
+    width: 100%;
+
+  }
 `;
 
 const StyledTextArea = styled.div`
-  grid-area: graph / graph / graph / list;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-left: 0.5em;
 `
 
 const StyledMainText = styled.h3`
-  font-size: 21px;
-  font-weight: 450;
+
 `
 
 const Text = styled.p`
-  font-size: 14px;
+
 `
 
 const GraphAndStatsGroupedByType = (props) => {
@@ -59,17 +53,17 @@ const GraphAndStatsGroupedByType = (props) => {
     type: 'popular',
   });
 
-  const handleDataChange = ({ target }) => {
+  const handleDataChange = ({value, dataType}) => {
     setDataToBeDisplayed({
       ...dataToBeDisplayed,
-      [target.name]: target.value,
+      [dataType]: value,
     });
   };
 
   return (
-    <StyledGraphArea>
+    <>
       {renderGraphArea({ handleDataChange, dataToBeDisplayed, Transactions: prepareTransactions(props)})}
-    </StyledGraphArea>
+    </>
   );
 };
 
@@ -100,20 +94,29 @@ const renderGraphArea = props => {
   return (
     <>
       <StyledDropdowns>
-        <CustomDropdownDashboard
+        <Dropdown
           name="category"
-          list={['incomes', 'expenses']}
-          handleChange={handleDataChange}
-          value={dataToBeDisplayed.category}
+          list={[
+            { value: 'incomes', label: 'incomes', dataType: 'category' },
+            { value: 'expenses', label: 'expenses', dataType: 'category' },
+          ]}
+          onChange={handleDataChange}
+          value={dataToBeDisplayed.category.label}
+          indexOfDefaultValue={0}
         />
-        <CustomDropdownDashboard
+        <Dropdown
           name="type"
-          list={['popular', 'expensive']}
-          handleChange={handleDataChange}
-          value={dataToBeDisplayed.type}
+          list={[
+            { value: 'popular', label: 'popular', dataType: 'type' },
+            { value: 'expensive', label: 'expensive', dataType: 'type' },
+          ]}
+          onChange={handleDataChange}
+          value={dataToBeDisplayed.type.label}
+          indexOfDefaultValue={0}
         />
       </StyledDropdowns>
-      {Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type].data.length === 0 ? (
+      {Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type].data
+        .length === 0 ? (
         <StyledTextArea>
           <StyledMainText>
             {`No ${dataToBeDisplayed.category} to analyze yet`}
@@ -122,7 +125,7 @@ const renderGraphArea = props => {
         </StyledTextArea>
       ) : (
         <>
-          <StyledGraph>
+          <Row>
             <Doughnut
               data={
                 Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type]
@@ -130,15 +133,13 @@ const renderGraphArea = props => {
               }
               options={options}
             />
-          </StyledGraph>
-          <StyledList>
             <GroupedTransactionsDisplayer
               transactions={
                 Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type]
                   .data
               }
             />
-          </StyledList>
+          </Row>
         </>
       )}
     </>

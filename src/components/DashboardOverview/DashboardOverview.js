@@ -58,7 +58,7 @@ const DashboardOverview = () => {
               incomes={recalculatedIncomes}
               Icon={availableCurrenciesState.Icon}
             />
-            <DashboardDisplayWindow title="Expenses/incomes">
+            <DashboardDisplayWindow title="Expenses / incomes">
               <GraphAndStatsGroupedByType
                 expenses={recalculatedExpenses}
                 incomes={recalculatedIncomes}

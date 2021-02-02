@@ -10,10 +10,11 @@ export const StyledOverview = styled.div`
 
   ${({ theme }) => theme.devices.mobile} {
     margin-left: 0;
-    padding: 1em 0;
+    margin-bottom: 10px;
+    padding: 2em 0;
   }
 
-  & > *:not(:last-child) {
+  & > * {
     margin-bottom: 1em;
   }
 `;
