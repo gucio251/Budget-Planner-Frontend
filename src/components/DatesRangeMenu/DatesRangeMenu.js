@@ -36,6 +36,10 @@ const Option = styled.li`
   ${({ theme }) => theme.devices.tablet} {
     padding: 0.5em 1.0em;
   }
+
+  ${({ theme }) => theme.devices.tablet} {
+    font-size: 0.8em;
+  }
 `;
 
 const DatesRangeMenu = ({ children }) => {

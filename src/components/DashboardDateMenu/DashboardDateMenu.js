@@ -7,6 +7,7 @@ import {ReactComponent as CalendarIcon} from 'assets/icons/calendarIcon.svg';
 
 const DateMenuTab = styled.div`
   display: flex;
+  align-items: center;
   white-space: nowrap;
 `;
 

@@ -9,22 +9,25 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   background-color: white;
   border-radius: 4px;
-  padding: 40px 1em 1em 1em;
+  padding: 50px 1em 1em 1em;
 
-  ${({theme}) => theme.devices.tablet}{
-    padding: 40px 0.5em 0.5em 0.5em;
-  }`;
-const StyledNumber = styled(animated.div)`
-`;
+  ${({ theme }) => theme.devices.tablet} {
+    padding: 50px 0.5em 0.5em 0.5em;
+  }
 
-const TextWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  font-size: 2em;
+  ${({ theme }) => theme.devices.mobile} {
+    padding: 35px 0.5em 0.5em 0.5em;
+  }
+
+  svg {
+    ${({ theme }) => theme.devices.mobile} {
+      width: 17px;
+      height: 17px;
+    }
+  }
 `;
 
 const TitleWrapper = styled.p`
@@ -42,7 +45,24 @@ const TitleWrapper = styled.p`
   ${({ theme }) => theme.devices.tablet} {
     top: 0.5em;
     left: 0.5em;
-  } ;
+  }
+
+  ${({ theme }) => theme.devices.mobile} {
+    font-size: 0.9em;
+  }
+`;
+const StyledNumber = styled(animated.div)`
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 2em;
+
+  ${({ theme }) => theme.devices.mobile} {
+    font-size: 1.3em;
+  }
 `;
 
 const SingleSummaryField = ({children, amount, name, Icon}) => {
