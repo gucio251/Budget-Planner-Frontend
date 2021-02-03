@@ -1,8 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import gsap from 'gsap';
 import Button from 'components/UI/Button'
-import {ReactComponent as AddSign} from 'assets/icons/addSignButton.svg';
+import { ReactComponent as AddSign } from 'assets/icons/addSignButton.svg';
 import { ReactComponent as Avatar } from 'assets/icons/userAvatar.svg';
 import { ReactComponent as ExpandArrow } from 'assets/icons/expandArrow.svg';
 
@@ -60,8 +61,6 @@ const UserSectionWrapper = styled.div`
   cursor: pointer;
 `;
 
-
-
 const initialValues = {
   amount: 0,
   currency: '',
@@ -73,10 +72,8 @@ const initialValues = {
   comments: '',
 };
 
-
-
-
 const TopToolbar = () => {
+    const login = useSelector(state => state.login.login);
     const arrowWrapper = useRef(null);
     const [modalVisibility,setModalVisiblity] = useState(false);
     const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
@@ -109,7 +106,7 @@ const TopToolbar = () => {
               onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}
             >
               <Avatar />
-              Caroline
+              {`${login}`}
               <div ref={arrowWrapper}>
                 <ExpandArrow />
               </div>

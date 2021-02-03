@@ -42,7 +42,7 @@ const login = (user, clearPasswordField) => dispatch => {
     dispatch(request());
     Users.login(user).then(
         ({token}) => {
-            dispatch(success(token));
+            dispatch(success({token, email: user.email}));
             navigate('dashboard');
         },
         (error) => {
@@ -60,11 +60,25 @@ const logout = () => dispatch => {
     navigate(routes.loginPage);
 }
 
+const getUserInfo = () => dispatch => {
+    const success = (payload) => {return {type: userConstants.GETUSERINFO_SUCCESS, payload}};
+    const request = () => {return {type: userConstants.GETUSERINFO_REQUEST}};
+    const failure = (payload) => {return {type: userConstants.GETUSERINFO_FAILURE, payload}};
+
+    dispatch(request());
+
+    Users.getUserDetails().then(
+      ({ email }) => dispatch(success(email)),
+      (error) => dispatch(failure(error))
+    );
+}
+
 
 export const userActions = {
     load,
     add,
     login,
-    logout
+    logout,
+    getUserInfo,
 }
 

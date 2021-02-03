@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { useSelector} from 'react-redux';
 
 import {
   StyledOverview,
@@ -23,6 +24,7 @@ import FilteredTransactionsContainer from 'containers/FilteredTransactionsContai
 import {useDispatch} from 'react-redux';
 
 const DashboardOverview = () => {
+  const login = useSelector(state => state.login.login);
   const dispatch=useDispatch();
   return (
     <FilteredTransactionsContainer>
@@ -33,7 +35,7 @@ const DashboardOverview = () => {
       }) => (
         <StyledOverview>
           <Row>
-            <WelcomeText>Hi Caroline, welcome back!</WelcomeText>
+            <WelcomeText>{`Hi ${login}, welcome back!`}</WelcomeText>
             <StyledDateMenu>
               <StyledDropdown>
                 <CustomDropdownDashboard

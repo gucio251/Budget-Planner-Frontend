@@ -6,7 +6,9 @@ export const Users = {
     create: (params) =>
         post('/signup', params),
     login: (params) =>
-        post('/signin', params)
+        post('/signin', params),
+    getUserDetails: () =>
+        get('/users/me')
 }
 
 export const IncomeTypes = {

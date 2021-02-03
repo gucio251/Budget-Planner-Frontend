@@ -6,6 +6,7 @@ import { currencyActions } from 'redux/actions/currencyActions';
 import { incomeTypesActions } from 'redux/actions/incomeTypesActions';
 import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
+import { userActions } from 'redux/actions/userActions';
 import Sidebar from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
@@ -43,6 +44,7 @@ const Dashboard = () => {
     dispatch(expensesActions.load());
     dispatch(incomesActions.load());
     dispatch(currencyActions.loadRatesFromApi());
+    dispatch(userActions.getUserInfo())
   }, [dispatch]);
 
   return (
