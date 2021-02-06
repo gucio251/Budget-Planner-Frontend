@@ -1,6 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import { useSelector} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   StyledOverview,
@@ -9,7 +8,6 @@ import {
   StyledDateMenu,
   StyledDropdown,
   RowWithoutSpaceBetween,
-  StyledAllTransactions,
 } from './DashboardOverview.styled';
 
 import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
@@ -19,9 +17,8 @@ import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/Gr
 import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
 import CustomDropdownDashboard from 'components/UI/Dropdown';
 import {currencyActions} from 'redux/actions/currencyActions'
-
 import FilteredTransactionsContainer from 'containers/FilteredTransactionsContainer/FilteredTransactionsContainer';
-import {useDispatch} from 'react-redux';
+import SortedTransactions from 'containers/SortedTransactions/SortedTransactions';
 
 const DashboardOverview = () => {
   const login = useSelector(state => state.login.login);
@@ -67,23 +64,23 @@ const DashboardOverview = () => {
               />
             </DashboardDisplayWindow>
           </RowWithoutSpaceBetween>
-          <StyledAllTransactions>
-            <DashboardDisplayWindow title="Recent transactions">
-              <TransactionsDisplayer
-                expenses={recalculatedExpenses}
-                incomes={recalculatedIncomes}
-                CurrencyIcon={availableCurrenciesState.SmallIcon}
-              />
-            </DashboardDisplayWindow>
-          </StyledAllTransactions>
+          <SortedTransactions
+            expenses={recalculatedExpenses}
+            incomes={recalculatedIncomes}
+          >
+            {({ groupedTransactions }) => (
+              <DashboardDisplayWindow title="Recent transactions">
+                <TransactionsDisplayer
+                  transactionList={groupedTransactions}
+                  CurrencyIcon={availableCurrenciesState.SmallIcon}
+                />
+              </DashboardDisplayWindow>
+            )}
+          </SortedTransactions>
         </StyledOverview>
       )}
     </FilteredTransactionsContainer>
   );
-};
-
-DashboardOverview.propTypes = {
-  handleDatePeriodChange: PropTypes.func.isRequired,
 };
 
 export default DashboardOverview;

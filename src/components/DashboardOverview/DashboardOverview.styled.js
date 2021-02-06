@@ -62,14 +62,6 @@ export const RowWithoutSpaceBetween = styled.div`
   }
 `;
 
-export const StyledAllTransactions = styled.div`
-  display: flex;
-
-  ${({ theme }) => theme.devices.tablet} {
-    display: none;
-  }
-`;
-
 export const StyledDropdown = styled.div`
   width: 100px;
 `

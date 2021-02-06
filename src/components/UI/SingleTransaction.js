@@ -9,15 +9,64 @@ const TableRow = styled.tr`
   border-bottom: 1px solid #efeff3;
   text-align: left;
 
-    & > *:first-child {
-      font-weight: 600;
-    }
+  ${({ theme }) => theme.devices.mobile} {
+    display: block;
+  }
 `;
 
 const TableCell = styled.td`
   padding: 8px 0px;
+
+  ${({ theme }) => theme.devices.mobile} {
+    display: block;
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 100px;
+    margin-left: 50px;
+
+    &:before {
+      position: absolute;
+      top: 12px;
+      left: 6px;
+      width: 100px;
+      padding-right: 40px;
+      white-space: nowrap;
+      margin-left: -50px;
+    }
+
+    &:nth-of-type(1):before {
+      content: 'Date';
+    }
+    &:nth-of-type(2):before {
+      content: 'Category';
+    }
+    &:nth-of-type(3):before {
+      content: 'Subcategory';
+    }
+    &:nth-of-type(4):before {
+      content: 'Details';
+    }
+    &:nth-of-type(5):before {
+      content: 'Edit';
+    }
+    &:nth-of-type(6):before {
+      content: 'Remove';
+    }
+    &:nth-of-type(7):before {
+      content: 'Price';
+    }
+  }
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > *:first-child{
+    margin-right: 0.5em;
+  }
+`
 const useStylesBootstrap = makeStyles((theme) => ({
   arrow: {
     color: theme.palette.common.gray,
@@ -50,13 +99,13 @@ const SingleTransaction = ({
 }) => {
   return (
     <TableRow key={id}>
+      <TableCell>{transaction_date}</TableCell>
       <TableCell>
-        {transaction_date}
+        <Wrapper>
+          <Svg />
+          {category}
+        </Wrapper>
       </TableCell>
-      <TableCell align="left">
-        <Svg />
-      </TableCell>
-      <TableCell>{category}</TableCell>
       <TableCell>{subcategory}</TableCell>
       <TableCell>{comments}</TableCell>
       <TableCell align="right">
