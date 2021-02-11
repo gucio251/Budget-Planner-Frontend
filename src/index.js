@@ -13,8 +13,8 @@ const store = configureStore();
 ReactDOM.render(
   <ReduxProvider store={store}>
     <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
+      <GlobalStyle />
+      <App />
     </ThemeProvider>
   </ReduxProvider>,
   document.getElementById('root')
