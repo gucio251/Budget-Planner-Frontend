@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import gsap from 'gsap';
 import Button from 'components/UI/Button'
@@ -7,11 +7,8 @@ import { ReactComponent as AddSign } from 'assets/icons/addSignButton.svg';
 import { ReactComponent as Avatar } from 'assets/icons/userAvatar.svg';
 import { ReactComponent as ExpandArrow } from 'assets/icons/expandArrow.svg';
 
-import Modal from 'components/Modal/Modal'
+import { modalActions } from 'redux/actions/modalActions'
 import UserFeaturesList from 'components/UserFeaturesList/UserFeaturesList';
-import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-
-import {getTodaysDate} from 'Utils/functions';
 
 const MobileButtonWrapper = styled.div`
   display: none;
@@ -61,26 +58,11 @@ const UserSectionWrapper = styled.div`
   cursor: pointer;
 `;
 
-const initialValues = {
-  amount: 0,
-  currency: '',
-  currency_id: '',
-  category: '',
-  subcategory: '',
-  category_id: '',
-  transaction_date: getTodaysDate(),
-  comments: '',
-};
-
 const TopToolbar = () => {
+    const dispatch = useDispatch();
     const login = useSelector(state => state.login.login);
     const arrowWrapper = useRef(null);
-    const [modalVisibility,setModalVisiblity] = useState(false);
     const [userFeatureListOpened, setUserFeatureListOpened] = useState(false);
-
-    const handleModalVisiblity = () => {setModalVisiblity(prevState => {
-      return !prevState;
-    })}
 
     useEffect(() => {
       const [elements] = arrowWrapper.current.children;
@@ -91,17 +73,11 @@ const TopToolbar = () => {
     return (
       <>
         <MobileButtonWrapper>
-          {renderButton(handleModalVisiblity)}
+          {renderButton(() => dispatch(modalActions.open({modalType: 'TransactionHandlingForm'})))}
         </MobileButtonWrapper>
-        <Modal open={modalVisibility} handleClose={handleModalVisiblity}>
-          <TransactionHandlingForm
-            initialValues={initialValues}
-            handleClose={handleModalVisiblity}
-          />
-        </Modal>
         <Header>
           <Wrapper>
-            {renderButton(handleModalVisiblity)}
+            {renderButton(() => dispatch(modalActions.open({modalType: 'TransactionHandlingForm'})))}
             <UserSectionWrapper
               onClick={() => setUserFeatureListOpened(!userFeatureListOpened)}
             >

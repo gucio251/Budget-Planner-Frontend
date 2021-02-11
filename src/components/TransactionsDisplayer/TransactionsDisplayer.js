@@ -1,21 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { MemoizedSingleTransaction } from 'components/UI/SingleTransaction';
-import Modal from 'components/Modal/Modal';
-import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
-import {expensesActions} from 'redux/actions/expensesActions';
-import {incomesActions} from 'redux/actions/incomesActions'
 import {useDispatch} from 'react-redux';
-import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-import {
-  convertDate,
-} from 'Utils/functions';
+import { modalActions } from 'redux/actions/modalActions'
 
 import { ReactComponent as EditIcon } from 'assets/icons/editIconTable.svg';
 import { ReactComponent as DeleteIcon } from 'assets/icons/deleteIconTable.svg';
 
 const Table = styled.table`
   border-collapse: collapse;
+  position: relative;
+  width: 100%;
 `;
 
 const TableHeader = styled.thead`
@@ -23,12 +17,12 @@ const TableHeader = styled.thead`
 
 const HeaderField = styled.th`
   padding: 10px 0;
-  color: #7a7d8a;
+  color: ${({ theme }) => theme.dashboardBlack};
   width: 20%;
-  font-weight: normal;
-  border-bottom: 2px solid #d0c9d6;
+  font-weight: 450;
+  border-bottom: 1px solid #efeff3;
 
-  ${({theme}) => theme.devices.tablet}{
+  ${({ theme }) => theme.devices.tablet} {
     width: 25%;
   }
 `;
@@ -43,6 +37,7 @@ const LeftCenteredSpan = styled.span`
 const TableBody = styled.tbody`
 
 `;
+
 
 const TableRow = styled.tr`
   & > td:first-child,
@@ -85,21 +80,18 @@ const TableRow = styled.tr`
 const DateFieldInRow = styled.td`
   padding: 0.5em 0;
   width: 100%;
-  border-bottom: 1px solid #d0c9d6;
+  border-bottom: 1px solid #EFEFF3;
+  background-color: #EFEFF3;
 `;
 
 const StyledDateText = styled.span`
   display: flex;
-  justify-content: center;
-  font-size: 1.1em;
-  font-weight: 500;
-
 `;
 
 const Field = styled.td`
   width: 20%;
   padding: 10px 0px;
-  border-bottom: 1px solid #d0c9d6;
+  border-bottom: 1px solid #efeff3;
 
   ${({ theme }) => theme.devices.tablet} {
     width: 25%;
@@ -114,6 +106,7 @@ const RightCenteredSpan = styled.span`
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const TextWrapper = styled.div`
@@ -128,85 +121,44 @@ const Text = styled.p`
   font-size: 0.7em;
 `;
 
-
 export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
   const dispatch = useDispatch();
-  const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
-  const [modifyModalVisibility, setModifyMobileVisibility] = useState(false);
-  const [clickedElementData, setClickedElementData] = useState({});
 
-  const handleDeleteModalVisibility = () => {
-    setDeleteModalVisibility(prevState => !prevState);
-  };
-
-  const handleModifyModalVisibility = () => {
-    setModifyMobileVisibility(prevState => !prevState);
-  };
-
-  const onIconClickHandler = (e) => {
-    handleDeleteModalVisibility();
-    const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
-    const transactionData = transactionList.find(
-      (singleTransaction) => singleTransaction.id === clickedTransactionId
+  const handleUpdate = ({ type, id }) => {
+    dispatch(
+      modalActions.open({
+        modalType: 'TransactionHandlingForm',
+        modalProps: { type, id },
+      })
     );
-    setClickedElementData(transactionData);
   };
 
-  const handleModifyIconClick = (e) => {
-    handleModifyModalVisibility();
-    const clickedTransactionId = parseInt(e.currentTarget.attributes.id.value);
-    const transactionData = transactionList.find(
-      (singleTransaction) => singleTransaction.id === clickedTransactionId
+  const handleDeletion = ({ type, id }) => {
+    dispatch(
+      modalActions.open({
+        modalType: 'DeleteTransactionContent',
+        modalProps: { type, id },
+      })
     );
-    setClickedElementData(transactionData);
-  };
-
-  const deleteTransaction = () => {
-    const { id, type } = clickedElementData;
-    if (type === 'income') {
-      dispatch(incomesActions.deleteSingle(id));
-    } else if (type === 'expense') {
-      dispatch(expensesActions.deleteSingle(id));
-    }
-    handleDeleteModalVisibility();
   };
 
   return (
     <>
-      <Modal
-        open={deleteModalVisibility}
-        handleClose={handleDeleteModalVisibility}
-      >
-        <DeleteTransactionContent
-          category={clickedElementData.category}
-          subcategory={clickedElementData.subcategory}
-          submitHandler={deleteTransaction}
-        />
-      </Modal>
-      <Modal
-        open={modifyModalVisibility}
-        handleClose={handleModifyModalVisibility}
-      >
-        <TransactionHandlingForm
-          initialValues={clickedElementData}
-          handleClose={handleModifyModalVisibility}
-        />
-      </Modal>
       {Object.keys(transactionList).length === 0 ? null : (
         <Table>
           <TableHeader>
             <TableRow>
               <HeaderField>
-                <LeftCenteredSpan>DESCRIPTION</LeftCenteredSpan>
+                <LeftCenteredSpan>Category</LeftCenteredSpan>
               </HeaderField>
               <HeaderField>
-                <LeftCenteredSpan>COMMENT</LeftCenteredSpan>
+                <LeftCenteredSpan>Subcategory</LeftCenteredSpan>
               </HeaderField>
               <HeaderField>
-                <LeftCenteredSpan>EDIT</LeftCenteredSpan>
+                <LeftCenteredSpan>Details</LeftCenteredSpan>
               </HeaderField>
               <HeaderField>
-                <LeftCenteredSpan>DELETE</LeftCenteredSpan>
+                <LeftCenteredSpan>Action</LeftCenteredSpan>
               </HeaderField>
               <HeaderField>
                 <RightCenteredSpan>AMOUNT</RightCenteredSpan>
@@ -225,6 +177,7 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                   <>
                     {transactionList[transaction_date].map((transaction) => {
                       const {
+                        id,
                         Icon,
                         category,
                         subcategory,
@@ -239,16 +192,20 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                               <Icon />
                               <TextWrapper>
                                 <MainText>{category}</MainText>
-                                <Text>{subcategory}</Text>
                               </TextWrapper>
                             </Wrapper>
                           </Field>
+                          <Field>{subcategory}</Field>
                           <Field>{comments}</Field>
                           <Field>
-                            <EditIcon />
-                          </Field>
-                          <Field>
-                            <DeleteIcon />
+                            <EditIcon
+                              onClick={() =>
+                                handleUpdate({ id, type })
+                              }
+                            />
+                            <DeleteIcon
+                              onClick={() => handleDeletion({ id, type })}
+                            />
                           </Field>
                           <Field>
                             <RightCenteredSpan>

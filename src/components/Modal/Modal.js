@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -15,32 +15,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ModalTemplate = ({children, open, handleClose}) => {
+const ModalTemplate = ({children, open=true}) => {
     const classes = useStyles();
-    const onEscapeClick = e => {
-      if(e.keyCode === 27){
-        handleClose()
-      }
-    }
-
-    useEffect(()=> {
-      document.addEventListener('keydown', onEscapeClick);
-
-      return ()=> {
-        document.removeEventListener('keydown', onEscapeClick)
-      }
-    })
 
     return (
       <ModalProvider
         value={{
-          open: open,
-          handleClose: handleClose,
+          open: open
         }}
       >
         <Modal
           open={open}
-          onClose={handleClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           closeAfterTransition
@@ -62,8 +47,6 @@ const ModalTemplate = ({children, open, handleClose}) => {
 
 ModalTemplate.propTypes = {
   children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired
 };
 
 export default ModalTemplate;

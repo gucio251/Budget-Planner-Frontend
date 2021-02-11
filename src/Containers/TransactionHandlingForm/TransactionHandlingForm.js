@@ -7,7 +7,9 @@ import styled from 'styled-components';
 
 import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
+import { modalActions } from 'redux/actions/modalActions';
 import { validations } from 'components/validationSchemas-yup/validationSchemas-yup';
+import { getTodaysDate } from 'Utils/functions';
 
 import Button from 'components/UI/Button';
 import SingleMonthDatePicker from 'components/UI/SingleMonthDatePicker';
@@ -61,6 +63,17 @@ const FormLineWrapper = styled.div`
   grid-column-gap: 1em;
 `
 
+const initialValues = {
+  amount: 0,
+  currency: '',
+  currency_id: '',
+  category: '',
+  subcategory: '',
+  category_id: '',
+  transaction_date: getTodaysDate(),
+  comments: '',
+};
+
 const TransactionHandlingForm = props => {
     const dispatch = useDispatch();
     const [categoriesToBeDisplayed, setCategoriesToBeDisplayed] = useState(setupCategoriesToBeDisplayed(props.initialValues));
@@ -93,7 +106,7 @@ const TransactionHandlingForm = props => {
           {`${
             checkIfTransactionIsModified(props) ? 'Modify' : 'Add new'
           } transaction`}
-          <StyledCloseFormSign onClick={props.handleClose} />
+          <StyledCloseFormSign onClick={() => dispatch(modalActions.close())} />
         </LineWrapper>
         <>
           {!checkIfTransactionIsModified(props) &&
@@ -304,10 +317,36 @@ TransactionHandlingForm.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  const calculateInitialValues = () => {
+    let transaction;
+    if(Object.keys(state.modalReducer.modalProps).length === 0) {
+      return initialValues;
+    }else{
+      switch (state.modalReducer.modalProps.type) {
+        case 'income':
+          [transaction] = state.incomes.incomes.filter(
+            (income) => income.id === state.modalReducer.modalProps.id
+          );
+          break;
+        case 'expense':
+          [transaction] = state.expenses.expenses.filter(
+            (expense) => expense.id === state.modalReducer.modalProps.id
+          );
+          break;
+        default:
+          break;
+      }
+
+      return transaction;
+    }
+  }
+
   return {
     expenseTypes: state.expenseTypes.expenseTypes,
     incomeTypes: state.incomeTypes.incomeTypes,
-    currencies: state.currencies.currencies
+    currencies: state.currencies.currencies,
+    initialValues: calculateInitialValues(),
+    type: state.modalReducer.modalProps.type,
   };
 }
 
