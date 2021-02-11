@@ -11,18 +11,20 @@ import {
 } from './DashboardOverview.styled';
 
 import BudgetSummary from 'containers/BudgetSummary/BudgetSummary';
+import CustomDropdownDashboard from 'components/UI/Dropdown';
 import DashboardDateMenu from 'components/DashboardDateMenu/DashboardDateMenu';
 import DashboardDisplayWindow from 'components/DashboardDisplayWindow/DashboardDisplayWindow';
-import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType';
-import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
-import CustomDropdownDashboard from 'components/UI/Dropdown';
-import {currencyActions} from 'redux/actions/currencyActions'
 import FilteredTransactionsContainer from 'containers/FilteredTransactionsContainer/FilteredTransactionsContainer';
+import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType';
 import SortedTransactions from 'containers/SortedTransactions/SortedTransactions';
+import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
+
+import { currencyActions } from 'redux/actions/currencyActions';
 
 const DashboardOverview = () => {
-  const login = useSelector(state => state.login.login);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
+  const login = useSelector((state) => state.login.login);
+
   return (
     <FilteredTransactionsContainer>
       {({
@@ -65,8 +67,10 @@ const DashboardOverview = () => {
             </DashboardDisplayWindow>
           </RowWithoutSpaceBetween>
           <SortedTransactions
-            expenses={recalculatedExpenses}
-            incomes={recalculatedIncomes}
+            allTransactions={[].concat(
+              recalculatedIncomes,
+              recalculatedExpenses
+            )}
           >
             {({ groupedTransactions }) => (
               <DashboardDisplayWindow title="Recent transactions">

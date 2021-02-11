@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux'
 
 import ApplyFilters from 'containers/ApplyFilters/ApplyFilters'
 import FiltersSection from 'components/FiltersSection/FiltersSection'
 import Pagination from 'components/Pagination/Pagination';
 import {Displayer} from 'components/TransactionsDisplayer/TransactionsDisplayer'
+import FilteredTransactionsContainer from 'containers/FilteredTransactionsContainer/FilteredTransactionsContainer';
+import SortedTransactions from 'containers/SortedTransactions/SortedTransactions';
 
 
 const Wrapper = styled.div`
@@ -25,9 +26,6 @@ const DisplayerWrapper = styled.div`
 const DashboardReports = () => {
     const [TransactionsPerPage, setTransactionsPerPage] = useState(5);
     const [currentActivePage, setCurrentActivePage] = useState(1);
-    const expenses = useSelector( state => state.expenses.expenses);
-    const incomes = useSelector( state => state.incomes.incomes);
-    const CurrencyIcon = useSelector( state => state.currencies.SmallIcon);
 
     const changeAmountOfPostsPerPage = amount => {
         setTransactionsPerPage(amount)
@@ -38,36 +36,49 @@ const DashboardReports = () => {
     const moveToPreviousPage = () => setCurrentActivePage(currentActivePage-1);
     const indexOfLastTransaction = TransactionsPerPage * currentActivePage;
     const indexOfFirstTransaction = indexOfLastTransaction - TransactionsPerPage;
-    const transactions = [].concat(expenses, incomes);
 
     return (
       <Wrapper>
         <FiltersSection />
-        <ApplyFilters transactions={transactions}>
-          {({ filteredTransactions }) => (
-          <>
-            <DisplayerWrapper>
-              <Displayer
-                transactionList={filteredTransactions.slice(
-                  indexOfFirstTransaction,
-                  indexOfLastTransaction
-                )}
-                CurrencyIcon={CurrencyIcon}
-                howManyItemsToBeDisplayed={TransactionsPerPage}
-              />
-            </DisplayerWrapper>
-            <Pagination
-              postsPerPage={TransactionsPerPage}
-              currentActivePage={currentActivePage}
-              totalPosts={filteredTransactions.length}
-              handlePostsAmountChange={changeAmountOfPostsPerPage}
-              changeActivePage={changeActivePage}
-              moveToNextPage={moveToNextPage}
-              moveToPreviousPage={moveToPreviousPage}
-            />
-          </>
+        <FilteredTransactionsContainer>
+          {({
+            recalculatedExpenses,
+            recalculatedIncomes,
+            availableCurrenciesState,
+          }) => (
+            <ApplyFilters
+              transactions={[].concat(
+                recalculatedExpenses,
+                recalculatedIncomes
+              )}
+            >
+              {({ filteredTransactions }) => (
+                <SortedTransactions allTransactions={filteredTransactions}>
+                  {({ groupedTransactions }) => (
+                    <>
+                      <DisplayerWrapper>
+                        <Displayer
+                          transactionList={groupedTransactions}
+                          CurrencyIcon={availableCurrenciesState.SmallIcon}
+                          howManyItemsToBeDisplayed={TransactionsPerPage}
+                        />
+                      </DisplayerWrapper>
+                      <Pagination
+                        postsPerPage={TransactionsPerPage}
+                        currentActivePage={currentActivePage}
+                        totalPosts={filteredTransactions.length}
+                        handlePostsAmountChange={changeAmountOfPostsPerPage}
+                        changeActivePage={changeActivePage}
+                        moveToNextPage={moveToNextPage}
+                        moveToPreviousPage={moveToPreviousPage}
+                      />
+                    </>
+                  )}
+                </SortedTransactions>
+              )}
+            </ApplyFilters>
           )}
-        </ApplyFilters>
+        </FilteredTransactionsContainer>
       </Wrapper>
     );
 };
