@@ -10,6 +10,7 @@ import expenses from 'redux/reducers/expensesReducer'
 import datesRange from 'redux/reducers/datesRangeReducer';
 import filtration from 'redux/reducers/filtrationReducer';
 import mobileView from 'redux/reducers/mobileViewReducer';
+import modalReducer from 'redux/reducers/modalReducer'
 
 const rootReducer = combineReducers({
   users,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   expenses,
   datesRange,
   filtration,
-  mobileView
+  mobileView,
+  modalReducer
 });
 
 export default rootReducer;

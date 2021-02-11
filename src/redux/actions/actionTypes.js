@@ -77,6 +77,8 @@ export const incomesConstants = {
   DELETEINCOME_REQUEST: 'INCOME_DELETE_REQUEST',
   DELETEINCOME_SUCCESS: 'INCOME_DELETE_SUCCESS',
   DELETEINCOME_FAILURE: 'INCOME_DELETE_FAILURE',
+
+  SETMODIFIEDINCOMEID: 'INCOME_SET_MODIFIEDINCOMEID',
 };
 
 export const datesRangeConstants = {
@@ -104,4 +106,9 @@ export const filtrationConstants = {
 
 export const mobileViewConstants = {
   SETONLYWORKINGSCREENVISIBLE: 'SET_WORKING_SCREEN_VISIBLE'
+}
+
+export const modalConstants = {
+  MODAL_OPEN: 'MODAL_OPEN',
+  MODAL_CLOSE: 'MODAL_CLOSE'
 }

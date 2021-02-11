@@ -54,6 +54,7 @@ const expenses = (state = initialState, {type, payload}) => {
         expenses: state.expenses.filter((expense) => {
           return parseInt(expense.id) !== parseInt(payload);
         }),
+        currentlyModifiedObjectId: null
       };
     case expensesConstants.UPDATEEXPENSE_REQUEST:
       return {
@@ -69,6 +70,11 @@ const expenses = (state = initialState, {type, payload}) => {
             return expense;
           }
         }),
+      };
+    case expensesConstants.SETMODIFIEDEXPENSEID:
+      return {
+        ...state,
+        currentlyModifiedObjectId: payload
       };
     default:
       return state;

@@ -8,8 +8,8 @@ import {
 const initialState = {
   status: 'idle',
   incomes: [],
-  error: false
-}
+  error: false,
+};
 
 const incomes = (state = initialState, {type, payload}) => {
   switch (type) {
@@ -74,6 +74,11 @@ const incomes = (state = initialState, {type, payload}) => {
           }
         })
       }
+    case incomesConstants.SETMODIFIEDINCOMEID:
+      return {
+        ...state,
+        currentlyModifiedObjectId: payload,
+      };
     default:
       return state;
   }
