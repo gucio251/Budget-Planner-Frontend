@@ -28,9 +28,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: min(450px, 100%);
   background-color: #f8f9fb;
   padding: 2em;
@@ -123,7 +120,8 @@ const TransactionHandlingForm = props => {
               category: categoriesToBeDisplayed,
             }),
             dispatch: dispatch,
-            handleClose: props.handleClose,
+            handleClose: ()=> {
+              dispatch(modalActions.close())},
           })}
         </>
       </Wrapper>
@@ -167,7 +165,7 @@ const renderForm = ({
       initialValues={initialValues}
       validationSchema={validations.getTransactionAdditionValidationSchema}
       onSubmit={(values) => {
-        dispatch(handleSubmit(values))
+        dispatch(handleSubmit(values));
         handleClose();
       }}
     >

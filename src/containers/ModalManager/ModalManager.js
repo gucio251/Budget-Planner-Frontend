@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import DeleteTransactionContent from 'components/UI/DeleteTransactionContent';
 import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
+import CustomRangePicker from 'containers/CustomRange/CustomRange';
 
 const modalsLookupTable = {
     TransactionHandlingForm,
-    DeleteTransactionContent
+    DeleteTransactionContent,
+    CustomRangePicker
 }
 
 const mapState = state => {return {currentModal: state.modalReducer}};
@@ -27,7 +29,6 @@ const ModalManager = ({currentModal}) => {
 };
 
 ModalManager.propTypes = {
-    
 };
 
 export default connect(mapState, null, null, {forwardRef: true})(ModalManager);

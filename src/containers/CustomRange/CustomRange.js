@@ -1,23 +1,19 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
 import { datesRangeActions } from 'redux/actions/dateRangeActions';
 import DayPicker, {DateUtils} from 'react-day-picker/DayPicker';
-import { ModalContext } from 'components/Modal/Modal';
+import { modalActions } from 'redux/actions/modalActions';
 import {Navbar} from 'components/UI/SingleMonthDatePicker'
 import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 
 const StyledContent = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
   gap: 1em;
   background-color: #f8f9fb;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   padding: 2em;
   width: min(40em, 100%);
   overflow-y: auto;
@@ -78,7 +74,6 @@ const ButtonWrapper = styled.div`
 
 const CustomRange = () => {
     const dispatch = useDispatch();
-    const modal = useContext(ModalContext);
     const [datesRange, setDatesRange] = useState({
       from: undefined,
       to: undefined,
@@ -100,13 +95,13 @@ const CustomRange = () => {
           option: 'Custom',
         })
       );
-      modal.handleClose();
+      dispatch(modalActions.close())
     }
     return (
       <StyledContent>
         <StyledRow>
           Custom range
-          <StyledCloseFormSign onClick={modal.handleClose} />
+          <StyledCloseFormSign onClick={() => dispatch(modalActions.close())} />
         </StyledRow>
         <InputFieldsWrapper>
           <InputControl>

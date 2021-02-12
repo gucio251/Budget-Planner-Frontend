@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomRangePicker from 'containers/CustomRange/CustomRange';
 import { datesRangeActions } from 'redux/actions/dateRangeActions';
-import Modal from 'components/Modal/Modal';
+import { modalActions } from 'redux/actions/modalActions';
 
 const DateChangeWrapper = styled.nav`
   display: flex;
@@ -45,15 +44,6 @@ const Option = styled.li`
 const DatesRangeMenu = ({ children }) => {
   const datesRangeState = useSelector(state => state.datesRange.datesRange);
   const dispatch = useDispatch();
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleModalOpening = () => {
-    setModalOpen(true);
-  }
-
-  const handleModalClosing = () => {
-    setModalOpen(false);
-  }
 
   const getDateRangeBasedOnOptionChosen = (optionChosen) => {
     switch (optionChosen) {
@@ -73,9 +63,6 @@ const DatesRangeMenu = ({ children }) => {
   };
   return (
     <>
-      <Modal open={modalOpen} handleClose={handleModalClosing}>
-        <CustomRangePicker />
-      </Modal>
       <DateChangeWrapper>
         <Options>
           {children.map((el, i) => {
@@ -84,7 +71,7 @@ const DatesRangeMenu = ({ children }) => {
                 active={datesRangeState.option === el.props.tab ? true : false}
                 key={i}
                 onClick={() => {
-                  el.props.tab === 'Custom' ? handleModalOpening():
+                  el.props.tab === 'Custom' ? dispatch(modalActions.open({modalType: 'CustomRangePicker'})):
                   dispatch(
                     datesRangeActions.setDateRange(
                       getDateRangeBasedOnOptionChosen(el.props.tab)
