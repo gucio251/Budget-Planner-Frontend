@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
 
 import {filtrationActions}  from 'redux/actions/filtrationActions'
 import {getCategories} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
@@ -10,9 +9,13 @@ import InputField from 'components/UI/InputField'
 import { currencyActions } from 'redux/actions/currencyActions';
 
 const Wrapper = styled.section`
-  margin: 20px 0;
+  margin: 2em 0;
+  display: block;
+`;
+
+const Row = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
 `;
 const OptionsMenu = styled.ul`
   list-style: none;
@@ -71,13 +74,19 @@ const FiltersSection = () => {
     const dispatch = useDispatch();
 
     const handleAmountFromChange = (e) => {
-      dispatch(filtrationActions.setAmountFromFilter(parseFloat(e.target.value)))
+      e.target.value === ''
+        ? dispatch(filtrationActions.setAmountFromFilter(null))
+        : dispatch(
+            filtrationActions.setAmountFromFilter(parseFloat(e.target.value))
+          );
     };
 
     const handleAmountToChange = (e) => {
-        dispatch(
-        filtrationActions.setAmountToFilter(parseFloat(e.target.value))
-        );
+      e.target.value === ''
+        ? dispatch(filtrationActions.setAmountToFilter(null))
+        : dispatch(
+            filtrationActions.setAmountToFilter(parseFloat(e.target.value))
+          );
     };
     const changeActiveItem = (e) => {
         const clickedElementName = e.target.textContent
@@ -91,69 +100,81 @@ const FiltersSection = () => {
         dispatch(filtrationActions.setTransactionTypeFilter(type));
     };
 
+    const checkIfAllowedSign = (evt) => {
+        ['e', 'E', '+', '-', '.'].includes(evt.key) && evt.preventDefault();
+    }
+
     return (
       <Wrapper>
-        <OptionsMenu>
-          {['All', 'Expenses', 'Incomes'].map((name, index) => {
-            return (
-              <Option
-                tabIndex={index}
-                onClick={changeActiveItem}
-                active={index === activeElement.number}
-              >
-                {name}
-              </Option>
-            );
-          })}
-        </OptionsMenu>
-        <DropdownWrapper>
-          <Label htmlFor="categories">Choose categories</Label>
-          <Dropdown
-            list={prepareOptions(incomeTypes, expenseTypes, activeElement.name)}
-            onChange={({ value }) => {
-              dispatch(filtrationActions.setCategoryFilter(value));
-            }}
-            value={{ value: filtration.category, label: filtration.category }}
-            isSearchable={true}
-            name="categories"
-          />
-        </DropdownWrapper>
-        <FieldWrapper>
-          <Label htmlFor="amountFrom">Amount From</Label>
-          <InputField
-            name="amountFrom"
-            type="number"
-            step="0.5"
-            placeholder={filtration.amountFrom == null ? '0,00' : null}
-            handleChange={handleAmountFromChange}
-            value={filtration.amountFrom}
-          />
-        </FieldWrapper>
-        <FieldWrapper>
-          <Label htmlFor="amountTo">Amount To</Label>
-          <InputField
-            name="amountTo"
-            type="number"
-            step="0.5"
-            placeholder={filtration.amountTo == null ? '0,00' : null}
-            handleChange={handleAmountToChange}
-            value={filtration.amountTo}
-          />
-        </FieldWrapper>
-        <DropdownWrapper>
-          <Label htmlFor="currencies">Currency</Label>
-          <Dropdown
-            list={availableCurrenciesState.currencies}
-            onChange={(value) =>
-              dispatch(currencyActions.changeActiveCurrency(value.value))
-            }
-            indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
-              (currency) => currency.value === availableCurrenciesState.active
-            )}
-            isSearchable={true}
-            name="currencies"
-          />
-        </DropdownWrapper>
+        <Row>
+          <OptionsMenu>
+            {['All', 'Expenses', 'Incomes'].map((name, index) => {
+              return (
+                <Option
+                  tabIndex={index}
+                  onClick={changeActiveItem}
+                  active={index === activeElement.number}
+                >
+                  {name}
+                </Option>
+              );
+            })}
+          </OptionsMenu>
+          <DropdownWrapper>
+            <Label htmlFor="categories">Choose categories</Label>
+            <Dropdown
+              list={prepareOptions(
+                incomeTypes,
+                expenseTypes,
+                activeElement.name
+              )}
+              onChange={({ value }) => {
+                dispatch(filtrationActions.setCategoryFilter(value));
+              }}
+              value={{ value: filtration.category, label: filtration.category }}
+              isSearchable={true}
+              name="categories"
+            />
+          </DropdownWrapper>
+          <FieldWrapper>
+            <Label htmlFor="amountFrom">Amount From</Label>
+            <InputField
+              name="amountFrom"
+              type="number"
+              step="0.5"
+              handleKeyDown={checkIfAllowedSign}
+              placeholder={filtration.amountFrom == null ? '0,00' : null}
+              handleChange={handleAmountFromChange}
+              value={filtration.amountFrom}
+            />
+          </FieldWrapper>
+          <FieldWrapper>
+            <Label htmlFor="amountTo">Amount To</Label>
+            <InputField
+              name="amountTo"
+              type="number"
+              step="0.5"
+              handleKeyDown={checkIfAllowedSign}
+              placeholder={filtration.amountTo == null ? '0,00' : null}
+              handleChange={handleAmountToChange}
+              value={filtration.amountTo}
+            />
+          </FieldWrapper>
+          <DropdownWrapper>
+            <Label htmlFor="currencies">Currency</Label>
+            <Dropdown
+              list={availableCurrenciesState.currencies}
+              onChange={(value) =>
+                dispatch(currencyActions.changeActiveCurrency(value.value))
+              }
+              indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
+                (currency) => currency.value === availableCurrenciesState.active
+              )}
+              isSearchable={true}
+              name="currencies"
+            />
+          </DropdownWrapper>
+        </Row>
       </Wrapper>
     );
 };
@@ -170,9 +191,5 @@ const prepareOptions = (incomeTypes, expenseTypes,activeElement) => {
             break;
     }
 }
-
-FiltersSection.propTypes = {
-    
-};
 
 export default FiltersSection;

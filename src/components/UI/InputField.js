@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components'
 import PropTypes from 'prop-types';
+import styled from 'styled-components'
 
 const Input = styled.input`
     background-color: white;
@@ -12,12 +12,14 @@ const Input = styled.input`
     min-width: 100%;
 `
 
-const InputField = ({placeholder, type, step, name, value, handleChange}) => {
+const InputField = ({placeholder, type, step, name, value, handleChange, handleKeyDown}) => {
     return (
       <Input
+        id={name}
         name={name}
         value={value}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         type={type}
         step={step}
@@ -26,7 +28,13 @@ const InputField = ({placeholder, type, step, name, value, handleChange}) => {
 };
 
 InputField.propTypes = {
-    
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  step: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.number,
+  handleChange: PropTypes.func,
+  handleKeyDown: PropTypes.func,
 };
 
 export default InputField;
