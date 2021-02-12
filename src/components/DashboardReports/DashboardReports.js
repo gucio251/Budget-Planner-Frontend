@@ -24,7 +24,7 @@ const DisplayerWrapper = styled.div`
 
 `
 const DashboardReports = () => {
-    const [TransactionsPerPage, setTransactionsPerPage] = useState(5);
+    const [transactionsPerPage, setTransactionsPerPage] = useState(5);
     const [currentActivePage, setCurrentActivePage] = useState(1);
 
     const changeAmountOfPostsPerPage = amount => {
@@ -34,8 +34,8 @@ const DashboardReports = () => {
     const changeActivePage = pageNumber => setCurrentActivePage(pageNumber);
     const moveToNextPage = () => setCurrentActivePage(currentActivePage+1);
     const moveToPreviousPage = () => setCurrentActivePage(currentActivePage-1);
-    const indexOfLastTransaction = TransactionsPerPage * currentActivePage;
-    const indexOfFirstTransaction = indexOfLastTransaction - TransactionsPerPage;
+    const indexOfLastTransaction = transactionsPerPage * currentActivePage;
+    const indexOfFirstTransaction = indexOfLastTransaction -transactionsPerPage;
 
     return (
       <Wrapper>
@@ -53,18 +53,17 @@ const DashboardReports = () => {
               )}
             >
               {({ filteredTransactions }) => (
-                <SortedTransactions allTransactions={filteredTransactions}>
+                <SortedTransactions allTransactions={filteredTransactions.slice(indexOfFirstTransaction, transactionsPerPage)}>
                   {({ groupedTransactions }) => (
                     <>
                       <DisplayerWrapper>
                         <Displayer
                           transactionList={groupedTransactions}
                           CurrencyIcon={availableCurrenciesState.SmallIcon}
-                          howManyItemsToBeDisplayed={TransactionsPerPage}
                         />
                       </DisplayerWrapper>
                       <Pagination
-                        postsPerPage={TransactionsPerPage}
+                        postsPerPage={transactionsPerPage}
                         currentActivePage={currentActivePage}
                         totalPosts={filteredTransactions.length}
                         handlePostsAmountChange={changeAmountOfPostsPerPage}

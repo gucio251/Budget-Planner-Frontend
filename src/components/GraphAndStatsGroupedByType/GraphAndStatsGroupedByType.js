@@ -49,7 +49,7 @@ const Text = styled.p`
 
 const GraphAndStatsGroupedByType = (props) => {
   const [dataToBeDisplayed, setDataToBeDisplayed] = useState({
-    category: 'expenses',
+    category: 'incomes',
     type: 'popular',
   });
 
