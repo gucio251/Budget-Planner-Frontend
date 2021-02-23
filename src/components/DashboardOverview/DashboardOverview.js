@@ -18,6 +18,7 @@ import FilteredTransactionsContainer from 'containers/FilteredTransactionsContai
 import GraphAndStatsGroupedByType from 'components/GraphAndStatsGroupedByType/GraphAndStatsGroupedByType';
 import SortedTransactions from 'containers/SortedTransactions/SortedTransactions';
 import TransactionsDisplayer from 'components/TransactionsDisplayer/TransactionsDisplayer';
+import TransformToDropdownList from 'containers/TransformToDropdownList/TransformToDropdownList';
 
 import { currencyActions } from 'redux/actions/currencyActions';
 
@@ -37,18 +38,20 @@ const DashboardOverview = () => {
             <WelcomeText>{`Hi ${login}, welcome back!`}</WelcomeText>
             <StyledDateMenu>
               <StyledDropdown>
-                <CustomDropdownDashboard
-                  list={availableCurrenciesState.currencies}
-                  onChange={(value) =>
-                    dispatch(currencyActions.changeActiveCurrency(value.value))
-                  }
-                  indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
-                    (currency) =>
-                      currency.value === availableCurrenciesState.active
+                <TransformToDropdownList
+                  objectToBeConverted={availableCurrenciesState.currencies}
+                >
+                  {({ dropdownList }) => (
+                    <CustomDropdownDashboard
+                      list={dropdownList}
+                      value={{label:availableCurrenciesState.currencies[availableCurrenciesState.active].name}}
+                      onChange={({value}) => dispatch(currencyActions.changeActiveCurrency(value))}
+                      indexOfDefaultValue={availableCurrenciesState.active - Object.keys(availableCurrenciesState.currencies)[0]}
+                      isSearchable={true}
+                      name="currencies"
+                    />
                   )}
-                  isSearchable={true}
-                  name="currencies"
-                />
+                </TransformToDropdownList>
               </StyledDropdown>
               <DashboardDateMenu />
             </StyledDateMenu>

@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { modalActions } from 'redux/actions/modalActions'
 
 import { ReactComponent as EditIcon } from 'assets/icons/editIconTable.svg';
 import { ReactComponent as DeleteIcon } from 'assets/icons/deleteIconTable.svg';
+
+import { getCategoryNameBySubcategoryId, getIconBySubcategoryId} from 'redux/reducers/expenseTypesReducer';
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -122,7 +124,31 @@ const Text = styled.p`
 `;
 
 export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
+  const incomeTypes = useSelector(state => state.incomeTypes.incomeTypes);
+  const expenseTypes = useSelector((state) => state.expenseTypes.expenseTypes);
   const dispatch = useDispatch();
+
+  const getFullDataForTransaction = transaction => {
+    let category, subcategory, Icon;
+    const id = parseInt(transaction.transaction_type_id);
+    if (transaction.type === 'income') {
+      category = getCategoryNameBySubcategoryId(id, incomeTypes);
+      subcategory = incomeTypes.subcategories[id].name;
+      Icon = getIconBySubcategoryId(id, incomeTypes);
+    } else {
+      category = getCategoryNameBySubcategoryId(id, expenseTypes);
+      subcategory = expenseTypes.subcategories[id].name;
+      Icon = getIconBySubcategoryId(id, expenseTypes);
+    }
+
+    return {
+      ...transaction,
+      category,
+      subcategory,
+      Icon
+    }
+  };
+
 
   const handleUpdate = ({ type, id }) => {
     dispatch(
@@ -134,6 +160,7 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
   };
 
   const handleDeletion = ({ type, id }) => {
+    console.log('handle');
     dispatch(
       modalActions.open({
         modalType: 'DeleteTransactionContent',
@@ -184,7 +211,7 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                         comments,
                         amount,
                         type,
-                      } = transaction;
+                      } = getFullDataForTransaction(transaction);
                       return (
                         <TableRow>
                           <Field>

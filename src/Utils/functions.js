@@ -1,20 +1,11 @@
-export const addSvg = (categories, correlationEl) => {
-  return categories.map(category => {
-    return {
-      ...category,
-      Icon: correlationEl[category.value]
-    }
-  })
-};
-
 export const filterTransactionsByDates = (transactions, datesRange) => {
-  if(transactions.length === 0) return [];
+  if (transactions.length === 0) return [];
   return transactions.filter(transaction => checkIfTransactionIsInsideGivenRange(transaction, datesRange))
 }
 
 export const checkIfTransactionIsInsideGivenRange = (transaction, datesRange) => {
     const convertedTransactionDate = convertToDateFormatFromString(
-      transaction.transaction_date
+      transaction.date
     );
     const convertedStartDate = convertToDateFormatFromString(datesRange.start);
     const convertedFinishDate = convertToDateFormatFromString(datesRange.end);
@@ -36,52 +27,6 @@ export const checkIfGivenDateIsHigherOrEqualToReference = (checkingDate, referen
     return true;
   }else{
     return false;
-  }
-}
-
-export const groupTransactionsByCategory = (transactions) => {
-  return transactions.reduce((groupedData, transaction) => {
-    switch(transaction.type){
-      case 'expense':
-        return {
-            ...groupedData,
-            expenses: addItemToGroupedTransactions(transaction, groupedData.expenses)
-        };
-      case 'income':
-        return {
-            ...groupedData,
-            incomes: addItemToGroupedTransactions(transaction, groupedData.incomes)
-        };
-      default:
-        return {
-          ...groupedData
-        }
-    }
-  }, {incomes: {}, expenses: {}});
-};
-
-const addItemToGroupedTransactions = (transaction, groupedTransactions) => {
-  const { amount, category, Icon, type } = transaction;
-
-  if (groupedTransactions.hasOwnProperty(category)) {
-    return {
-      ...groupedTransactions,
-      [category]: {
-        ...groupedTransactions[category],
-        amount: groupedTransactions[category].amount + amount,
-        howManyOccurences: groupedTransactions[category].howManyOccurences + 1,
-      },
-    };
-  } else {
-    return {
-      ...groupedTransactions,
-      [category]: {
-        amount,
-        howManyOccurences: 1,
-        Icon,
-        type,
-      },
-    };
   }
 }
 
@@ -143,15 +88,16 @@ export const recalculateTransactionsForActiveCurrency = ({
 }) => {
   if (transactions.length === 0) return [];
   return transactions.map((transaction) => {
-    if (transaction.currency === currencies.active) {
+    if (transaction.currency_id === currencies.active) {
       return transaction;
     } else {
-      const calculatedAmount = transaction.amount *
-        (currencies.rates[currencies.active] /
-          currencies.rates[transaction.currency]);
+      const calculatedAmount =
+        transaction.amount *
+        (currencies.rates[currencies.currencies[currencies.active].name] /
+          currencies.rates[currencies.currencies[transaction.currency_id].name]);
       return {
         ...transaction,
-        currency: currencies.active,
+        currency: currencies.currencies[currencies.active].name,
         amount: calculatedAmount,
       };
     }
@@ -175,35 +121,6 @@ const howManyDaysBeforeToday = (someDate) => {
   const referenceDay = new Date(someDate);
 
   return parseInt(today.getDate()) - parseInt(referenceDay.getDate());
-}
-
-const returnSvg = (transactionName, correlation) => correlation[transactionName];
-
-const addSvgToObjectAsIcon = (Svg, transactionObject) => {
-  return {...transactionObject, Icon:Svg}
-}
-
-const addSvgToTransaction = (transactionObject, keyNameForSvg, correlation) => {
-  const Svg = returnSvg(transactionObject[keyNameForSvg], correlation);
-  return addSvgToObjectAsIcon(Svg, transactionObject);
-}
-
-export const handleSvgAddition = (transactionsList, keyNameForSvg, correlation) => {
-  if(Array.isArray(transactionsList)){
-    return transactionsList.map(transaction => {
-      return addSvgToTransaction(transaction, keyNameForSvg, correlation);
-    });
-  }else{
-    return addSvgToTransaction(transactionsList, keyNameForSvg, correlation);
-  }
-}
-
-const addPropertyToAnObject = (propertyName, value, obj) => {
-  return {...obj, [propertyName]: value};
-}
-
-export const addPropertyLoListOfObjects = (propertyName, value, listOfObjects) => {
-  return listOfObjects.map(obj => addPropertyToAnObject(propertyName, value, obj));
 }
 
 export const getTodaysDate = () => {

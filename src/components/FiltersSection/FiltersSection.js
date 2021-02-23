@@ -167,9 +167,6 @@ const FiltersSection = () => {
               onChange={(value) =>
                 dispatch(currencyActions.changeActiveCurrency(value.value))
               }
-              indexOfDefaultValue={availableCurrenciesState.currencies.findIndex(
-                (currency) => currency.value === availableCurrenciesState.active
-              )}
               isSearchable={true}
               name="currencies"
             />

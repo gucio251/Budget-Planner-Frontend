@@ -18,12 +18,32 @@ const FilteredTransactionsContainer = ({children, expenses, incomes, datesRange,
     });
 };
 
-const calculateFilteredTransactions = (expenses, incomes, datesRange, currencies) => {
-    const filteredExpenses = filterTransactionsByDates(expenses, datesRange);
-    const filteredIncomes = filterTransactionsByDates(incomes, datesRange);
+const convertToArray = transactionsObj => {
+  if(transactionsObj === null || Object.keys(transactionsObj).length === 0) return []
 
-    const recalculatedExpenses = recalculateTransactionsForActiveCurrency({transactions: filteredExpenses, currencies});
-    const recalculatedIncomes = recalculateTransactionsForActiveCurrency({transactions: filteredIncomes, currencies});
+  return Object.keys(transactionsObj).map(keyName => {
+    return transactionsObj[keyName];
+  })
+}
+
+const calculateFilteredTransactions = (expenses, incomes, datesRange, currencies) => {
+    const filteredExpenses = filterTransactionsByDates(
+      convertToArray(expenses),
+      datesRange
+    );
+    const filteredIncomes = filterTransactionsByDates(
+      convertToArray(incomes),
+      datesRange
+    );
+
+    const recalculatedExpenses = recalculateTransactionsForActiveCurrency({
+      transactions: filteredExpenses,
+      currencies,
+    });
+    const recalculatedIncomes = recalculateTransactionsForActiveCurrency({
+      transactions: filteredIncomes,
+      currencies,
+    });
 
     const availableCurrenciesState = currencies;
 

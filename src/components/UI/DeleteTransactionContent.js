@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import { modalActions } from 'redux/actions/modalActions';
 import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
+import { getCategoryNameBySubcategoryId } from 'redux/reducers/expenseTypesReducer'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -67,10 +68,13 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const getTransactionById = (allTransactions, id) => allTransactions.filter(transaction => transaction.id === id)
-
-const DeleteTransactionContent = ({transaction, dispatch}) => {
-  const {category, subcategory, id, type} = transaction;
+const DeleteTransactionContent = ({transaction, dispatch, transactionType}) => {
+  const { transaction_type_id, id, type } = transaction;
+  const category = getCategoryNameBySubcategoryId(
+    transaction_type_id,
+    transactionType
+  );
+  const subcategory = transactionType.subcategories[transaction_type_id].name;
 
   const handleDeletion = () => {
     dispatch(modalActions.close());
@@ -110,15 +114,12 @@ export default connect((state)=> {
   let transaction;
 
   if (state.modalReducer.modalProps.type === 'expense') {
-    [transaction] = getTransactionById(
-      state.expenses.expenses,
-      state.modalReducer.modalProps.id
-    );
+    transaction = state.expenses.expenses[state.modalReducer.modalProps.id]
   } else {
-    [transaction] = getTransactionById(
-      state.incomes.incomes,
-      state.modalReducer.modalProps.id
-    );
+    transaction = state.incomes.incomes[state.modalReducer.modalProps.id]
   }
-  return { transaction };
+  return {
+    transaction,
+    transactionType: transaction.type === 'expense' ? state.expenseTypes.expenseTypes : state.incomeTypes.incomeTypes
+  };
 })(DeleteTransactionContent);

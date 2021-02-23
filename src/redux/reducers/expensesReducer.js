@@ -1,10 +1,8 @@
 import { expensesConstants } from './../actions/actionTypes';
-import {expenseTypeSvgCorrelation} from 'Utils/svgCorrelation';
-import {handleSvgAddition, addPropertyLoListOfObjects} from 'Utils/functions';
 
 const initialState = {
   status: 'idle',
-  expenses: [],
+  expenses: {},
   error: false,
 };
 
@@ -16,20 +14,10 @@ const expenses = (state = initialState, {type, payload}) => {
         status: 'loading',
       };
     case expensesConstants.GETEXPENSES_SUCCESS:
-      const expensesWithSvg = handleSvgAddition(
-        payload,
-        'category',
-        expenseTypeSvgCorrelation
-      );
-      const finalExpenses = addPropertyLoListOfObjects(
-        'type',
-        'expense',
-        expensesWithSvg
-      );
       return {
         ...state,
         status: 'succedded',
-        expenses: [...finalExpenses],
+        expenses: payload,
       };
     case expensesConstants.GETEXPENSES_FAILURE:
       return {
@@ -44,37 +32,32 @@ const expenses = (state = initialState, {type, payload}) => {
     case expensesConstants.ADDEXPENSE_SUCCESS:
       return {
         ...state,
-        expenses: [].concat(state.expenses, {...payload, type: 'expense'}),
+        expenses: {
+          ...state.expenses,
+          [payload.id]: { ...payload },
+        },
         status: 'succedded',
       };
     case expensesConstants.DELETEEXPENSE_SUCCESS:
+      const objectCopy = {...state.expenses}
+      delete objectCopy[payload];
       return {
         ...state,
         status: 'succedded',
-        expenses: state.expenses.filter((expense) => {
-          return parseInt(expense.id) !== parseInt(payload);
-        }),
-        currentlyModifiedObjectId: null
+        expenses: objectCopy,
       };
     case expensesConstants.UPDATEEXPENSE_REQUEST:
       return {
         ...state,
       };
     case expensesConstants.UPDATEEXPENSE_SUCCESS:
+      const expensesCopy = {...state.expenses};
       return {
         ...state,
-        expenses: state.expenses.map((expense) => {
-          if (expense.id === payload.id) {
-            return payload;
-          } else {
-            return expense;
-          }
-        }),
-      };
-    case expensesConstants.SETMODIFIEDEXPENSEID:
-      return {
-        ...state,
-        currentlyModifiedObjectId: payload
+        expenses: {
+          ...expensesCopy,
+          [payload.id]: {...payload}
+        }
       };
     default:
       return state;

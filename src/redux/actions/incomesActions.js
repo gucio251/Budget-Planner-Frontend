@@ -16,7 +16,7 @@ const load = () => (dispatch) => {
 
   Incomes.index().then(
     ({results}) => {
-      dispatch(success(results));
+      dispatch(success(results[0].incomes));
     },
     (error) => {
       dispatch(failure(error));

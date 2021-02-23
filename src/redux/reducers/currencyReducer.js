@@ -5,10 +5,10 @@ const initialState = {
   status: 'idle',
   statusCurrencies: 'idle',
   statusRates: 'idle',
-  currencies: [],
+  currencies: {},
   errorMsg: false,
   rates: {},
-  active: 'USD',
+  active: 2,
   Icon: currenciesSvgCorrelation['USD'],
   SmallIcon: currenciesSvgCorrelation['USDSmall']
 }
@@ -27,7 +27,6 @@ const currencies = (state = initialState, { type, payload }) => {
         status: state.statusRates === 'succedded' ? 'succedded' : state.status
       };
     case currenciesConstants.GETCURRENCIES_FAILURE:
-      debugger;
       return {
         ...state,
         status: 'failed',
@@ -37,8 +36,8 @@ const currencies = (state = initialState, { type, payload }) => {
       return {
         ...state,
         active: payload,
-        Icon: currenciesSvgCorrelation[payload],
-        SmallIcon: currenciesSvgCorrelation[`${payload}Small`]
+        Icon: currenciesSvgCorrelation[state.currencies[payload].name],
+        SmallIcon: currenciesSvgCorrelation[`${state.currencies[payload].name}Small`],
       };
     case currenciesConstants.GETRATES_REQUEST:
       return {

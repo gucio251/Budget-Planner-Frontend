@@ -17,14 +17,14 @@ const loadCurrencies = () => (dispatch) => {
 
   Currencies.index().then(
     ({result}) => {
+      let currencyObject = {};
       const finalResult = result.map(({id, name}) => {
-          return {
-              id: id,
-              value: name,
-              label: name
-          }
+        currencyObject = {
+          ...currencyObject,
+          [id]: {id, name}
+        }
       })
-      dispatch(success(finalResult));
+      dispatch(success(currencyObject));
     },
     (error) => {
       dispatch(failure(error));

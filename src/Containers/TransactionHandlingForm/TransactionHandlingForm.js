@@ -20,6 +20,7 @@ import { ReactComponent as CloseFormSign } from 'assets/icons/closeSign.svg';
 import TextArea from 'components/UI/TextArea';
 import TabPane from 'components/UI/TabPane';
 import Tabs from 'components/Tabs/Tabs';
+import { getIconBySubcategoryId } from 'redux/reducers/expenseTypesReducer';
 
 const Wrapper = styled.div`
   max-height: 100%;
@@ -28,7 +29,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2em;
-  width: min(450px, 100%);
+  width: min(450px, 100vw);
   background-color: #f8f9fb;
   padding: 2em;
   border-radius: 4px;
@@ -62,63 +63,43 @@ const FormLineWrapper = styled.div`
 
 const initialValues = {
   amount: 0,
-  currency: '',
-  currency_id: '',
   category: '',
-  subcategory: '',
-  category_id: '',
-  transaction_date: getTodaysDate(),
+  currency_id: '',
+  transaction_type_id: '',
+  date: getTodaysDate(),
   comments: '',
+  type: 'income'
 };
 
 const TransactionHandlingForm = props => {
     const dispatch = useDispatch();
-    const [categoriesToBeDisplayed, setCategoriesToBeDisplayed] = useState(setupCategoriesToBeDisplayed(props.initialValues));
-    const [initialValues, setInitialValues] = useState(props.initialValues);
+    const [currentTransactionType, setCurrentTransactionType] = useState(props.initialValues.id ? `${props.initialValues.type}Types` : 'incomeTypes')
 
-    const handleSourceChange = (name) => {
-      switch(name){
-        case 'Income':
-          setCategoriesToBeDisplayed('incomeTypes');
-          setInitialValues((prevState) => ({
-            ...prevState,
-            type: 'income',
-          }));
-          break;
-        case 'Expense':
-          setInitialValues((prevState) => ({
-            ...prevState,
-            type: 'expense'
-          }))
-          setCategoriesToBeDisplayed('expenseTypes');
-          break;
-        default:
-          break;
-      }
-    };
-
+    const handleTabChange = (name) => {
+      setCurrentTransactionType(`${name.charAt(0).toLowerCase() + name.slice(1)}Types`);
+    }
     return (
       <Wrapper>
         <LineWrapper>
           {`${
-            checkIfTransactionIsModified(props) ? 'Modify' : 'Add new'
+            props.initialValues.id ? 'Modify' : 'Add new'
           } transaction`}
           <StyledCloseFormSign onClick={() => dispatch(modalActions.close())} />
         </LineWrapper>
         <>
-          {!checkIfTransactionIsModified(props) &&
-            renderNavigation(handleSourceChange)}
+          {!props.initialValues.id &&
+            renderNavigation(handleTabChange)}
         </>
         <>
           {renderForm({
             ...props,
-            initialValues: initialValues,
-            categories: props[categoriesToBeDisplayed],
-            currencies: props.currencies,
-            handleSubmit: returnSubmitHandler({
-              initialValues: initialValues,
-              category: categoriesToBeDisplayed,
-            }),
+            initialValues: {
+              ...props.initialValues,
+              type: currentTransactionType.slice(0,6)
+            },
+            transactionTypes: prepareCategoriesForDropdown(props[currentTransactionType]),
+            currencies: prepareCurrenciesForDropdown(props.currencies),
+            handleSubmit: returnSubmitHandler(props.initialValues),
             dispatch: dispatch,
             handleClose: ()=> {
               dispatch(modalActions.close())},
@@ -137,27 +118,22 @@ const renderNavigation = (props) => {
   );
 };
 
-const checkIfTransactionIsModified = (props) => {
-  return props.initialValues.hasOwnProperty('id');
-}
-
 const fieldsName = {
   amount: 'amount',
-  currency: 'currency',
+  currency: 'currency_id',
   category: 'category',
-  subcategory: 'subcategory',
-  transactionDate: 'transaction_date',
-  comment: 'comments'
-}
+  subcategory: 'transaction_type_id',
+  transactionDate: 'date',
+  comment: 'comments',
+};
 
 const renderForm = ({
   initialValues,
-  categories,
+  transactionTypes,
   currencies,
   handleSubmit,
   dispatch,
-  handleClose,
-  ...props
+  handleClose
 }) => {
   return (
     <Formik
@@ -170,6 +146,7 @@ const renderForm = ({
       }}
     >
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
+        console.log(values);
         return (
           <>
             <StyledForm>
@@ -185,15 +162,12 @@ const renderForm = ({
                 <LabelWrapper label="Currency">
                   <Dropdown
                     name={fieldsName.currency}
+                    value={currencies.filter((currency) => parseInt(currency.value) === values.currency_id)}
                     list={currencies}
                     isSearchable={false}
                     label="Select Currency"
-                    value={convertStringToDropdowObject(
-                      values[fieldsName.currency]
-                    )}
-                    onChange={({ value, id }) => {
-                      setFieldValue('currency', value);
-                      setFieldValue('currency_id', id);
+                    onChange={({ value }) => {
+                      setFieldValue('currency_id', parseInt(value));
                     }}
                   />
                 </LabelWrapper>
@@ -201,51 +175,50 @@ const renderForm = ({
               <LabelWrapper label="Select category">
                 <Dropdown
                   name={fieldsName.category}
-                  list={getCategories(categories.categories)}
-                  isSearchable={false}
-                  value={convertStringToDropdowObject(
-                    values[fieldsName.category]
-                  )}
-                  onChange={({ value }) => {
-                    setFieldValue('Icon', categories.categories[value].Icon);
-                    setFieldValue(fieldsName.category, value);
-                    setFieldValue('subcategory', null);
+                  value={values.category}
+                  onChange={(value) => {
+                    setFieldValue('category', value);
+                    setFieldValue('transaction_type_id', null);
                   }}
+                  list={transactionTypes.categories}
+                  isSearchable={false}
                 />
               </LabelWrapper>
               <LabelWrapper label="Select subcategory">
                 <Dropdown
                   name={fieldsName.subcategory}
-                  list={getSubcategories({
-                    category: values.category,
-                    dependencies: categories,
-                  })}
-                  value={convertStringToDropdowObject(
-                    values[fieldsName.subcategory]
-                  )}
-                  onChange={({ value, id }) => {
-                    setFieldValue('category_id', id);
-                    setFieldValue(fieldsName.subcategory, value);
+                  value={
+                    values.transaction_type_id
+                      ? transactionTypes.subcategories[
+                          values.category.value
+                        ].filter(
+                          (subcategory) =>
+                            subcategory.value === values.transaction_type_id
+                        )
+                      : null
+                  }
+                  list={transactionTypes.subcategories[values.category.value]}
+                  onChange={({ value }) => {
+                    setFieldValue('transaction_type_id', value);
                   }}
                 />
               </LabelWrapper>
               <LabelWrapper label="Date">
                 <SingleMonthDatePicker
-                  name="transaction_date"
+                  name={fieldsName.transactionDate}
                   value={values.transaction_date}
                   onChange={setFieldValue}
                 />
               </LabelWrapper>
               <LabelWrapper label={'Write a note'}>
                 <TextArea
-                  name={'comments'}
+                  name={fieldsName.comment}
                   value={values.comments}
                   handleChange={handleChange}
                   placeholder="Aa"
                 />
               </LabelWrapper>
               <Button
-                color="#264AE7"
                 type="submit"
                 disabled={!calculateIfFormCanBeSubmitted(errors, dirty)}
               >
@@ -259,40 +232,60 @@ const renderForm = ({
   );
 };
 
-export const getCategories = props => {
-  return Object.values(props).map(value => {return {...value, label: value.value}});
+const prepareCategoriesForDropdown = transactionTypes => {
+  let dropdownCategories=[];
+  let dropdownSubcategories={};
+
+  const {categories, subcategories} = transactionTypes;
+
+  Object.keys(categories).forEach(transactionTypeId => {
+    dropdownCategories.push({
+      value: transactionTypeId,
+      label: categories[transactionTypeId].name,
+      Icon: categories[transactionTypeId].Icon
+    });
+
+    let arr = [];
+
+    categories[transactionTypeId].subcategories.forEach(subcategoryId => {
+      arr.push({value: subcategoryId, label: subcategories[subcategoryId].name})
+    });
+
+    dropdownSubcategories[transactionTypeId] = arr;
+  })
+
+  return {
+    categories: dropdownCategories,
+    subcategories: dropdownSubcategories
+  }
 }
 
-const convertStringToDropdowObject = value => {
-  return {value: value, label: value}
+const prepareCurrenciesForDropdown = currencies => {
+  if (Object.keys(currencies).length === 0) return [];
+
+  return Object.keys(currencies).map(currencyId => {
+    return {
+      value: currencyId,
+      label: currencies[currencyId].name
+    }
+  });
 }
 
+export const getCategories = (props) => {
+  return Object.values(props).map((value) => {
+    return { ...value, label: value.value };
+  });
+};
 
-export const getSubcategories = ({category, dependencies}) => {
-  if (dependencies.categories.hasOwnProperty(category) === false) return [];
-  if(category === '') return [];
-  const subcategoriesIds = dependencies.categories[category].subcategories;
-  return subcategoriesIds.map(subcategoryId => {return {
-    ...dependencies.subcategories[subcategoryId],
-    label: dependencies.subcategories[subcategoryId].value,
-  };});
-}
-
-const returnSubmitHandler = ({initialValues, category}) => {
-  if(initialValues.hasOwnProperty('id')){
-    return category === 'incomeTypes' ? incomesActions.update : expensesActions.update;
+const returnSubmitHandler = (props) => {
+  if (props.id) {
+    return props.type === 'income'
+      ? incomesActions.update
+      : expensesActions.update;
   }
 
-  return category === 'incomeTypes' ? incomesActions.add : expensesActions.add;
+  return props.type === 'income' ? incomesActions.add : expensesActions.add;
 
-}
-
-const setupCategoriesToBeDisplayed = (props) => {
-  if(props.hasOwnProperty('type')){
-    return props.type === 'income' ? 'incomeTypes' : 'expenseTypes';
-  }
-
-  return 'incomeTypes';
 }
 
 const calculateIfFormCanBeSubmitted = (errors, formInitialized) => {
@@ -314,29 +307,47 @@ TransactionHandlingForm.propTypes = {
     handleClose: PropTypes.func.isRequired
 };
 
+const getFullTransactionInfo = (transactions, transactionTypesState, transaction_id) => {
+  let transaction = transactions[transaction_id];
+  const category =
+    transactionTypesState.subcategories[transaction.transaction_type_id]
+      .category_id;
+  const categoryName = transactionTypesState.categories[category].name;
+  const Icon = getIconBySubcategoryId(
+    transaction.transaction_type_id,
+    transactionTypesState
+  );
+  return transaction = {
+    ...transaction,
+    category: {
+      value: category.toString(),
+      label: categoryName,
+      Icon,
+    },
+  };
+}
+
 const mapStateToProps = (state) => {
   const calculateInitialValues = () => {
     let transaction;
-    if(Object.keys(state.modalReducer.modalProps).length === 0) {
-      return initialValues;
-    }else{
       switch (state.modalReducer.modalProps.type) {
         case 'income':
-          [transaction] = state.incomes.incomes.filter(
-            (income) => income.id === state.modalReducer.modalProps.id
-          );
+          const incomes = state.incomes.incomes;
+          const incomeTypes = state.incomeTypes.incomeTypes;
+          const income_id = state.modalReducer.modalProps.id;
+          transaction = getFullTransactionInfo(incomes, incomeTypes, income_id);
           break;
         case 'expense':
-          [transaction] = state.expenses.expenses.filter(
-            (expense) => expense.id === state.modalReducer.modalProps.id
-          );
-          break;
+          const expenses = state.expenses.expenses;
+          const expenseTypes = state.expenseTypes.expenseTypes;
+          const expense_id = state.modalReducer.modalProps.id;
+          transaction = getFullTransactionInfo(expenses, expenseTypes, expense_id);
+          break
         default:
+          transaction = initialValues;
           break;
-      }
-
-      return transaction;
     }
+    return transaction;
   }
 
   return {

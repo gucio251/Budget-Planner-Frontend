@@ -15,14 +15,16 @@ const DashboardOverviewHandling = props => {
 };
 
 const checkIfStateIsInitialized = props => {
-  return props.status !== 'loading' && props.status !== 'idle' ? true : false;
+  return props.status === 'succedded' ? true : false;
 }
 
 const checkIfSingleStatesAreInitialized = props => {
   if (
     checkIfStateIsInitialized(props.incomes) &&
     checkIfStateIsInitialized(props.expenses) &&
-    checkIfStateIsInitialized(props.currencies)
+    checkIfStateIsInitialized(props.currencies)&&
+    checkIfStateIsInitialized(props.incomeTypes)&&
+    checkIfStateIsInitialized(props.expenseTypes)
   ) {
     return true;
   } else {
@@ -31,7 +33,7 @@ const checkIfSingleStatesAreInitialized = props => {
 }
 
 const renderDashboard = ({ expenses, incomes }) => {
-  if (expenses.expenses.length === 0 && incomes.incomes.length === 0) {
+  if (expenses.expenses === null && incomes.incomes === null) {
     return <WelcomeStateDashboard />;
   } else {
     return <DashboardOverview />;
@@ -51,7 +53,9 @@ const mapStateToProps = (state) => {
   return {
     expenses: state.expenses,
     incomes: state.incomes,
-    currencies: state.currencies
+    currencies: state.currencies,
+    incomeTypes: state.incomeTypes,
+    expenseTypes: state.expenseTypes
   };
 };
 

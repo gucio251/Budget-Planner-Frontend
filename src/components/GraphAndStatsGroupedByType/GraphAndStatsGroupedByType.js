@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
-  groupTransactionsByCategory,
   sortTransactionsByChosenProperty,
   prepareDataForGraph,
 } from 'Utils/functions';
@@ -11,6 +10,8 @@ import 'chartjs-plugin-datalabels';
 import GroupedTransactionsDisplayer from 'components/GroupedTransactionsDisplayer/GroupedTransactionsDisplayer'
 import { graphColors } from 'Utils/svgCorrelation';
 import Dropdown from 'components/UI/Dropdown';
+import { connect } from 'react-redux';
+import { getCategoryNameBySubcategoryId, getIconBySubcategoryId } from 'redux/reducers/expenseTypesReducer'
 
 const StyledDropdowns = styled.div`
   display: flex;
@@ -101,8 +102,7 @@ const renderGraphArea = props => {
             { value: 'expenses', label: 'expenses', dataType: 'category' },
           ]}
           onChange={handleDataChange}
-          value={dataToBeDisplayed.category.label}
-          indexOfDefaultValue={0}
+          value={{label: dataToBeDisplayed.category}}
         />
         <Dropdown
           name="type"
@@ -111,8 +111,7 @@ const renderGraphArea = props => {
             { value: 'expensive', label: 'expensive', dataType: 'type' },
           ]}
           onChange={handleDataChange}
-          value={dataToBeDisplayed.type.label}
-          indexOfDefaultValue={0}
+          value={{label: dataToBeDisplayed.type}}
         />
       </StyledDropdowns>
       {Transactions[dataToBeDisplayed.category][dataToBeDisplayed.type].data
@@ -146,38 +145,130 @@ const renderGraphArea = props => {
   );
 }
 
-const prepareTransactions = props => {
-    const transactions = [].concat(props.incomes, props.expenses);
-    const groupedTransactions = groupTransactionsByCategory(transactions);
+const convertIdsToNames = (transactions, transactionTypes) => {
+  if(transactions.length === 0) return [];
 
-    const sortedExpensesByPopularity = sortTransactionsByChosenProperty(groupedTransactions.expenses, 'howManyTimes');
-    const sortedIncomesByPopularity = sortTransactionsByChosenProperty(groupedTransactions.incomes, 'howManyTimes');
+  return transactions.map(transaction => {
+    const categoryName = getCategoryNameBySubcategoryId(
+      parseInt(transaction.transaction_type_id),
+      transactionTypes
+    );
 
-    const sortedExpensesByHighestAmount = sortTransactionsByChosenProperty(groupedTransactions.expenses, 'amount');
-    const sortedIncomesByHighestAmount = sortTransactionsByChosenProperty(groupedTransactions.incomes, 'amount');
+    const Icon = getIconBySubcategoryId(
+      parseInt(transaction.transaction_type_id),
+      transactionTypes
+    );
 
     return {
-      expenses: {
-        popular: {
-          graph: prepareDataForGraph(sortedExpensesByPopularity.slice(0,4), graphColors, 'howManyOccurences'),
-          data: sortedExpensesByPopularity.slice(0,4),
-        },
-        expensive: {
-          graph: prepareDataForGraph(sortedExpensesByHighestAmount.slice(0,4), graphColors, 'amount'),
-          data: sortedExpensesByHighestAmount.slice(0,4),
-        },
+      ...transaction,
+      categoryName,
+      Icon
+    }
+  });
+
+}
+
+const prepareTransactions = props => {
+  const expensesWithNames = convertIdsToNames(
+    props.expenses,
+    props.expenseTypes
+  );
+
+  const incomesWithNames = convertIdsToNames(
+    props.incomes,
+    props.incomeTypes
+  );
+
+  const groupedExpenses = countOccurrencesAndTotalAmount(
+    expensesWithNames,
+    'categoryName'
+  );
+  const groupedIncomes = countOccurrencesAndTotalAmount(
+    incomesWithNames,
+    'categoryName'
+  );
+
+  const sortedExpensesByPopularity = sortTransactionsByChosenProperty(
+    groupedExpenses,
+    'occurrences'
+  );
+  const sortedIncomesByPopularity = sortTransactionsByChosenProperty(
+    groupedIncomes,
+    'occurrences'
+  );
+
+  const sortedExpensesByHighestAmount = sortTransactionsByChosenProperty(
+    groupedExpenses,
+    'totalAmount'
+  );
+  const sortedIncomesByHighestAmount = sortTransactionsByChosenProperty(
+    groupedIncomes,
+    'totalAmount'
+  );
+
+  return {
+    expenses: {
+      popular: {
+        graph: prepareDataForGraph(
+          sortedExpensesByPopularity.slice(0, 4),
+          graphColors,
+          'occurrences'
+        ),
+        data: sortedExpensesByPopularity.slice(0, 4),
       },
-      incomes: {
-        popular: {
-          graph: prepareDataForGraph(sortedIncomesByPopularity.slice(0,4), graphColors, 'howManyOccurences'),
-          data: sortedIncomesByPopularity.slice(0.4),
-        },
-        expensive: {
-          graph: prepareDataForGraph(sortedIncomesByHighestAmount.slice(0,4), graphColors, 'amount'),
-          data: sortedIncomesByHighestAmount.slice(0,4),
-        },
+      expensive: {
+        graph: prepareDataForGraph(
+          sortedExpensesByHighestAmount.slice(0,4),
+          graphColors,
+          'totalAmount'
+        ),
+        data: sortedExpensesByHighestAmount.slice(0,4),
       },
+    },
+    incomes: {
+      popular: {
+        graph: prepareDataForGraph(
+          sortedIncomesByPopularity.slice(0, 4),
+          graphColors,
+          'occurrences'
+        ),
+        data: sortedIncomesByPopularity.slice(0.4),
+      },
+      expensive: {
+        graph: prepareDataForGraph(
+          sortedIncomesByHighestAmount.slice(0, 4),
+          graphColors,
+          'totalAmount'
+        ),
+        data: sortedIncomesByHighestAmount.slice(0, 4),
+      },
+    },
+  };
+}
+
+const countOccurrencesAndTotalAmount = (transactions, collectorName) => {
+  let finalResult = {};
+  if(transactions.length === 0) return finalResult;
+  transactions.forEach((transaction) => {
+    const {amount, Icon} = transaction;
+    const idAlreadyAdded = finalResult[transaction[collectorName]]
+      ? true
+      : false;
+
+    finalResult[transaction[collectorName]] = {
+      totalAmount:
+        idAlreadyAdded === false
+          ? amount
+          : finalResult[transaction[collectorName]].totalAmount + amount,
+      occurrences:
+        idAlreadyAdded === false
+          ? 1
+          : finalResult[transaction[collectorName]].occurrences + 1,
+      Icon
     };
+  });
+
+  return finalResult;
 }
 
 GraphAndStatsGroupedByType.propTypes = {
@@ -185,5 +276,11 @@ GraphAndStatsGroupedByType.propTypes = {
   expenses: PropTypes.array,
 };
 
+const mapStateToProps = state => {
+  return {
+    incomeTypes: state.incomeTypes.incomeTypes,
+    expenseTypes: state.expenseTypes.expenseTypes
+  }
+}
 
-export default GraphAndStatsGroupedByType;
+export default connect(mapStateToProps)(GraphAndStatsGroupedByType);

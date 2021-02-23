@@ -36,13 +36,13 @@ const getTransactionAdditionValidationSchema = (values) => {
     amount: Yup.number()
       .typeError("Value must be a number")
       .positive("Number must be positive"),
-    currency: Yup.string()
+    currency_id: Yup.string()
       .required(selectedValueMsg),
     category: Yup.string()
       .required(selectedValueMsg),
-    subcategory: Yup.string()
+    transaction_type_id: Yup.string()
       .required(selectedValueMsg),
-    transaction_date: Yup.string()
+    date: Yup.string()
       .required(selectedValueMsg)
   })
 }

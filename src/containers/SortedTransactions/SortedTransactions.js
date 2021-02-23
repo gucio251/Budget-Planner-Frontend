@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {sortTransactionsByChosenProperty} from 'Utils/functions';
 
 const SortedTransactions = ({children, allTransactions}) => {
-    const sortedTransactions = sortTransactionsByChosenProperty(allTransactions, 'transaction_date');
+    const sortedTransactions = sortTransactionsByChosenProperty(allTransactions, 'date');
 
     const groupedTransactions = groupTransactionsByDate(sortedTransactions);
 
@@ -14,16 +14,16 @@ const SortedTransactions = ({children, allTransactions}) => {
 
 const groupTransactionsByDate = transactions => {
     return transactions.reduce((groupedData, currentTransaction, index) => {
-        if(index === 0 || !groupedData.hasOwnProperty(currentTransaction.transaction_date)){
+        if(index === 0 || !groupedData.hasOwnProperty(currentTransaction.date)){
             return {
                 ...groupedData,
-                [currentTransaction.transaction_date]: [currentTransaction]
+                [currentTransaction.date]: [currentTransaction]
             }
         }else{
             return {
               ...groupedData,
-              [currentTransaction.transaction_date]: [].concat(
-                groupedData[currentTransaction.transaction_date],
+              [currentTransaction.date]: [].concat(
+                groupedData[currentTransaction.date],
                 currentTransaction
               ),
             };

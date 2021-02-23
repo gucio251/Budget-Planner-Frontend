@@ -1,50 +1,75 @@
 import {expenseTypesConstants} from './../actions/actionTypes';
 import {expenseTypeSvgCorrelation} from 'Utils/svgCorrelation';
-import { normalize, schema } from 'normalizr';
 
-const subcategory = new schema.Entity('subcategories', {});
-const category = new schema.Entity('categories', {
-  subcategories: [subcategory],
-}, {idAttribute: 'value'})
+export const restructureInputData = (transactionTypes, relation) => {
+  let categories = {};
+  let subcategories = {};
 
-export const normalizePack = { category, subcategory};
+  transactionTypes.forEach(transactionType => {
+    const categoriesWithIcon = { ...transactionType.categories, Icon: relation[transactionType.categories.name]};
+    categories[transactionType.categories.id] = categoriesWithIcon;
+    subcategories = {
+      ...subcategories,
+      ...transactionType.subcategories
+    }
+  });
 
-export const addSvgToData = (data, dependencies) => {
-  return Object.keys(
-        data.entities.categories
-      ).reduce((finalResult, categoryName) => {
-        return {
-          ...finalResult,
-          [categoryName]: {
-            ...data.entities.categories[categoryName],
-            Icon: dependencies[categoryName]
-          }
-        }
-      }, {});
+  return {
+    categories,
+    subcategories,
+  }
 }
 
-const expenseTypes = (state = {}, {type, payload}) => {
+export const getCategoryNameBySubcategoryId = (subcategoryId, transactionTypes) => {
+  if (isNaN(subcategoryId)) return '';
+
+  const categoryId = transactionTypes.subcategories[subcategoryId].category_id;
+  const categoryName = transactionTypes.categories[categoryId].name;
+
+  return categoryName;
+}
+
+export const getIconBySubcategoryId = (subcategoryId, transactionTypes) => {
+    if (isNaN(subcategoryId)) return null;
+
+    const categoryId = transactionTypes.subcategories[subcategoryId].category_id;
+    const Icon = transactionTypes.categories[categoryId].Icon;
+
+    return Icon;
+}
+
+const initialState = {
+  status: 'idle',
+  expenseTypes: {
+    categories: {},
+    subcategories: {}
+  },
+  error: false,
+};
+
+const expenseTypes = (state = initialState, {type, payload}) => {
   switch (type) {
     case expenseTypesConstants.GETEXPENSETYPES_REQUEST:
       return {
       ...state,
-      loading: true
+      status: 'loading'
       };
     case expenseTypesConstants.GETEXPENSETYPES_SUCCESS:
-      const normalizedData = normalize({categories: payload}, { categories: [normalizePack.category]});
-      const normalizedCategoriesWithSvg = addSvgToData(normalizedData, expenseTypeSvgCorrelation);
+      const restructuredData = restructureInputData(
+        payload,
+        expenseTypeSvgCorrelation
+      );
       return {
         ...state,
-        loading: false,
+        status: 'succedded',
         expenseTypes: {
-          ...normalizedData.entities,
-          categories: normalizedCategoriesWithSvg,
+          ...restructuredData,
         },
       };
     case expenseTypesConstants.GETEXPENSETYPES_FAILURE:
       return {
         ...state,
-        loading: false,
+        status: 'failed',
         errorMsg: payload
       };
     default:

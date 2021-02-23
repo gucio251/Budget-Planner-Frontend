@@ -44,7 +44,7 @@ const CustomValueContainer = (props) => {
   }
 
   const [currentlyDisplayedOption] = options.filter(
-    (option) => option.value === label
+    (option) => option.label === label
   );
 
   const Icon =
@@ -72,7 +72,7 @@ const IconOption = (props) => {
     <StyledOption {...props}>
       <StyledSingleOption>
         {data.Icon && <data.Icon />}
-        <StyledOptionText>{data.value}</StyledOptionText>
+        <StyledOptionText>{data.label}</StyledOptionText>
       </StyledSingleOption>
     </StyledOption>
   );
@@ -84,7 +84,7 @@ const Dropdown = ({
   onChange,
   name,
   handleBlur,
-  indexOfDefaultValue
+  indexOfDefaultValue = null
 }) => {
   return (
     <Select
@@ -95,12 +95,20 @@ const Dropdown = ({
       }}
       isSearchable={false}
       value={value}
-      onChange={value => onChange(value)}
+      onChange={onChange}
       onBlur={handleBlur}
-      defaultValue={list[indexOfDefaultValue]}
       name={name}
       noOptionsMessage={() => null}
       styles={{
+        container: (provided, state) => ({
+          ...provided,
+          cursor: 'pointer',
+
+          '&focus': {
+            color: 'red',
+            border: '2px solid red'
+          }
+        }),
         dropdownIndicator: (provided, state) => ({
           ...provided,
           transform:

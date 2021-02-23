@@ -1,7 +1,6 @@
 import { incomeTypesConstants } from './../actions/actionTypes';
 import { incomeTypeSvgCorrelation } from 'Utils/svgCorrelation';
-import { normalizePack, addSvgToData } from './expenseTypesReducer';
-import { normalize } from 'normalizr';
+import { restructureInputData } from './expenseTypesReducer';
 
 const initialState = {
   status: 'idle',
@@ -17,14 +16,15 @@ const incomeTypes = (state = initialState, {type, payload}) => {
         status: 'loading',
       };
     case incomeTypesConstants.GETINCOMETYPES_SUCCESS:
-      const normalizedData = normalize({categories: payload}, { categories: [normalizePack.category]});
-      const normalizedCategoriesWithSvg = addSvgToData(normalizedData, incomeTypeSvgCorrelation);
+      const restructuredData = restructureInputData(
+        payload,
+        incomeTypeSvgCorrelation
+      );
       return {
         ...state,
         status: 'succedded',
         incomeTypes: {
-          ...normalizedData.entities,
-          categories: normalizedCategoriesWithSvg,
+          ...restructuredData,
         },
       };
     case incomeTypesConstants.GETINCOMETYPES_FAILURE:
