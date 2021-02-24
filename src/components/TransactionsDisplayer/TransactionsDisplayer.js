@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 import { modalActions } from 'redux/actions/modalActions'
@@ -7,6 +7,7 @@ import { ReactComponent as EditIcon } from 'assets/icons/editIconTable.svg';
 import { ReactComponent as DeleteIcon } from 'assets/icons/deleteIconTable.svg';
 
 import { getCategoryNameBySubcategoryId, getIconBySubcategoryId} from 'redux/reducers/expenseTypesReducer';
+import { ReactComponent as Expand} from 'assets/icons/expand.svg';
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -104,12 +105,29 @@ const RightCenteredSpan = styled.span`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+
+  ${({theme}) => theme.devices.mobile}{
+
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const MobileRow = styled.div`
+  display: none;
+  padding-top: 10px;
+  max-height: ${({active}) => !active ? 0 : '100px'};
+  overflow: hidden;
+  transition: all 1s;
+
+  ${({theme}) => theme.devices.mobile}{
+    display: block;
+  }
+`
 
 const TextWrapper = styled.div`
   margin-left: 1em;
@@ -120,10 +138,33 @@ const MainText = styled.p`
 `;
 
 const Text = styled.p`
-  font-size: 0.7em;
+  font-size: 0.85em;
+  margin-left: 50px;
 `;
 
+const StyledExpand = styled(Expand)`
+  transform: ${({active}) => active ? 'rotate(0deg)' : 'rotate(180deg)'};
+  transition: 0.5 all;
+  cursor: pointer;
+  display: none;
+
+  ${({theme}) => theme.devices.mobile}{
+    display: block;
+  }
+`
+const TextContainerMobile = styled.div`
+
+`
+
+const IconsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-right:20px;
+`
+
 export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
+  const [currentlyExpandedRow, setCurrentlyExpandedRow] = useState(null);
   const incomeTypes = useSelector(state => state.incomeTypes.incomeTypes);
   const expenseTypes = useSelector((state) => state.expenseTypes.expenseTypes);
   const dispatch = useDispatch();
@@ -160,7 +201,6 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
   };
 
   const handleDeletion = ({ type, id }) => {
-    console.log('handle');
     dispatch(
       modalActions.open({
         modalType: 'DeleteTransactionContent',
@@ -168,6 +208,14 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
       })
     );
   };
+
+  const handleExpanding = e => {
+    const closestTr = e.target.closest('tr');
+    const id  = closestTr.dataset.id;
+    setCurrentlyExpandedRow((prevState) => {
+      return prevState === id ? null : id;
+    });
+  }
 
   return (
     <>
@@ -212,8 +260,10 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                         amount,
                         type,
                       } = getFullDataForTransaction(transaction);
+                      const tempId = `${id}/${category}`;
+                      const active = currentlyExpandedRow === tempId;
                       return (
-                        <TableRow>
+                        <TableRow data-id={tempId} key={tempId} active={active}>
                           <Field>
                             <Wrapper>
                               <Icon />
@@ -221,14 +271,15 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                                 <MainText>{category}</MainText>
                               </TextWrapper>
                             </Wrapper>
+                            <MobileRow active={active}>
+                              <Text>{subcategory}</Text>
+                            </MobileRow>
                           </Field>
                           <Field>{subcategory}</Field>
                           <Field>{comments}</Field>
                           <Field>
                             <EditIcon
-                              onClick={() =>
-                                handleUpdate({ id, type })
-                              }
+                              onClick={() => handleUpdate({ id, type })}
                             />
                             <DeleteIcon
                               onClick={() => handleDeletion({ id, type })}
@@ -236,10 +287,23 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon }) => {
                           </Field>
                           <Field>
                             <RightCenteredSpan>
-                              {`${type === 'expense' ? '-' : '+'}`}
-                              <CurrencyIcon />
-                              {amount.toFixed(2)}
+                              <TextContainerMobile>
+                                {`${type === 'expense' ? '-' : '+'}`}
+                                <CurrencyIcon />
+                                {amount.toFixed(2)}
+                              </TextContainerMobile>
+                              <StyledExpand onClick={handleExpanding} active={active}/>
                             </RightCenteredSpan>
+                            <MobileRow active={active}>
+                              <IconsWrapper>
+                                <EditIcon
+                                  onClick={() => handleUpdate({ id, type })}
+                                />
+                                <DeleteIcon
+                                  onClick={() => handleDeletion({ id, type })}
+                                />
+                              </IconsWrapper>
+                            </MobileRow>
                           </Field>
                         </TableRow>
                       );
