@@ -84,7 +84,6 @@ const Dropdown = ({
   onChange,
   name,
   handleBlur,
-  indexOfDefaultValue = null
 }) => {
   return (
     <Select

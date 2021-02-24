@@ -8,7 +8,7 @@ const initialState = {
   currencies: {},
   errorMsg: false,
   rates: {},
-  active: 2,
+  active: null,
   Icon: currenciesSvgCorrelation['USD'],
   SmallIcon: currenciesSvgCorrelation['USDSmall']
 }
@@ -20,11 +20,15 @@ const currencies = (state = initialState, { type, payload }) => {
         status: 'loading',
       };
     case currenciesConstants.GETCURRENCIES_SUCCESS:
+      const firstCurrencyNumber = Object.keys(payload)[0];
+      const defaultCurrencyNumber = parseInt(firstCurrencyNumber) + 1;
+
       return {
         ...state,
         currencies: payload,
+        active: defaultCurrencyNumber,
         statusCurrencies: 'succedded',
-        status: state.statusRates === 'succedded' ? 'succedded' : state.status
+        status: state.statusRates === 'succedded' ? 'succedded' : state.status,
       };
     case currenciesConstants.GETCURRENCIES_FAILURE:
       return {

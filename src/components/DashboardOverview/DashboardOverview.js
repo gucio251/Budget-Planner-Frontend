@@ -46,7 +46,6 @@ const DashboardOverview = () => {
                       list={dropdownList}
                       value={{label:availableCurrenciesState.currencies[availableCurrenciesState.active].name}}
                       onChange={({value}) => dispatch(currencyActions.changeActiveCurrency(value))}
-                      indexOfDefaultValue={availableCurrenciesState.active - Object.keys(availableCurrenciesState.currencies)[0]}
                       isSearchable={true}
                       name="currencies"
                     />
