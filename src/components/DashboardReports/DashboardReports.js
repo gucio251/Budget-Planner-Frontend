@@ -60,6 +60,7 @@ const DashboardReports = () => {
                         <Displayer
                           transactionList={groupedTransactions}
                           CurrencyIcon={availableCurrenciesState.SmallIcon}
+                          withDeletion={true}
                         />
                       </DisplayerWrapper>
                       <Pagination
