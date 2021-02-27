@@ -50,7 +50,7 @@ const incomes = (state = initialState, {type, payload}) => {
       const incomesCopy = {...state.incomes};
       return {
         ...state,
-        expenses: {
+        incomes: {
           ...incomesCopy,
           [payload.id]: { ...payload },
         },
