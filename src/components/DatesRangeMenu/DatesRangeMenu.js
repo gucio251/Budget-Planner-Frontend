@@ -93,11 +93,27 @@ export const calculateMonthBeginningAndEnd = (
   monthDifferenceFromCurrent = 0
 ) => {
   const currentDate = new Date();
-  const month = currentDate.getMonth() + monthDifferenceFromCurrent;
-  const year = currentDate.getFullYear();
-  const firstDay = `${year}-${month < 10 ? `0${month + 1}` : month}-01`;
-  const lastDay = new Date(year, month + 1, 0);
-  return {start: firstDay, end: lastDay.toJSON().slice(0, 10)}
+  let year = currentDate.getFullYear();
+  let currentMonth = currentDate.getMonth() + 1;
+  let calculatedMonthWithDifference = currentMonth + monthDifferenceFromCurrent;
+  const withinTheSameYear = calculatedMonthWithDifference >= 1 && calculatedMonthWithDifference <= 12;
+
+  if(!withinTheSameYear){
+    const yearsDifference = Math.floor(calculatedMonthWithDifference/12);
+    year = year + yearsDifference;
+    currentMonth =
+      calculatedMonthWithDifference < 0
+        ? 12 + (calculatedMonthWithDifference % 12)
+        : 0 + (calculatedMonthWithDifference % 12);
+  }else{
+    currentMonth= calculatedMonthWithDifference;
+  }
+
+  const lastDay = new Date(year, currentMonth, 0).getDate();
+  const monthAsString = `${currentMonth < 10 ? `0${currentMonth}` : currentMonth}`;
+  const monthBeginning = `${year}-${monthAsString}-01`;
+  const monthEnd = `${year}-${monthAsString}-${lastDay}`;
+  return { start: monthBeginning, end: monthEnd};
 };
 
 
