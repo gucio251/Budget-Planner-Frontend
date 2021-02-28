@@ -76,6 +76,7 @@ const TransactionHandlingForm = props => {
     const [currentTransactionType, setCurrentTransactionType] = useState(props.initialValues.id ? `${props.initialValues.type}Types` : 'incomeTypes')
 
     const handleTabChange = (name) => {
+      debugger;
       setCurrentTransactionType(`${name.charAt(0).toLowerCase() + name.slice(1)}Types`);
     }
     return (
@@ -99,7 +100,11 @@ const TransactionHandlingForm = props => {
             },
             transactionTypes: prepareCategoriesForDropdown(props[currentTransactionType]),
             currencies: prepareCurrenciesForDropdown(props.currencies),
-            handleSubmit: returnSubmitHandler(props.initialValues),
+            handleSubmit: returnSubmitHandler(
+              {
+              ...props.initialValues,
+              type: currentTransactionType.slice(0,6)
+            }),
             dispatch: dispatch,
             handleClose: ()=> {
               dispatch(modalActions.close())},
@@ -146,7 +151,6 @@ const renderForm = ({
       }}
     >
       {({ setFieldValue, values, errors, dirty, handleChange }) => {
-        console.log(values);
         return (
           <>
             <StyledForm>
