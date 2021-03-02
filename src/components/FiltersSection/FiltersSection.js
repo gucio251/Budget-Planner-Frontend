@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {filtrationActions}  from 'redux/actions/filtrationActions'
-import {getCategories} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
+import {prepareCurrenciesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
 import Dropdown from 'components/UI/Dropdown'
 import InputField from 'components/UI/InputField'
 import { currencyActions } from 'redux/actions/currencyActions';
@@ -111,6 +111,7 @@ const FiltersSection = () => {
             {['All', 'Expenses', 'Incomes'].map((name, index) => {
               return (
                 <Option
+                  key={index}
                   tabIndex={index}
                   onClick={changeActiveItem}
                   active={index === activeElement.number}
@@ -124,8 +125,8 @@ const FiltersSection = () => {
             <Label htmlFor="categories">Choose categories</Label>
             <Dropdown
               list={prepareOptions(
-                incomeTypes,
-                expenseTypes,
+                incomeTypes.categories,
+                expenseTypes.categories,
                 activeElement.name
               )}
               onChange={({ value }) => {
@@ -163,7 +164,7 @@ const FiltersSection = () => {
           <DropdownWrapper>
             <Label htmlFor="currencies">Currency</Label>
             <Dropdown
-              list={availableCurrenciesState.currencies}
+              list={prepareCurrenciesForDropdown(availableCurrenciesState.currencies)}
               onChange={(value) =>
                 dispatch(currencyActions.changeActiveCurrency(value.value))
               }
@@ -177,16 +178,30 @@ const FiltersSection = () => {
 };
 
 const prepareOptions = (incomeTypes, expenseTypes,activeElement) => {
-    switch(activeElement){
-        case 'All':
-            return [].concat({value: "All"}, getCategories(incomeTypes.categories), getCategories(expenseTypes.categories))
-        case 'Incomes':
-            return [].concat({value: "All"}, getCategories(incomeTypes.categories))
-        case 'Expenses':
-            return [].concat({value: "All"}, getCategories(expenseTypes.categories))
-        default:
-            break;
+    let calculatedIncomes = [];
+    let calculatedExpenses = [];
+
+    if(activeElement === 'All' || activeElement === 'Incomes'){
+      calculatedIncomes = Object.keys(incomeTypes).map((key) =>
+        returnDropdownValues(incomeTypes[key])
+      );
     }
+
+    if(activeElement === 'All' || activeElement === 'Expenses'){
+      calculatedExpenses = Object.keys(expenseTypes).map((key) =>
+        returnDropdownValues(expenseTypes[key])
+      );
+    }
+
+    return [].concat({value: 'All', label: 'All'}, calculatedIncomes, calculatedExpenses)
+}
+
+const returnDropdownValues = ({name, Icon}) => {
+  return {
+    value: name,
+    label: name,
+    Icon,
+  };
 }
 
 export default FiltersSection;

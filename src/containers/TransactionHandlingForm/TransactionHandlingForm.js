@@ -236,7 +236,7 @@ const renderForm = ({
   );
 };
 
-const prepareCategoriesForDropdown = transactionTypes => {
+export const prepareCategoriesForDropdown = transactionTypes => {
   let dropdownCategories=[];
   let dropdownSubcategories={};
 
@@ -264,7 +264,7 @@ const prepareCategoriesForDropdown = transactionTypes => {
   }
 }
 
-const prepareCurrenciesForDropdown = currencies => {
+export const prepareCurrenciesForDropdown = currencies => {
   if (Object.keys(currencies).length === 0) return [];
 
   return Object.keys(currencies).map(currencyId => {
@@ -274,12 +274,6 @@ const prepareCurrenciesForDropdown = currencies => {
     }
   });
 }
-
-export const getCategories = (props) => {
-  return Object.values(props).map((value) => {
-    return { ...value, label: value.value };
-  });
-};
 
 const returnSubmitHandler = (props) => {
   if (props.id) {

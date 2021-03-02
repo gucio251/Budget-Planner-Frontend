@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import ApplyFilters from 'containers/ApplyFilters/ApplyFilters'
@@ -28,7 +27,7 @@ const DashboardReports = () => {
     const [currentActivePage, setCurrentActivePage] = useState(1);
 
     const changeAmountOfPostsPerPage = amount => {
-        setTransactionsPerPage(amount)
+        setTransactionsPerPage(parseInt(amount))
         setCurrentActivePage(1);
     };
     const changeActivePage = pageNumber => setCurrentActivePage(pageNumber);
@@ -53,7 +52,11 @@ const DashboardReports = () => {
               )}
             >
               {({ filteredTransactions }) => (
-                <SortedTransactions allTransactions={filteredTransactions.slice(indexOfFirstTransaction, transactionsPerPage)}>
+                <SortedTransactions
+                  allTransactions={filteredTransactions}
+                  indexOfFirstTransaction={indexOfFirstTransaction}
+                  transactionsPerPage={transactionsPerPage}
+                >
                   {({ groupedTransactions }) => (
                     <>
                       <DisplayerWrapper>
@@ -81,10 +84,6 @@ const DashboardReports = () => {
         </FilteredTransactionsContainer>
       </Wrapper>
     );
-};
-
-DashboardReports.propTypes = {
-    
 };
 
 export default DashboardReports;

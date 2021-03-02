@@ -131,3 +131,10 @@ export const getTodaysDate = () => {
       : todaysDate.getMonth()
   }-${todaysDate.getDate()}`;
 }
+
+export const allowNull = wrappedPropTypes => {
+  return (props, propName, ...rest) => {
+    if (props[propName] === null) return null;
+    return wrappedPropTypes(props, propName, ...rest);
+  };
+}

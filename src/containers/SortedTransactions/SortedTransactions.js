@@ -1,18 +1,36 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import {sortTransactionsByChosenProperty} from 'Utils/functions';
+import {sortTransactionsByChosenProperty, allowNull} from 'Utils/functions';
 
-const SortedTransactions = ({children, allTransactions}) => {
-    const sortedTransactions = sortTransactionsByChosenProperty(allTransactions, 'date');
+const SortedTransactions = ({
+  children,
+  allTransactions = {},
+  transactionsPerPage = null,
+  indexOfFirstTransaction = null,
+}) => {
+  if(Object.keys(allTransactions).length === 0) return children({groupedTransactions: []});
 
-    const groupedTransactions = groupTransactionsByDate(sortedTransactions);
+  let sortedTransactions = sortTransactionsByChosenProperty(
+    allTransactions,
+    'date'
+  );
 
-    return children({
-      groupedTransactions,
-    });
+  if (transactionsPerPage !== null && indexOfFirstTransaction !== null) {
+    sortedTransactions = sortedTransactions.slice(
+      indexOfFirstTransaction,
+      indexOfFirstTransaction + transactionsPerPage
+    );
+  }
+
+  const groupedTransactions = groupTransactionsByDate(sortedTransactions);
+
+  return children({
+    groupedTransactions,
+  });
 };
 
 const groupTransactionsByDate = transactions => {
+    if(transactions.length === 0) return {};
+
     return transactions.reduce((groupedData, currentTransaction, index) => {
         if(index === 0 || !groupedData.hasOwnProperty(currentTransaction.date)){
             return {
@@ -43,7 +61,14 @@ SortedTransactions.propTypes = {
     subcategory: PropTypes.string,
     transaction_date: PropTypes.string,
     type: PropTypes.string
-  }))
+  })),
+  children: PropTypes.oneOfType([
+  PropTypes.arrayOf(PropTypes.node),
+  PropTypes.element,
+  PropTypes.node,
+]).isRequired,
+transactionsPerPage: allowNull(PropTypes.number),
+indexOfFirstTransaction: allowNull(PropTypes.number)
 };
 
 export default SortedTransactions;
