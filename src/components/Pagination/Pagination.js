@@ -116,7 +116,7 @@ const Pagination = ({
         <TextWrapper>View</TextWrapper>
         <DropdownWrapper>
           <Dropdown
-            value={dropdownOptions[1]}
+            value={{value: postsPerPage, label: postsPerPage}}
             list={dropdownOptions}
             onChange={({ value }) => handlePostsAmountChange(value)}
             name="transactionsPerPage"
