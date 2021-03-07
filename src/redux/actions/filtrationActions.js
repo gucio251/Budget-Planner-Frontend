@@ -1,5 +1,4 @@
 import { filtrationConstants } from 'redux/actions/actionTypes';
-import filtration from 'redux/reducers/filtrationReducer';
 
 const setTransactionTypeFilter = transactionType => {
     return {
@@ -12,6 +11,13 @@ const setCategoryFilter = categoryType => {
   return {
     type: filtrationConstants.SETCATEGORYFILTER,
     payload: categoryType,
+  };
+};
+
+const setSubcategoryFilter = subcategoryType => {
+  return {
+    type: filtrationConstants.SETSUBCATEGORYFILTER,
+    payload: subcategoryType,
   };
 };
 
@@ -28,9 +34,11 @@ const setAmountToFilter = (amountTo) => {
     payload: amountTo,
   };
 };
+
 export const filtrationActions = {
   setTransactionTypeFilter,
   setCategoryFilter,
+  setSubcategoryFilter,
   setAmountFromFilter,
   setAmountToFilter,
 };

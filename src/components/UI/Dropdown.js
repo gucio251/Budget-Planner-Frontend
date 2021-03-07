@@ -84,6 +84,7 @@ const Dropdown = ({
   onChange,
   name,
   handleBlur,
+  isMulti=false
 }) => {
   return (
     <Select
@@ -94,6 +95,7 @@ const Dropdown = ({
       }}
       isSearchable={false}
       value={value}
+      isMulti={isMulti}
       onChange={onChange}
       onBlur={handleBlur}
       name={name}
@@ -155,7 +157,8 @@ Dropdown.propTypes = {
   onChange: PropTypes.func,
   handleBlur: PropTypes.func,
   name: PropTypes.string,
-  indexOfDefaultValue: PropTypes.number
+  indexOfDefaultValue: PropTypes.number,
+  isMulti: PropTypes.bool
 };
 
 export default Dropdown;

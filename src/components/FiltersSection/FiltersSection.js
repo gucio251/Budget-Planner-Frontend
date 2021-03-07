@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {filtrationActions}  from 'redux/actions/filtrationActions'
-import {prepareCurrenciesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
+import {prepareCurrenciesForDropdown, prepareCategoriesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
 import Dropdown from 'components/UI/Dropdown'
 import InputField from 'components/UI/InputField'
 import { currencyActions } from 'redux/actions/currencyActions';
@@ -11,6 +11,10 @@ import { currencyActions } from 'redux/actions/currencyActions';
 const Wrapper = styled.section`
   margin: 2em 0;
   display: block;
+
+  & > *:not(:first-child){
+    padding-top: 30px;
+  }
 `;
 
 const Row = styled.div`
@@ -18,6 +22,7 @@ const Row = styled.div`
   gap: 15px;
 `;
 const OptionsMenu = styled.ul`
+  height: 40px;
   list-style: none;
   display: flex;
   background-color: white;
@@ -49,6 +54,11 @@ const Option = styled.li`
   }
 `;
 
+const WiderDropdownWrapper = styled.div`
+  width: 600px;
+  position: relative;
+`;
+
 const DropdownWrapper = styled.div`
   width: 200px;
   position: relative;
@@ -70,8 +80,33 @@ const FiltersSection = () => {
     const expenseTypes = useSelector(state => state.expenseTypes.expenseTypes);
     const availableCurrenciesState = useSelector(state => state.currencies)
     const filtration = useSelector(state => state.filtration);
-    const [activeElement, setActiveElement] = useState({number: 0, name: 'All'});
     const dispatch = useDispatch();
+
+    const handleCategoryChange = value => {
+      if (value !== null) {
+        if (filtration.categories.length > value.length)
+          removeUnnecessarySubcategories(value);
+        dispatch(filtrationActions.setCategoryFilter(value));
+      } else {
+        dispatch(filtrationActions.setCategoryFilter([]));
+        dispatch(filtrationActions.setSubcategoryFilter([]));
+      }
+    }
+
+    const removeUnnecessarySubcategories = currentCategories => {
+      const newCategories = currentCategories.map(category => category.value);
+
+      const [deletedCategory] = filtration.categories.filter(
+        (category) => !newCategories.includes(category.value)
+      );
+      const subcategoriesToBeDeleted =
+        deletedCategory.type === 'expenseTypes'
+          ? expenseTypes.categories[deletedCategory.value].subcategories
+          : incomeTypes.categories[deletedCategory.value].subcategories;
+
+      const newSubcategories = filtration.subcategories.filter(subcategory => !subcategoriesToBeDeleted.includes(subcategory.value));
+      dispatch(filtrationActions.setSubcategoryFilter(newSubcategories));
+    }
 
     const handleAmountFromChange = (e) => {
       e.target.value === ''
@@ -90,14 +125,16 @@ const FiltersSection = () => {
     };
     const changeActiveItem = (e) => {
         const clickedElementName = e.target.textContent
-        setActiveElement({ number: e.target.tabIndex, name: clickedElementName});
+
         const type =
           clickedElementName === 'Incomes'
             ? 'income'
             : clickedElementName === 'Expenses'
             ? 'expense'
-            : clickedElementName;
+            : 'all';
         dispatch(filtrationActions.setTransactionTypeFilter(type));
+        dispatch(filtrationActions.setCategoryFilter([]));
+        dispatch(filtrationActions.setSubcategoryFilter([]));
     };
 
     const checkIfAllowedSign = (evt) => {
@@ -108,35 +145,56 @@ const FiltersSection = () => {
       <Wrapper>
         <Row>
           <OptionsMenu>
-            {['All', 'Expenses', 'Incomes'].map((name, index) => {
+            {['all', 'expenses', 'incomes'].map((name, index) => {
               return (
                 <Option
                   key={index}
                   tabIndex={index}
                   onClick={changeActiveItem}
-                  active={index === activeElement.number}
+                  active={name.includes(filtration.type)}
                 >
-                  {name}
+                  {`${name.charAt(0).toUpperCase()}${name.slice(
+                    1,
+                    name.length
+                  )}`}
                 </Option>
               );
             })}
           </OptionsMenu>
-          <DropdownWrapper>
-            <Label htmlFor="categories">Choose categories</Label>
+          <WiderDropdownWrapper>
+            <Label htmlFor="categories">Select category</Label>
             <Dropdown
+              isMulti={true}
               list={prepareOptions(
                 incomeTypes.categories,
                 expenseTypes.categories,
-                activeElement.name
+                filtration.type
               )}
-              onChange={({ value }) => {
-                dispatch(filtrationActions.setCategoryFilter(value));
-              }}
-              value={{ value: filtration.category, label: filtration.category }}
+              onChange={handleCategoryChange}
+              value={filtration.categories}
               isSearchable={true}
               name="categories"
             />
-          </DropdownWrapper>
+          </WiderDropdownWrapper>
+          <WiderDropdownWrapper>
+            <Label htmlFor="subcategories">Select subcategory</Label>
+            <Dropdown
+              isMulti={true}
+              list={prepareSubcategories(
+                incomeTypes,
+                expenseTypes,
+                filtration.categories
+              )}
+              onChange={(value) => {
+                dispatch(filtrationActions.setSubcategoryFilter(value));
+              }}
+              value={filtration.subcategories}
+              isSearchable={true}
+              name="subcategories"
+            />
+          </WiderDropdownWrapper>
+        </Row>
+        <Row>
           <FieldWrapper>
             <Label htmlFor="amountFrom">Amount From</Label>
             <InputField
@@ -164,7 +222,15 @@ const FiltersSection = () => {
           <DropdownWrapper>
             <Label htmlFor="currencies">Currency</Label>
             <Dropdown
-              list={prepareCurrenciesForDropdown(availableCurrenciesState.currencies)}
+              list={prepareCurrenciesForDropdown(
+                availableCurrenciesState.currencies
+              )}
+              value={{
+                label:
+                  availableCurrenciesState.currencies[
+                    availableCurrenciesState.active
+                  ].name,
+              }}
               onChange={(value) =>
                 dispatch(currencyActions.changeActiveCurrency(value.value))
               }
@@ -181,26 +247,66 @@ const prepareOptions = (incomeTypes, expenseTypes,activeElement) => {
     let calculatedIncomes = [];
     let calculatedExpenses = [];
 
-    if(activeElement === 'All' || activeElement === 'Incomes'){
+    if(activeElement === 'all' || activeElement === 'income'){
       calculatedIncomes = Object.keys(incomeTypes).map((key) =>
-        returnDropdownValues(incomeTypes[key])
+        returnDropdownValuesForCategories(incomeTypes[key], 'incomeTypes')
       );
     }
 
-    if(activeElement === 'All' || activeElement === 'Expenses'){
+    if(activeElement === 'all' || activeElement === 'expense'){
       calculatedExpenses = Object.keys(expenseTypes).map((key) =>
-        returnDropdownValues(expenseTypes[key])
+        returnDropdownValuesForCategories(expenseTypes[key], 'expenseTypes')
       );
     }
 
-    return [].concat({value: 'All', label: 'All'}, calculatedIncomes, calculatedExpenses)
+    return [].concat(calculatedIncomes, calculatedExpenses)
 }
 
-const returnDropdownValues = ({name, Icon}) => {
+const prepareSubcategories = (incomeTypes, expenseTypes, activeCategories) => {
+  const result = activeCategories.reduce((agg, {type, value}) => {
+    const subcategories =
+      type === 'incomeTypes'
+        ? incomeTypes.categories[value].subcategories
+        : expenseTypes.categories[value].subcategories
+
+    if(type === 'incomeTypes'){
+      return {
+        ...agg,
+        incomeSubcategories: [].concat(
+          ...agg.incomeSubcategories,
+          subcategories
+        ),
+      };
+    }else{
+      return {
+        ...agg,
+        expenseSubcategories: [].concat(
+          ...agg.expenseSubcategories,
+          subcategories
+        ),
+      };
+    }
+  }, {incomeSubcategories: [], expenseSubcategories: []})
+
+  const allIncomeSub = result.incomeSubcategories.map(incomeSubcategory => {
+    const {id, name} = incomeTypes.subcategories[incomeSubcategory];
+    return {value: id, label: name, type: 'income'};
+  })
+
+  const allExpenseSub = result.expenseSubcategories.map(expenseSubcategory => {
+    const { id, name } = expenseTypes.subcategories[expenseSubcategory];
+    return { value: id, label: name, type: 'expense' };
+  })
+
+  return [].concat(...allIncomeSub, ...allExpenseSub);
+}
+
+const returnDropdownValuesForCategories = ({id, name, Icon}, type) => {
   return {
-    value: name,
+    value: id,
     label: name,
     Icon,
+    type
   };
 }
 

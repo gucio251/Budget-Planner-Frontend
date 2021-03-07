@@ -1,8 +1,9 @@
 import {filtrationConstants} from 'redux/actions/actionTypes';
 
 const initialState = {
-    type: 'All',
-    category: 'All',
+    type: 'all',
+    categories: [],
+    subcategories: [],
     amountFrom: null,
     amountTo: null
 }
@@ -18,7 +19,12 @@ const filtration = (state=initialState, {type, payload}) => {
       case filtrationConstants.SETCATEGORYFILTER:
         return {
           ...state,
-          category: payload,
+          categories: payload,
+        };
+      case filtrationConstants.SETSUBCATEGORYFILTER:
+        return {
+          ...state,
+          subcategories: payload,
         };
       case filtrationConstants.SETAMOUNTFROMFILTER:
         return {
