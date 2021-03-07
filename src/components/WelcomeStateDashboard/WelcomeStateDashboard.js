@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from 'react-redux';
 import {ReactComponent as EmptyStateIcon} from 'assets/icons/emptyStateIcon.svg';
-import Button from 'components/UI/Button'
-import Modal from 'components/Modal/Modal'
-import TransactionHandlingForm from 'containers/TransactionHandlingForm/TransactionHandlingForm';
-import { getTodaysDate } from 'Utils/functions';
+import Button from 'components/UI/Button';
+import {modalActions} from 'redux/actions/modalActions';
 
 const StyledContainer = styled.section`
     width: 100%;
     height: 100%;
+    margin-left: 180px;
     display: grid;
     grid-template-columns: 24% 37% 39%;
     grid-template-rows: 10% 90%;
@@ -46,53 +46,32 @@ const ButtonWrapper = styled.div`
     width: 60%;
 `
 
-const initialValues = {
-  amount: 0,
-  currency: '',
-  currency_id: '',
-  category: '',
-  subcategory: '',
-  category_id: '',
-  transaction_date: getTodaysDate(),
-  comments: '',
-};
-
 const WelcomeStateDashboard = () => {
-    const [openModal, setModalOpen] = useState(false);
-
-    const handleModalOpen = () => {
-        setModalOpen(true);
-    };
-
-    const handleModalClose = () => {
-        setModalOpen(false);
-    };
+    const login = useSelector((state) => state.login.login);
+    const dispatch = useDispatch();
 
     return (
-        <>
-        <Modal open={openModal} handleClose={handleModalClose}>
-          <TransactionHandlingForm initialValues={initialValues} handleClose={handleModalClose}/>
-        </Modal>
         <StyledContainer>
-            <Header>
-                Hi Caroline, welcome!
-            </Header>
+            <Header>{`Hi ${login}, welcome!`}</Header>
             <MiddleContainer>
-                <EmptyStateIcon />
-                <MainInfo>
-                    No data to analyze yet
-                </MainInfo>
-                <Text>
-                    Add first transaction and start analysing your spendings
-                </Text>
-                <ButtonWrapper>
-                    <Button color="#2F54F3" onClick={handleModalOpen}>
-                        Add first transaction
-                    </Button>
-                </ButtonWrapper>
+            <EmptyStateIcon />
+            <MainInfo>No data to analyze yet</MainInfo>
+            <Text>
+                Add first transaction and start analysing your spendings
+            </Text>
+            <ButtonWrapper>
+                <Button
+                onClick={() =>
+                    dispatch(
+                    modalActions.open({ modalType: 'TransactionHandlingForm' })
+                    )
+                }
+                >
+                Add first transaction
+                </Button>
+            </ButtonWrapper>
             </MiddleContainer>
         </StyledContainer>
-        </>
     );
 };
 
