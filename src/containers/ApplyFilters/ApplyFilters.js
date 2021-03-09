@@ -72,6 +72,12 @@ const filter = (transactions, filters, incomeTypes, expenseTypes) => {
       );
     }
 
+    if (filters.comment !== ''){
+        filteredTransactions = filteredTransactions.filter((transaction) =>
+          transaction.comments.includes(filters.comment)
+        );
+    }
+
     return filteredTransactions;
 }
 

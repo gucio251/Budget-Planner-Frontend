@@ -5,7 +5,8 @@ const initialState = {
     categories: [],
     subcategories: [],
     amountFrom: null,
-    amountTo: null
+    amountTo: null,
+    comment: '',
 }
 
 const filtration = (state=initialState, {type, payload}) => {
@@ -35,6 +36,11 @@ const filtration = (state=initialState, {type, payload}) => {
         return {
           ...state,
           amountTo: payload,
+        };
+      case filtrationConstants.SETCOMMENTFILTER:
+        return {
+          ...state,
+          comment: payload,
         };
       default:
         return state;

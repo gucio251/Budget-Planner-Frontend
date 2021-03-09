@@ -8,6 +8,7 @@ import {prepareCurrenciesForDropdown, prepareCategoriesForDropdown} from 'contai
 import Dropdown from 'components/UI/Dropdown';
 import InputField from 'components/UI/InputField';
 import { currencyActions } from 'redux/actions/currencyActions';
+import SearchField from 'components/UI/SearchField';
 
 const Wrapper = styled.section`
   margin: 2em 0;
@@ -240,6 +241,7 @@ const FiltersSection = () => {
             />
           </DropdownWrapper>
           <DateDisplayer />
+          <SearchField />
         </Row>
       </Wrapper>
     );

@@ -28,10 +28,17 @@ const setAmountFromFilter = amountFrom => {
   }
 }
 
-const setAmountToFilter = (amountTo) => {
+const setAmountToFilter = amountTo => {
   return {
     type: filtrationConstants.SETAMOUNTTOFILTER,
     payload: amountTo,
+  };
+};
+
+const setCommentFilter = comment => {
+  return {
+    type: filtrationConstants.SETCOMMENTFILTER,
+    payload: comment,
   };
 };
 
@@ -41,4 +48,5 @@ export const filtrationActions = {
   setSubcategoryFilter,
   setAmountFromFilter,
   setAmountToFilter,
+  setCommentFilter,
 };
