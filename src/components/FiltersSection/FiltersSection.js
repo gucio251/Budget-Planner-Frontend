@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {filtrationActions}  from 'redux/actions/filtrationActions'
-import {prepareCurrenciesForDropdown, prepareCategoriesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm'
-import Dropdown from 'components/UI/Dropdown'
-import InputField from 'components/UI/InputField'
+import DateDisplayer from 'components/UI/DateDisplayer';
+import {filtrationActions}  from 'redux/actions/filtrationActions';
+import {prepareCurrenciesForDropdown, prepareCategoriesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm';
+import Dropdown from 'components/UI/Dropdown';
+import InputField from 'components/UI/InputField';
 import { currencyActions } from 'redux/actions/currencyActions';
 
 const Wrapper = styled.section`
@@ -238,6 +239,7 @@ const FiltersSection = () => {
               name="currencies"
             />
           </DropdownWrapper>
+          <DateDisplayer />
         </Row>
       </Wrapper>
     );

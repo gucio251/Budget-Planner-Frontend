@@ -38,7 +38,7 @@ const generateCalendarView = props => {
     </>
   );
 }
-const generateCustomDate = ({start, end}) => {
+export const generateCustomDate = ({start, end}) => {
   const [startYear, startMonth, startDay] = start.split('-');
   const endDate = end.split('-').reverse().join('.');
 
