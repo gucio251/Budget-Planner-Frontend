@@ -13,16 +13,18 @@ const ApplyFilters = ({children, transactions}) => {
 
 
 const filter = (transactions, filters, incomeTypes, expenseTypes) => {
+    const {appliedFilters} = filters;
+    const {type, categories, subcategories, amountFrom, amountTo, comment} = appliedFilters;
     let filteredTransactions = transactions;
 
-    if (filters.type !== 'all') {
+    if (type !== 'all') {
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => transaction.type === filters.type
+        (transaction) => transaction.type === type
       );
     }
 
-    if (filters.categories.length !== 0) {
-      const filtrationCategories = filters.categories.reduce(
+    if (categories.length !== 0) {
+      const filtrationCategories = categories.reduce(
         (acc, { type, value }) => {
           const key = `${type}/${value}`;
           return {
@@ -46,9 +48,9 @@ const filter = (transactions, filters, incomeTypes, expenseTypes) => {
       });
     }
 
-    if (filters.subcategories.length !== 0) {
+    if (subcategories.length !== 0) {
       filteredTransactions = filteredTransactions.filter((transaction) => {
-        const result = filters.subcategories.filter((subcategory) => {
+        const result = subcategories.filter((subcategory) => {
           if (subcategory.type === transaction.type) {
             if (subcategory.value === transaction.transaction_type_id) {
               return subcategory;
@@ -60,21 +62,21 @@ const filter = (transactions, filters, incomeTypes, expenseTypes) => {
       });
     }
 
-    if (filters.amountFrom !== null) {
+    if (amountFrom !== null) {
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => transaction.amount >= filters.amountFrom
+        (transaction) => transaction.amount >= amountFrom
       );
     }
 
-    if (filters.amountTo !== null) {
+    if (amountTo !== null) {
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => transaction.amount < filters.amountTo
+        (transaction) => transaction.amount < amountTo
       );
     }
 
-    if (filters.comment !== ''){
+    if (comment !== ''){
         filteredTransactions = filteredTransactions.filter((transaction) =>
-          transaction.comments.includes(filters.comment)
+          transaction.comments.includes(comment)
         );
     }
 

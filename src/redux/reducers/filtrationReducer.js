@@ -1,47 +1,88 @@
 import {filtrationConstants} from 'redux/actions/actionTypes';
 
+const initialData = {
+  type: 'all',
+  categories: [],
+  subcategories: [],
+  amountFrom: null,
+  amountTo: null,
+  comment: '',
+};
+
 const initialState = {
-    type: 'all',
-    categories: [],
-    subcategories: [],
-    amountFrom: null,
-    amountTo: null,
-    comment: '',
-}
+  appliedFilters: {
+    ...initialData,
+  },
+  filtersToBeConfirmed: {
+    ...initialData,
+  },
+};
 
 const filtration = (state=initialState, {type, payload}) => {
     switch (type) {
       case filtrationConstants.SETTRANSACTIONTYPEFILTER:
         return {
           ...state,
-          type: payload,
-          category: initialState.category,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            type: payload
+          }
         };
       case filtrationConstants.SETCATEGORYFILTER:
         return {
           ...state,
-          categories: payload,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            categories: payload,
+          },
         };
       case filtrationConstants.SETSUBCATEGORYFILTER:
         return {
           ...state,
-          subcategories: payload,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            subcategories: payload,
+          },
         };
       case filtrationConstants.SETAMOUNTFROMFILTER:
         return {
           ...state,
-          amountFrom: payload,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            amountFrom: payload,
+          },
         };
       case filtrationConstants.SETAMOUNTTOFILTER:
         return {
           ...state,
-          amountTo: payload,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            amountTo: payload,
+          },
         };
       case filtrationConstants.SETCOMMENTFILTER:
         return {
           ...state,
-          comment: payload,
+          filtersToBeConfirmed: {
+            ...state.filtersToBeConfirmed,
+            comment: payload,
+          },
         };
+      case filtrationConstants.APPLYFILTERS: {
+        return {
+          ...state,
+          appliedFilters: {
+            ...state.appliedFilters,
+            ...state.filtersToBeConfirmed
+          },
+        };
+      }
+      case filtrationConstants.CLEARFILTERS: {
+        return {
+          ...state,
+          ...initialState
+        };
+      }
       default:
         return state;
     }

@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 
 import DateDisplayer from 'components/UI/DateDisplayer';
 import {filtrationActions}  from 'redux/actions/filtrationActions';
-import {prepareCurrenciesForDropdown, prepareCategoriesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm';
+import {prepareCurrenciesForDropdown} from 'containers/TransactionHandlingForm/TransactionHandlingForm';
 import Dropdown from 'components/UI/Dropdown';
 import InputField from 'components/UI/InputField';
 import { currencyActions } from 'redux/actions/currencyActions';
@@ -12,7 +12,8 @@ import SearchField from 'components/UI/SearchField';
 
 const Wrapper = styled.section`
   margin: 2em 0;
-  display: block;
+  display: flex;
+  flex-direction: column;
 
   & > *:not(:first-child){
     padding-top: 30px;
@@ -21,6 +22,7 @@ const Wrapper = styled.section`
 
 const Row = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
 `;
 const OptionsMenu = styled.ul`
@@ -57,12 +59,13 @@ const Option = styled.li`
 `;
 
 const WiderDropdownWrapper = styled.div`
-  width: 600px;
+  max-width: 600px;
+  min-width: 400px;
   position: relative;
 `;
 
 const DropdownWrapper = styled.div`
-  width: 200px;
+  min-width: 200px;
   position: relative;
 `;
 
@@ -77,6 +80,24 @@ const Label = styled.label`
   font-size: 12px;
 `;
 
+const Button = styled.button`
+  background-color: ${({ transparent, theme }) =>
+    transparent ? 'transparent' : theme.mainBlue};
+  color: ${({ transparent, theme }) =>
+    !transparent ? 'white' : theme.mainBlue};
+  border-radius: 4px;
+  font-size: 1em;
+  padding: 0em 2em;
+  height: 40px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &:hover{
+    transform: translateY(-10px);
+  }
+`;
+
 const FiltersSection = () => {
     const incomeTypes = useSelector(state => state.incomeTypes.incomeTypes);
     const expenseTypes = useSelector(state => state.expenseTypes.expenseTypes);
@@ -86,7 +107,7 @@ const FiltersSection = () => {
 
     const handleCategoryChange = value => {
       if (value !== null) {
-        if (filtration.categories.length > value.length)
+        if (filtration.filtersToBeConfirmed.categories.length > value.length)
           removeUnnecessarySubcategories(value);
         dispatch(filtrationActions.setCategoryFilter(value));
       } else {
@@ -95,10 +116,16 @@ const FiltersSection = () => {
       }
     }
 
+    const handleSubcategoryChange = value => {
+      return value !== null
+        ? dispatch(filtrationActions.setSubcategoryFilter(value))
+        : dispatch(filtrationActions.setSubcategoryFilter([]));
+    }
+
     const removeUnnecessarySubcategories = currentCategories => {
       const newCategories = currentCategories.map(category => category.value);
 
-      const [deletedCategory] = filtration.categories.filter(
+      const [deletedCategory] = filtration.filtersToBeConfirmed.categories.filter(
         (category) => !newCategories.includes(category.value)
       );
       const subcategoriesToBeDeleted =
@@ -106,7 +133,9 @@ const FiltersSection = () => {
           ? expenseTypes.categories[deletedCategory.value].subcategories
           : incomeTypes.categories[deletedCategory.value].subcategories;
 
-      const newSubcategories = filtration.subcategories.filter(subcategory => !subcategoriesToBeDeleted.includes(subcategory.value));
+      const newSubcategories = filtration.filtersToBeConfirmed.subcategories.filter(
+        (subcategory) => !subcategoriesToBeDeleted.includes(subcategory.value)
+      );
       dispatch(filtrationActions.setSubcategoryFilter(newSubcategories));
     }
 
@@ -143,6 +172,10 @@ const FiltersSection = () => {
         ['e', 'E', '+', '-', '.'].includes(evt.key) && evt.preventDefault();
     }
 
+
+    const handleFiltersAddition = () => dispatch(filtrationActions.applyFilters())
+
+    const handleFilterRemoval = () => dispatch(filtrationActions.clearFilters());
     return (
       <Wrapper>
         <Row>
@@ -153,7 +186,7 @@ const FiltersSection = () => {
                   key={index}
                   tabIndex={index}
                   onClick={changeActiveItem}
-                  active={name.includes(filtration.type)}
+                  active={name.includes(filtration.filtersToBeConfirmed.type)}
                 >
                   {`${name.charAt(0).toUpperCase()}${name.slice(
                     1,
@@ -170,10 +203,10 @@ const FiltersSection = () => {
               list={prepareOptions(
                 incomeTypes.categories,
                 expenseTypes.categories,
-                filtration.type
+                filtration.filtersToBeConfirmed.type
               )}
               onChange={handleCategoryChange}
-              value={filtration.categories}
+              value={filtration.filtersToBeConfirmed.categories}
               isSearchable={true}
               name="categories"
             />
@@ -185,12 +218,10 @@ const FiltersSection = () => {
               list={prepareSubcategories(
                 incomeTypes,
                 expenseTypes,
-                filtration.categories
+                filtration.filtersToBeConfirmed.categories
               )}
-              onChange={(value) => {
-                dispatch(filtrationActions.setSubcategoryFilter(value));
-              }}
-              value={filtration.subcategories}
+              onChange={handleSubcategoryChange}
+              value={filtration.filtersToBeConfirmed.subcategories}
               isSearchable={true}
               name="subcategories"
             />
@@ -204,9 +235,13 @@ const FiltersSection = () => {
               type="number"
               step="0.5"
               handleKeyDown={checkIfAllowedSign}
-              placeholder={filtration.amountFrom == null ? '0,00' : null}
+              placeholder={
+                filtration.filtersToBeConfirmed.amountFrom == null
+                  ? '0,00'
+                  : null
+              }
               handleChange={handleAmountFromChange}
-              value={filtration.amountFrom}
+              value={filtration.filtersToBeConfirmed.amountFrom}
             />
           </FieldWrapper>
           <FieldWrapper>
@@ -216,9 +251,11 @@ const FiltersSection = () => {
               type="number"
               step="0.5"
               handleKeyDown={checkIfAllowedSign}
-              placeholder={filtration.amountTo == null ? '0,00' : null}
+              placeholder={
+                filtration.filtersToBeConfirmed.amountTo == null ? '0,00' : null
+              }
               handleChange={handleAmountToChange}
-              value={filtration.amountTo}
+              value={filtration.filtersToBeConfirmed.amountTo}
             />
           </FieldWrapper>
           <DropdownWrapper>
@@ -242,6 +279,8 @@ const FiltersSection = () => {
           </DropdownWrapper>
           <DateDisplayer />
           <SearchField />
+          <Button onClick={handleFiltersAddition}>Apply</Button>
+          <Button onClick={handleFilterRemoval} transparent={true}>Clear all filters</Button>
         </Row>
       </Wrapper>
     );

@@ -42,6 +42,17 @@ const setCommentFilter = comment => {
   };
 };
 
+const clearFilters = () => {
+  return {
+    type: filtrationConstants.CLEARFILTERS,
+  };
+};
+
+const applyFilters = () => {
+  return {
+    type: filtrationConstants.APPLYFILTERS,
+  };
+};
 export const filtrationActions = {
   setTransactionTypeFilter,
   setCategoryFilter,
@@ -49,4 +60,6 @@ export const filtrationActions = {
   setAmountFromFilter,
   setAmountToFilter,
   setCommentFilter,
+  clearFilters,
+  applyFilters
 };
