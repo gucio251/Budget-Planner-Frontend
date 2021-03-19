@@ -14,7 +14,6 @@ import {
   DateFieldInRow,
   StyledDateText,
   CheckboxTd,
-  Checkbox,
   Field,
   Wrapper,
   TextWrapper,
@@ -25,6 +24,7 @@ import {
   StyledExpand,
   IconsWrapper
 } from 'components/TransactionsDisplayer/TransactionDisplayer.styled'
+import Checkbox from 'components/UI/Checkbox'
 
 import { ReactComponent as EditIcon } from 'assets/icons/editIconTable.svg';
 import { ReactComponent as DeleteIcon } from 'assets/icons/deleteIconTable.svg';
@@ -258,7 +258,6 @@ export const Displayer = ({ transactionList = {}, CurrencyIcon, withDeletion = f
                               <CheckboxTd align="left">
                                 <LeftCenteredSpan>
                                   <Checkbox
-                                    type="checkbox"
                                     onClick={handleItemsSelection}
                                     checked={selectionState.selectedItems.includes(
                                       tempId

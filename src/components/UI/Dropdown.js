@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Select, { components } from 'react-select';
 
+import Checkbox from 'components/UI/Checkbox'
+
 const StyledSingleOption = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 const StyledOptionText = styled.div`
   color: #262C42;
-  margin-left: 15px;
 `;
 
 const SingleValueContainer = styled.div`
@@ -32,7 +34,6 @@ const IconWrapper = styled.div`
 const { Option, SingleValue } = components;
 
 const StyledOption = styled(Option)`
-  //background-color: ${({isFocused}) => isFocused ? 'black!important' : 'white'};
 `
 
 const CustomValueContainer = (props) => {
@@ -71,6 +72,7 @@ const IconOption = (props) => {
   return (
     <StyledOption {...props}>
       <StyledSingleOption>
+        {props.isMulti && <Checkbox checked={props.isSelected}/>}
         {data.Icon && <data.Icon />}
         <StyledOptionText>{data.label}</StyledOptionText>
       </StyledSingleOption>
@@ -92,14 +94,32 @@ const Dropdown = ({
       components={{
         Option: IconOption,
         SingleValue: CustomValueContainer,
+                ValueContainer: ({ children, ...props }) => {
+          let [values, input] = children;
+
+          if (Array.isArray(values)) {
+            const result = `${values.length} items selected`;
+
+            values = result;
+          }
+
+          return (
+            <components.ValueContainer {...props}>
+              {values}
+              {input}
+            </components.ValueContainer>
+          );
+        }
       }}
       isSearchable={false}
       value={value}
-      isMulti={isMulti}
       onChange={onChange}
       onBlur={handleBlur}
       name={name}
+      hideSelectedOptions={isMulti ? false : true}
+      backspaceRemovesValue={false}
       noOptionsMessage={() => null}
+      isMulti={isMulti}
       styles={{
         container: (provided, state) => ({
           ...provided,
@@ -127,6 +147,14 @@ const Dropdown = ({
           ...provided,
           zIndex: '2',
         }),
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+          return {
+            ...styles,
+            backgroundColor: 'transparent',
+            color: '#FFF',
+            cursor: isDisabled ? 'not-allowed' : 'default',
+          };
+        },
         control: (provided, state) => ({
           ...provided,
           height: '40px',
@@ -137,14 +165,6 @@ const Dropdown = ({
             ? '#EFEFF3'
             : 'white',
           cursor: state.selectProps.disabledWithoutOption && 'not-allowed',
-
-          option: (provided) => ({
-            ...provided,
-
-            '&hover': {
-              backgroundColor: 'red',
-            },
-          }),
         }),
       }}
     />

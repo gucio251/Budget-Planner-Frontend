@@ -35,7 +35,7 @@ const Input = styled.input`
 
 const SearchField = () => {
     const dispatch = useDispatch();
-    const commentValue = useSelector(state => state.filtration.comment);
+    const commentValue = useSelector(state => state.filtration.filtersToBeConfirmed.comment);
 
     const handleChange = e => {
         const comment = e.target.value;

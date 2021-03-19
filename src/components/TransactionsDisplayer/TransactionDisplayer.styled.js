@@ -172,10 +172,6 @@ export const CheckboxTd = styled.td`
   border-bottom: 1px solid #efeff3;
 `;
 
-export const Checkbox = styled.input`
-  outline: none;
-`;
-
 export const Field = styled.td`
   min-width: 19%;
   padding: 10px 0px;

@@ -58,14 +58,8 @@ const Option = styled.li`
   }
 `;
 
-const WiderDropdownWrapper = styled.div`
-  max-width: 600px;
-  min-width: 400px;
-  position: relative;
-`;
-
 const DropdownWrapper = styled.div`
-  min-width: 200px;
+  width: 250px;
   position: relative;
 `;
 
@@ -109,10 +103,10 @@ const FiltersSection = () => {
       if (value !== null) {
         if (filtration.filtersToBeConfirmed.categories.length > value.length)
           removeUnnecessarySubcategories(value);
-        dispatch(filtrationActions.setCategoryFilter(value));
+          dispatch(filtrationActions.setCategoryFilter(value));
       } else {
-        dispatch(filtrationActions.setCategoryFilter([]));
-        dispatch(filtrationActions.setSubcategoryFilter([]));
+          dispatch(filtrationActions.setCategoryFilter([]));
+          dispatch(filtrationActions.setSubcategoryFilter([]));
       }
     }
 
@@ -128,10 +122,12 @@ const FiltersSection = () => {
       const [deletedCategory] = filtration.filtersToBeConfirmed.categories.filter(
         (category) => !newCategories.includes(category.value)
       );
+
+      const [id, ...rest] = deletedCategory.value.split('/');
       const subcategoriesToBeDeleted =
         deletedCategory.type === 'expenseTypes'
-          ? expenseTypes.categories[deletedCategory.value].subcategories
-          : incomeTypes.categories[deletedCategory.value].subcategories;
+          ? expenseTypes.categories[id].subcategories
+          : incomeTypes.categories[id].subcategories;
 
       const newSubcategories = filtration.filtersToBeConfirmed.subcategories.filter(
         (subcategory) => !subcategoriesToBeDeleted.includes(subcategory.value)
@@ -196,7 +192,7 @@ const FiltersSection = () => {
               );
             })}
           </OptionsMenu>
-          <WiderDropdownWrapper>
+          <DropdownWrapper>
             <Label htmlFor="categories">Select category</Label>
             <Dropdown
               isMulti={true}
@@ -210,8 +206,8 @@ const FiltersSection = () => {
               isSearchable={true}
               name="categories"
             />
-          </WiderDropdownWrapper>
-          <WiderDropdownWrapper>
+          </DropdownWrapper>
+          <DropdownWrapper>
             <Label htmlFor="subcategories">Select subcategory</Label>
             <Dropdown
               isMulti={true}
@@ -225,9 +221,7 @@ const FiltersSection = () => {
               isSearchable={true}
               name="subcategories"
             />
-          </WiderDropdownWrapper>
-        </Row>
-        <Row>
+          </DropdownWrapper>
           <FieldWrapper>
             <Label htmlFor="amountFrom">Amount From</Label>
             <InputField
@@ -258,6 +252,8 @@ const FiltersSection = () => {
               value={filtration.filtersToBeConfirmed.amountTo}
             />
           </FieldWrapper>
+        </Row>
+        <Row>
           <DropdownWrapper>
             <Label htmlFor="currencies">Currency</Label>
             <Dropdown
@@ -307,10 +303,11 @@ const prepareOptions = (incomeTypes, expenseTypes,activeElement) => {
 
 const prepareSubcategories = (incomeTypes, expenseTypes, activeCategories) => {
   const result = activeCategories.reduce((agg, {type, value}) => {
+    const [id, ...rest] = value.split('/')
     const subcategories =
       type === 'incomeTypes'
-        ? incomeTypes.categories[value].subcategories
-        : expenseTypes.categories[value].subcategories
+        ? incomeTypes.categories[id].subcategories
+        : expenseTypes.categories[id].subcategories
 
     if(type === 'incomeTypes'){
       return {
@@ -346,7 +343,7 @@ const prepareSubcategories = (incomeTypes, expenseTypes, activeCategories) => {
 
 const returnDropdownValuesForCategories = ({id, name, Icon}, type) => {
   return {
-    value: id,
+    value: `${id}/${name}`,
     label: name,
     Icon,
     type

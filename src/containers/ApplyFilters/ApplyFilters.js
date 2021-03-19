@@ -26,10 +26,11 @@ const filter = (transactions, filters, incomeTypes, expenseTypes) => {
     if (categories.length !== 0) {
       const filtrationCategories = categories.reduce(
         (acc, { type, value }) => {
-          const key = `${type}/${value}`;
+          const [id, ...rest] = value.split('/');
+          const key = `${type}/${id}`;
           return {
             ...acc,
-            [key]: value,
+            [key]: id,
           };
         },
         {}
