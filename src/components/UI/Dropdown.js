@@ -80,6 +80,24 @@ const IconOption = (props) => {
   );
 };
 
+const ValueContainer = ({children, ...props}) => {
+  let [values, input] = children;
+
+    if (Array.isArray(values)) {
+      const result = `${values.length} items selected`;
+
+      values = result;
+    }
+
+    return (
+      <components.ValueContainer {...props}>
+        {values}
+        {input}
+      </components.ValueContainer>
+    );
+
+}
+
 const Dropdown = ({
   list,
   value,
@@ -94,30 +112,15 @@ const Dropdown = ({
       components={{
         Option: IconOption,
         SingleValue: CustomValueContainer,
-                ValueContainer: ({ children, ...props }) => {
-          let [values, input] = children;
-
-          if (Array.isArray(values)) {
-            const result = `${values.length} items selected`;
-
-            values = result;
-          }
-
-          return (
-            <components.ValueContainer {...props}>
-              {values}
-              {input}
-            </components.ValueContainer>
-          );
-        }
+        ValueContainer
       }}
       isSearchable={false}
       value={value}
       onChange={onChange}
       onBlur={handleBlur}
       name={name}
-      hideSelectedOptions={isMulti ? false : true}
-      backspaceRemovesValue={false}
+      hideSelectedOptions={!isMulti}
+      closeMenuOnSelect={!isMulti}
       noOptionsMessage={() => null}
       isMulti={isMulti}
       styles={{
@@ -125,16 +128,15 @@ const Dropdown = ({
           ...provided,
           cursor: 'pointer',
 
-          '&focus': {
-            color: 'red',
-            border: '2px solid red'
+          ':hover': {
+            cursor: state.selectProps.options.length === 0 ? 'not-allowed' : 'pointer'
           }
         }),
         dropdownIndicator: (provided, state) => ({
           ...provided,
           transform:
             !state.selectProps.menuIsOpen ||
-            state.selectProps.disabledWithoutOption
+            state.selectProps.options.length === 0
               ? 'rotate(0deg)'
               : 'rotate(180deg)',
           color: '#707070'
@@ -147,7 +149,7 @@ const Dropdown = ({
           ...provided,
           zIndex: '2',
         }),
-        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        option: (styles, {isDisabled}) => {
           return {
             ...styles,
             backgroundColor: 'transparent',
@@ -172,12 +174,11 @@ const Dropdown = ({
 };
 
 Dropdown.propTypes = {
-  list: PropTypes.array,
-  value: PropTypes.string,
+  list: PropTypes.array.isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   handleBlur: PropTypes.func,
   name: PropTypes.string,
-  indexOfDefaultValue: PropTypes.number,
   isMulti: PropTypes.bool
 };
 
