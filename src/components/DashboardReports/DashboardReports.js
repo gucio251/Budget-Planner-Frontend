@@ -10,8 +10,15 @@ import SortedTransactions from 'containers/SortedTransactions/SortedTransactions
 
 
 const Wrapper = styled.div`
-  width: calc(100vw - 220px);
   margin: 20px 20px 20px 200px;
+
+  ${({theme}) => theme.devices.tablet}{
+     margin: 20px 20px 20px 120px;
+  }
+
+  ${({theme}) => theme.devices.mobile}{
+    margin: 20px 0 0 0;
+  }
 `;
 
 const DisplayerWrapper = styled.div`

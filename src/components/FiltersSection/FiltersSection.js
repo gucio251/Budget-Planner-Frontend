@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -8,7 +8,24 @@ import {prepareCurrenciesForDropdown} from 'containers/TransactionHandlingForm/T
 import Dropdown from 'components/UI/Dropdown';
 import InputField from 'components/UI/InputField';
 import { currencyActions } from 'redux/actions/currencyActions';
+import { ReactComponent as CloseSign} from 'assets/icons/closeSign.svg'
 import SearchField from 'components/UI/SearchField';
+
+const MobileRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+
+  &>*:nth-child(2){
+    display: none;
+  }
+
+  ${({theme}) => theme.devices.mobile}{
+    &>*:nth-child(2){
+      display: block;
+    }
+  }
+`
 
 const Wrapper = styled.section`
   margin: 2em 0;
@@ -18,19 +35,66 @@ const Wrapper = styled.section`
   & > *:not(:first-child){
     padding-top: 30px;
   }
+
+  ${({theme}) => theme.devices.mobile}{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: ${({displayOnMobile}) => displayOnMobile ? 'block' : 'none'};
+    background-color: #F6F6F8;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    margin-top: 0;
+    padding: 0 1em;
+  }
+`;
+
+const MobileContent = styled.div`
+  display: none;
+  margin-top: 20px;
+
+  ${({theme}) => theme.devices.mobile}{
+    display: ${({displayOnMobile}) => displayOnMobile ? 'flex' : 'none'};
+    justify-content: space-between;
+  }
+`;
+
+const StyledCloseSign = styled(CloseSign)`
+  cursor: pointer;
+
+  &:hover{
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   gap: 15px;
 `;
+
+const StyledParagraph = styled.p`
+  font-size: 2em;
+  font-weight: 500;
+
+  ${({theme}) => theme.devices.mobile}{
+    font-size: 1em;
+  }
+`
 const OptionsMenu = styled.ul`
   height: 40px;
+  margin: 10px 0;
   list-style: none;
   display: flex;
   background-color: white;
   border-radius: 4px;
+
+  ${({theme}) => theme.devices.mobile}{
+    width: 100%;
+  }
 `;
 
 const Option = styled.li`
@@ -60,11 +124,30 @@ const Option = styled.li`
 
 const DropdownWrapper = styled.div`
   width: 250px;
+  margin: 10px 0;
   position: relative;
+
+  ${({theme}) => theme.devices.mobile}{
+    width: 100%;
+  }
+`;
+
+const SmallerDropdownWrapper = styled.div`
+  width: 250px;
+  position: relative;
+
+  ${({theme}) => theme.devices.mobile}{
+    width: 48%;
+  }
 `;
 
 const FieldWrapper = styled.div`
   position: relative;
+  margin: 10px 0;
+
+  ${({theme}) => theme.devices.mobile}{
+    width: 48%;
+  }
 `;
 
 const Label = styled.label`
@@ -98,6 +181,7 @@ const FiltersSection = () => {
     const availableCurrenciesState = useSelector(state => state.currencies)
     const filtration = useSelector(state => state.filtration);
     const dispatch = useDispatch();
+    const [filtersVisibilityOnMobile, setFiltersVisibilityOnMobile] = useState(false);
 
     const handleCategoryChange = value => {
       if (value !== null) {
@@ -169,116 +253,144 @@ const FiltersSection = () => {
     }
 
 
-    const handleFiltersAddition = () => dispatch(filtrationActions.applyFilters())
+    const handleFiltersAddition = () => {
+      dispatch(filtrationActions.applyFilters());
 
-    const handleFilterRemoval = () => dispatch(filtrationActions.clearFilters());
+      if(filtersVisibilityOnMobile) handleFilterSectionVisibility();
+    }
+
+    const handleFilterRemoval = () => {
+      dispatch(filtrationActions.clearFilters());
+
+      if(filtersVisibilityOnMobile) handleFilterSectionVisibility();
+    }
+
+    const handleFilterSectionVisibility = () => setFiltersVisibilityOnMobile(filtersVisibilityOnMobile => !filtersVisibilityOnMobile);
     return (
-      <Wrapper>
-        <Row>
-          <OptionsMenu>
-            {['all', 'expenses', 'incomes'].map((name, index) => {
-              return (
-                <Option
-                  key={index}
-                  tabIndex={index}
-                  onClick={changeActiveItem}
-                  active={name.includes(filtration.filtersToBeConfirmed.type)}
-                >
-                  {`${name.charAt(0).toUpperCase()}${name.slice(
-                    1,
-                    name.length
-                  )}`}
-                </Option>
-              );
-            })}
-          </OptionsMenu>
-          <DropdownWrapper>
-            <Label htmlFor="categories">Select category</Label>
-            <Dropdown
-              isMulti={true}
-              list={prepareOptions(
-                incomeTypes.categories,
-                expenseTypes.categories,
-                filtration.filtersToBeConfirmed.type
-              )}
-              onChange={handleCategoryChange}
-              value={filtration.filtersToBeConfirmed.categories}
-              isSearchable={true}
-              name="categories"
-            />
-          </DropdownWrapper>
-          <DropdownWrapper>
-            <Label htmlFor="subcategories">Select subcategory</Label>
-            <Dropdown
-              isMulti={true}
-              list={prepareSubcategories(
-                incomeTypes,
-                expenseTypes,
-                filtration.filtersToBeConfirmed.categories
-              )}
-              onChange={handleSubcategoryChange}
-              value={filtration.filtersToBeConfirmed.subcategories}
-              isSearchable={true}
-              name="subcategories"
-            />
-          </DropdownWrapper>
-          <FieldWrapper>
-            <Label htmlFor="amountFrom">Amount From</Label>
-            <InputField
-              name="amountFrom"
-              type="number"
-              step="0.5"
-              handleKeyDown={checkIfAllowedSign}
-              placeholder={
-                filtration.filtersToBeConfirmed.amountFrom == null
-                  ? '0,00'
-                  : null
-              }
-              handleChange={handleAmountFromChange}
-              value={filtration.filtersToBeConfirmed.amountFrom}
-            />
-          </FieldWrapper>
-          <FieldWrapper>
-            <Label htmlFor="amountTo">Amount To</Label>
-            <InputField
-              name="amountTo"
-              type="number"
-              step="0.5"
-              handleKeyDown={checkIfAllowedSign}
-              placeholder={
-                filtration.filtersToBeConfirmed.amountTo == null ? '0,00' : null
-              }
-              handleChange={handleAmountToChange}
-              value={filtration.filtersToBeConfirmed.amountTo}
-            />
-          </FieldWrapper>
-        </Row>
-        <Row>
-          <DropdownWrapper>
-            <Label htmlFor="currencies">Currency</Label>
-            <Dropdown
-              list={prepareCurrenciesForDropdown(
-                availableCurrenciesState.currencies
-              )}
-              value={{
-                label:
-                  availableCurrenciesState.currencies[
-                    availableCurrenciesState.active
-                  ].name,
-              }}
-              onChange={(value) =>
-                dispatch(currencyActions.changeActiveCurrency(value.value))
-              }
-              isSearchable={true}
-              name="currencies"
-            />
-          </DropdownWrapper>
-          <DateDisplayer />
-          <SearchField />
-          <Button onClick={handleFiltersAddition}>Apply</Button>
-          <Button onClick={handleFilterRemoval} transparent={true}>Clear all filters</Button>
-        </Row>
-      </Wrapper>
+      <>
+        <MobileRow displayOnMobile={filtersVisibilityOnMobile}>
+          <Row>
+            <StyledParagraph>
+              Transactions
+            </StyledParagraph>
+          </Row>
+          <Button transparent={true} onClick={handleFilterSectionVisibility}>
+            Filters
+          </Button>
+        </MobileRow>
+        <Wrapper displayOnMobile={filtersVisibilityOnMobile}>
+          <MobileContent displayOnMobile={filtersVisibilityOnMobile}>
+            <StyledParagraph>
+              Filters
+            </StyledParagraph>
+            <StyledCloseSign onClick={handleFilterSectionVisibility}/>
+          </MobileContent>
+          <Row>
+            <OptionsMenu>
+              {['all', 'expenses', 'incomes'].map((name, index) => {
+                return (
+                  <Option
+                    key={index}
+                    tabIndex={index}
+                    onClick={changeActiveItem}
+                    active={name.includes(filtration.filtersToBeConfirmed.type)}
+                  >
+                    {`${name.charAt(0).toUpperCase()}${name.slice(
+                      1,
+                      name.length
+                    )}`}
+                  </Option>
+                );
+              })}
+            </OptionsMenu>
+            <DropdownWrapper>
+              <Label htmlFor="categories">Select category</Label>
+              <Dropdown
+                isMulti={true}
+                list={prepareOptions(
+                  incomeTypes.categories,
+                  expenseTypes.categories,
+                  filtration.filtersToBeConfirmed.type
+                )}
+                onChange={handleCategoryChange}
+                value={filtration.filtersToBeConfirmed.categories}
+                isSearchable={true}
+                name="categories"
+              />
+            </DropdownWrapper>
+            <DropdownWrapper>
+              <Label htmlFor="subcategories">Select subcategory</Label>
+              <Dropdown
+                isMulti={true}
+                list={prepareSubcategories(
+                  incomeTypes,
+                  expenseTypes,
+                  filtration.filtersToBeConfirmed.categories
+                )}
+                onChange={handleSubcategoryChange}
+                value={filtration.filtersToBeConfirmed.subcategories}
+                isSearchable={true}
+                name="subcategories"
+              />
+            </DropdownWrapper>
+            <FieldWrapper>
+              <Label htmlFor="amountFrom">Amount From</Label>
+              <InputField
+                name="amountFrom"
+                type="number"
+                step="0.5"
+                handleKeyDown={checkIfAllowedSign}
+                placeholder={
+                  filtration.filtersToBeConfirmed.amountFrom == null
+                    ? '0,00'
+                    : null
+                }
+                handleChange={handleAmountFromChange}
+                value={filtration.filtersToBeConfirmed.amountFrom}
+              />
+            </FieldWrapper>
+            <FieldWrapper>
+              <Label htmlFor="amountTo">Amount To</Label>
+              <InputField
+                name="amountTo"
+                type="number"
+                step="0.5"
+                handleKeyDown={checkIfAllowedSign}
+                placeholder={
+                  filtration.filtersToBeConfirmed.amountTo == null ? '0,00' : null
+                }
+                handleChange={handleAmountToChange}
+                value={filtration.filtersToBeConfirmed.amountTo}
+              />
+            </FieldWrapper>
+          </Row>
+          <Row>
+            <SmallerDropdownWrapper>
+              <Label htmlFor="currencies">Currency</Label>
+              <Dropdown
+                list={prepareCurrenciesForDropdown(
+                  availableCurrenciesState.currencies
+                )}
+                value={{
+                  label:
+                    availableCurrenciesState.currencies[
+                      availableCurrenciesState.active
+                    ].name,
+                }}
+                onChange={(value) =>
+                  dispatch(currencyActions.changeActiveCurrency(value.value))
+                }
+                isSearchable={true}
+                name="currencies"
+              />
+            </SmallerDropdownWrapper>
+            <DateDisplayer />
+            <SearchField />
+            <Button onClick={handleFiltersAddition}>Apply</Button>
+            <Button onClick={handleFilterRemoval} transparent={true}>Clear all filters</Button>
+          </Row>
+        </Wrapper>
+      </>
     );
 };
 

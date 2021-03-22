@@ -14,6 +14,9 @@ const StyledSearchField = styled.div`
     border-radius: 4px;
     background-color: white;
 
+    ${({theme}) => theme.devices.mobile}{
+        width: 100%;
+    }
 `;
 
 const StyledSearchIcon = styled(SearchIcon)`
@@ -28,10 +31,6 @@ const Input = styled.input`
   outline: none;
   border: none;
 `;
-
-
-
-
 
 const SearchField = () => {
     const dispatch = useDispatch();

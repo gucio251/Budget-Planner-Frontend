@@ -18,6 +18,10 @@ const StyledDateDisplayer = styled.div`
     & > *:first-child{
         margin-right: 0.5em;
     }
+
+    ${({theme}) => theme.devices.mobile}{
+        width: 48.4%;
+    }
 `
 
 const Text = styled.span`
