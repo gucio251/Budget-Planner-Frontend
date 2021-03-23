@@ -121,6 +121,7 @@ const Dropdown = ({
       name={name}
       hideSelectedOptions={!isMulti}
       closeMenuOnSelect={!isMulti}
+      blurInputOnSelect={!isMulti}
       noOptionsMessage={() => null}
       isMulti={isMulti}
       styles={{

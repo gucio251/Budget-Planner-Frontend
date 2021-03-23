@@ -9,7 +9,8 @@ const StyledDateDisplayer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    min-width: 200px;
+    width: 200px;
+    height: 40px;
     background-color: white;
     border-radius: 4px;
     padding: 0 0.5em;
@@ -20,7 +21,7 @@ const StyledDateDisplayer = styled.div`
     }
 
     ${({theme}) => theme.devices.mobile}{
-        width: 48.4%;
+        width: 100%
     }
 `
 

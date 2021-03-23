@@ -9,7 +9,7 @@ const Input = styled.input`
     outline: none;
     padding-left: 10px;
     height: 40px;
-    min-width: 100%;
+    width: 100%;
 `
 
 const InputField = ({placeholder, type, step, name, value, handleChange, handleKeyDown}) => {

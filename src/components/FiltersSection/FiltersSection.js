@@ -47,6 +47,10 @@ const Wrapper = styled.section`
     left: 0;
     margin-top: 0;
     padding: 0 1em;
+
+    & > *:not(:first-child){
+      padding-top: 15px;
+    }
   }
 `;
 
@@ -131,6 +135,15 @@ const DropdownWrapper = styled.div`
     width: 100%;
   }
 `;
+
+const MobileWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+
+  ${({theme}) => theme.devices.mobile}{
+    width: 100%;
+  }
+`
 
 const SmallerDropdownWrapper = styled.div`
   width: 250px;
@@ -333,39 +346,41 @@ const FiltersSection = () => {
                 name="subcategories"
               />
             </DropdownWrapper>
-            <FieldWrapper>
-              <Label htmlFor="amountFrom">Amount From</Label>
-              <InputField
-                name="amountFrom"
-                type="number"
-                step="0.5"
-                handleKeyDown={checkIfAllowedSign}
-                placeholder={
-                  filtration.filtersToBeConfirmed.amountFrom == null
-                    ? '0,00'
-                    : null
-                }
-                handleChange={handleAmountFromChange}
-                value={filtration.filtersToBeConfirmed.amountFrom}
-              />
-            </FieldWrapper>
-            <FieldWrapper>
-              <Label htmlFor="amountTo">Amount To</Label>
-              <InputField
-                name="amountTo"
-                type="number"
-                step="0.5"
-                handleKeyDown={checkIfAllowedSign}
-                placeholder={
-                  filtration.filtersToBeConfirmed.amountTo == null ? '0,00' : null
-                }
-                handleChange={handleAmountToChange}
-                value={filtration.filtersToBeConfirmed.amountTo}
-              />
-            </FieldWrapper>
+            <MobileWrapper>
+              <FieldWrapper>
+                <Label htmlFor="amountFrom">Amount From</Label>
+                <InputField
+                  name="amountFrom"
+                  type="number"
+                  step="0.5"
+                  handleKeyDown={checkIfAllowedSign}
+                  placeholder={
+                    filtration.filtersToBeConfirmed.amountFrom == null
+                      ? '0,00'
+                      : null
+                  }
+                  handleChange={handleAmountFromChange}
+                  value={filtration.filtersToBeConfirmed.amountFrom}
+                />
+              </FieldWrapper>
+              <FieldWrapper>
+                <Label htmlFor="amountTo">Amount To</Label>
+                <InputField
+                  name="amountTo"
+                  type="number"
+                  step="0.5"
+                  handleKeyDown={checkIfAllowedSign}
+                  placeholder={
+                    filtration.filtersToBeConfirmed.amountTo == null ? '0,00' : null
+                  }
+                  handleChange={handleAmountToChange}
+                  value={filtration.filtersToBeConfirmed.amountTo}
+                />
+              </FieldWrapper>
+            </MobileWrapper>
           </Row>
           <Row>
-            <SmallerDropdownWrapper>
+            <DropdownWrapper>
               <Label htmlFor="currencies">Currency</Label>
               <Dropdown
                 list={prepareCurrenciesForDropdown(
@@ -383,7 +398,7 @@ const FiltersSection = () => {
                 isSearchable={true}
                 name="currencies"
               />
-            </SmallerDropdownWrapper>
+            </DropdownWrapper>
             <DateDisplayer />
             <SearchField />
             <Button onClick={handleFiltersAddition}>Apply</Button>
