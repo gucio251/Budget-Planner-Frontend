@@ -7,6 +7,8 @@ import { incomeTypesActions } from 'redux/actions/incomeTypesActions';
 import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
 import { userActions } from 'redux/actions/userActions';
+import LoadingInProgress from 'components/LoadingInProgress/LoadingInProgress';
+import DataReadiness from 'containers/DataReadiness/DataReadiness';
 import Sidebar from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
@@ -52,15 +54,25 @@ const Dashboard = () => {
       <StyledDashboard>
         <Sidebar />
         <TopToolbar />
-        <Router>
-          <DashboardOverviewHandling path='/' />
-          <DashboardReports
-            path='reports'
-          />
-        </Router>
+        <DataReadiness>
+          {({dataReadiness}) =>
+            dataReadiness === true ? (
+            <Router>
+              <DashboardOverviewHandling path='/' />
+              <DashboardReports
+                path='reports'
+              />
+            </Router>
+            ):(
+              <LoadingInProgress />
+            )
+          }
+        </DataReadiness>
       </StyledDashboard>
     </Wrapper>
   );
 };
+
+
 
 export default Dashboard;
