@@ -4,7 +4,7 @@ import {IncomeTypes} from 'api/services/API';
 const load = () => dispatch => {
     const request = () => {return {type: incomeTypesConstants.GETINCOMETYPES_REQUEST}};
     const success = payload => {return {type: incomeTypesConstants.GETINCOMETYPES_SUCCESS, payload}};
-    const failure = payload => {return {type: incomeTypesConstants.GETINCOMETYPES_ERROR, payload}};
+    const failure = payload => {return {type: incomeTypesConstants.GETINCOMETYPES_FAILURE, payload}};
 
     dispatch(request());
 
