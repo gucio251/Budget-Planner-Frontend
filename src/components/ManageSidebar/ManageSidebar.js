@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import { SidebarItem } from 'components/UI/SidebarItem';
 
@@ -14,9 +14,15 @@ const NavigationList = styled.ul`
 `;
 
 const ManageSidebar = ({children}) => {
-    const [activeSidebarEl, setActiveSidebarEl] = useState(0);
+    const [activeSidebarEl, setActiveSidebarEl] = useState('overview');
     const [hoveredSidebarEl, setHoveredSidebarEl] = useState();
 
+    useEffect(() => {
+      const arr = window.location.href.split('/');
+      const indexOfLastElement = arr.length -1;
+      const activeElement = arr[indexOfLastElement] === 'dashboard' ? 'overview' : arr[indexOfLastElement];
+      setActiveSidebarEl(activeElement);
+    }, [window.location.href])
     return (
       <NavigationList>
         {children.map((el, i) => {
@@ -29,7 +35,7 @@ const ManageSidebar = ({children}) => {
             href={href}
             Icon={Icon}
             name={name}
-            isActive={activeSidebarEl === parseInt(num)}
+            isActive={activeSidebarEl === name.toLowerCase()}
             isHover = {hoveredSidebarEl === parseInt(num)}
             onMouseEnter={()=> setHoveredSidebarEl(parseInt(num))}
             onMouseLeave={()=> setHoveredSidebarEl(null)}
