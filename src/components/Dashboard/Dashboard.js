@@ -8,16 +8,14 @@ import { incomesActions } from 'redux/actions/incomesActions';
 import { expensesActions } from 'redux/actions/expensesActions';
 import { userActions } from 'redux/actions/userActions';
 import LoadingInProgress from 'components/LoadingInProgress/LoadingInProgress';
+import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
+import DashboardReports from 'components/DashboardReports/DashboardReports';
 import DataReadiness from 'containers/DataReadiness/DataReadiness';
+import NotFound from 'views/NotFound/NotFound'
 import Sidebar from './../Sidebar/Sidebar';
 import TopToolbar from 'components/Toolbar/Toolbar';
 
 import { Router } from '@reach/router';
-import { routes } from 'routes';
-import ProtectedRoutes from 'components/ProtectedRoutes/ProtectedRoutes';
-
-import DashboardOverviewHandling from 'containers/DashboardOverviewHandling/DashboardOverviewHandling';
-import DashboardReports from 'components/DashboardReports/DashboardReports';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -58,10 +56,9 @@ const Dashboard = () => {
           {({dataReadiness}) =>
             dataReadiness === true ? (
             <Router>
-              <DashboardOverviewHandling path='/' />
-              <DashboardReports
-                path='reports'
-              />
+              <DashboardOverviewHandling path='/'/>
+              <DashboardReports path='reports'/>
+              <NotFound default/>
             </Router>
             ):(
               <LoadingInProgress />
