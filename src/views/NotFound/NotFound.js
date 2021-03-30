@@ -68,7 +68,7 @@ const StyledRegularText = styled.p`
 `
 
 const ButtonWrapper = styled.div`
-  width: 50%;
+  min-width: 250px;
 
   ${({theme}) => theme.devices.mobile}{
     width: 100%;
