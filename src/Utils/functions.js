@@ -91,10 +91,11 @@ export const recalculateTransactionsForActiveCurrency = ({
     if (transaction.currency_id === currencies.active) {
       return transaction;
     } else {
+      debugger
       const calculatedAmount =
         transaction.amount *
-        (currencies.rates[currencies.currencies[currencies.active].name] /
-          currencies.rates[currencies.currencies[transaction.currency_id].name]);
+        (currencies.rates[`USD_${currencies.currencies[currencies.active].name}`] /
+          currencies.rates[`USD_${currencies.currencies[transaction.currency_id].name}`]);
       return {
         ...transaction,
         currency: currencies.currencies[currencies.active].name,

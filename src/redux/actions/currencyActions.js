@@ -46,7 +46,7 @@ const loadRatesFromApi = () => (dispatch) => {
     dispatch(request());
 
     currenciesApi.loadRates().then(
-      ({ rates }) => dispatch(success(rates)),
+      (rates) => dispatch(success(rates)),
       (error) => dispatch(failure(error))
     );
 }

@@ -49,6 +49,7 @@ const currencies = (state = initialState, { type, payload }) => {
         status: 'loading',
       };
     case currenciesConstants.GETRATES_SUCCESS:
+      console.log(payload)
       return {
         ...state,
         statusRates: 'succedded',
